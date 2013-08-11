@@ -1,45 +1,37 @@
 (ns incise.core
-  (:use (hiccup core def page))
-  (:require (compojure [route :refer [resources not-found]]
-                       [core :refer [defroutes]])
-            (ring.middleware [reload :refer [wrap-reload]]
-                             [stacktrace :refer [wrap-stacktrace]])
-            [dieter.core :refer [asset-pipeline]]
-            [org.httpkit.server :refer [run-server]]))
+  (:require (incise [server :refer [serve stop-server defserver]]
+                    [watcher :refer [start-watching stop-watching]])
+            [incise.parsers.core :refer [parse]]
+            [clojure.java.classpath :refer [classpath]]
+            [clojure.tools.namespace.find :as ns-tools]))
 
-(defroutes routes
-  (resources "/")
-  (not-found (html5 [:h1 "404"])))
+(def ^:const core-namespace-symbols
+  "Namespaces which are the core parser and layouts."
+  #{'incise.parsers.core
+    'incise.layouts.core})
 
-(defn wrap-static-index [handler]
-  (fn [{:keys [uri] :as request}]
-    (handler (if (= (last uri) \/)
-               (assoc request :uri (str uri "index.html"))
-               request))))
+(defn namespace-is-layout-or-parser [namespace-sym]
+  (and (not (contains? core-namespace-symbols namespace-sym))
+       (re-find #"incise\.(layouts|parsers)\..+" (str namespace-sym))))
 
-(def app (-> routes
-             (wrap-static-index)
-             (wrap-reload)
-             (wrap-stacktrace)
-             (asset-pipeline {:cache-mode :development
-                              :engine :v8
-                              :compress false})))
+(defn load-parsers-and-layouts []
+  (doseq [ns-sym (filter namespace-is-layout-or-parser
+                         (ns-tools/find-namespaces (classpath)))]
+    (require ns-sym)))
 
-(defn getenv
-  "A nice wrapper around System/getenv that allows a second argument to be
-  passed in as the default."
-  ([variable default] (or (System/getenv variable) default))
-  ([variable] (getenv variable nil)))
+(load-parsers-and-layouts)
+
+(def parse-on-watch (partial start-watching parse))
 
 (defn -main
-  "Run the application."
-  [& [port thread-count]]
-  (run-server app {:port (or port (Integer. (getenv "PORT" "5000")))
-                   :thread (or thread-count (Integer. (getenv "THREAD_COUNT" "4")))}))
-
-(declare server)
-
-(defn defserver
-  "Start a server and bind the result to a var, 'server'."
+  "Start the development server and watcher."
   [& args]
-  (alter-var-root #'server (fn [& _] (apply -main args))))
+  (apply serve args)
+  (parse-on-watch))
+
+(defn defserver-and-watch
+  [& args]
+  (stop-server)
+  (apply defserver args)
+  (stop-watching)
+  (parse-on-watch))
