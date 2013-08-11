@@ -12,11 +12,10 @@
   (not-found (html5 [:h1 "404"])))
 
 (defn wrap-static-index [handler]
-  (fn [request]
-    (let [uri (:uri request)]
-      (handler (if (= (last uri) \/)
-                 (assoc request :uri (str uri "index.html"))
-                 request)))))
+  (fn [{:keys [uri] :as request}]
+    (handler (if (= (last uri) \/)
+               (assoc request :uri (str uri "index.html"))
+               request))))
 
 (def app (-> routes
              (wrap-static-index)
