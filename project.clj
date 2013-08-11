@@ -3,8 +3,9 @@
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[speclj "2.1.2"]
-                 [org.clojure/clojure "1.5.1"]
+  :dependencies [[org.clojure/clojure "1.5.1"]
+                 [speclj "2.1.2"]
+                 [ring "1.2.0"]
                  [hiccup "1.0.2"]
                  [compojure "1.1.5"]
                  [http-kit "2.1.1"]
