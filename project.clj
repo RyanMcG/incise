@@ -11,4 +11,5 @@
                  [http-kit "2.1.1"]
                  [dieter "0.4.1"]]
   :plugins [[speclj "2.1.2"]]
-  :test-paths ["spec/"])
+  :test-paths ["spec/"]
+  :main incise.core)
