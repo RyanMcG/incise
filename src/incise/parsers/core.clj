@@ -21,7 +21,12 @@
                        (repeat parser))))
 
 (defn extension [^java.io.File file]
-  (last (s/split (.getName file) #"\.")))
+  "Get the extension, enforcing lower case, on the given file."
+  (-> file
+      (.getName)
+      (s/split #"\.")
+      (last)
+      (s/lower-case)))
 
 (defn parse [^java.io.File file]
   ((@parsers (extension file)) file))
