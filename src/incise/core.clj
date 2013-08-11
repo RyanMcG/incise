@@ -11,9 +11,17 @@
   (resources "/")
   (not-found (html5 [:h1 "404"])))
 
+(defn wrap-static-index [handler]
+  (fn [request]
+    (let [uri (:uri request)]
+      (handler (if (= (last uri) \/)
+                 (assoc request :uri (str uri "index.html"))
+                 request)))))
+
 (def app (-> routes
-             (wrap-stacktrace)
+             (wrap-static-index)
              (wrap-reload)
+             (wrap-stacktrace)
              (asset-pipeline {:cache-mode :development
                               :engine :v8
                               :compress false})))
