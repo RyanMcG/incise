@@ -10,14 +10,20 @@
   #{'incise.parsers.core
     'incise.layouts.core})
 
-(defn namespace-is-layout-or-parser [namespace-sym]
-  (and (not (contains? core-namespace-symbols namespace-sym))
-       (re-find #"incise\.(layouts|parsers)\..+" (str namespace-sym))))
+(defn namespace-is-layout-or-parser?
+  "Predicate to determine if the given symbol is a namespace for a layout or
+   parser. It would be a namespace under incise.layouts or incise.parsers."
+  [namespace-sym]
+  (re-find #"incise\.(layouts|parsers)\..+" (str namespace-sym)))
 
-(defn load-parsers-and-layouts []
-  (doseq [ns-sym (filter namespace-is-layout-or-parser
-                         (ns-tools/find-namespaces (classpath)))]
-    (require ns-sym)))
+(defn load-parsers-and-layouts
+  "Require with reload all namespaces under incise.layouts and incise.parsers."
+  []
+  (doseq [ns-sym (->> (classpath)
+                      (ns-tools/find-namespaces)
+                      (remove (partial contains? core-namespace-symbols))
+                      (filter namespace-is-layout-or-parser?)) ]
+    (require :reload ns-sym)))
 
 (load-parsers-and-layouts)
 
