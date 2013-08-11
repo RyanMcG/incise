@@ -1,15 +1,22 @@
 # incise
 
-A Clojure library designed to ... well, that part is up to you.
-
-Includes speclj.
+A hopefully simplified static site generator in Clojure.
 
 ## Usage
 
-FIXME
+Development mode
+```bash
+lein run
+```
+
+Test
+
+```bash
+lein spec -a
+```
 
 ## License
 
-Copyright 2012 FIXME
+Copyright © 2012 Ryan McGowan
 
-
+Distributed under the Eclipse Public License, the same as Clojure.
