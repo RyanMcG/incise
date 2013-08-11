@@ -23,7 +23,11 @@
   (it "does not contain core namespaces"
     (doseq [core-sym core-namespace-symbols]
       (should-not-contain core-sym @layout-and-parser-syms)))
-  (it "should contain default layouts and parsers"
+  (it "does not contain spec namespaces"
+    (doseq [spec-sym ['incise.parsers.core-spec
+                      'incise.parsers.markdown-spec]]
+      (should-not-contain spec-sym @layout-and-parser-syms)))
+  (it "contains default layouts and parsers"
     (doseq [default-sym ['incise.parsers.markdown
                          'incise.layouts.page]]
       (should-contain default-sym @layout-and-parser-syms))))
