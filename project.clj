@@ -14,6 +14,7 @@
                  [org.clojure/java.classpath "0.2.0"]
                  [org.clojure/tools.namespace "0.2.4"]
                  [dieter "0.4.1"]]
-  :plugins [[speclj "2.1.2"]]
+  :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
+  :plugins [[speclj "2.5.0"]]
   :test-paths ["spec/"]
   :main incise.core)
