@@ -1,11 +1,17 @@
 (ns incise.parsers.core
   (:require [clojure.string :as s]))
 
-(def parsers (atom {}))
+(def parsers
+  "An atom containing a mapping of extensions (strings) to parse functions. A
+   parse function takes a java.io.File object and returns a string (hopefully of
+   html). This string should have meta attached like:
 
-(defprotocol Parser
-  "A parser"
-  (run [this path]))
+     {:title \"Some nice title\"
+      ; All other meta only necessary for posts
+      :date \"2013-08-11\"
+      :tags [\"a\" \"vector\" \"of\" \"descriptive\" \"tags\"]
+      :category \"singular category\"}"
+  (atom {}))
 
 (defn register
   "Register a parser for the given file extensions."
@@ -18,5 +24,4 @@
   (last (s/split (.getName file) #"\.")))
 
 (defn parse [^java.io.File file]
-  (println (str "HEREYRERE " file))
-  (run (@parsers (extension file)) (.getPath file)))
+  ((@parsers (extension file)) file))

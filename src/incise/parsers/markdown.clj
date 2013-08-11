@@ -1,13 +1,9 @@
 (ns incise.parsers.markdown
   (:require [incise.parsers.core :as pc]))
 
-(defn- parse-from-path
-  [file-path]
-  (do (println (str "Parsing: " file-path))))
+(defn parse
+  "Parse markdown into html."
+  [^java.io.File file]
+  (spit "yay" (with-meta "<h1>Yoyoyo</h1>" {:title "Yoyoyo"})))
 
-(defrecord Markdown []
-  pc/Parser
-  (run [this path]
-    (parse-from-path path)))
-
-(pc/register [:md :markdown] ->Markdown)
+(pc/register [:md :markdown] parse)
