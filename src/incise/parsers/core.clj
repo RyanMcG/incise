@@ -1,5 +1,6 @@
 (ns incise.parsers.core
   (:require [incise.layouts.core :as layout]
+            [incise.config :refer [config]]
             [clojure.string :as s])
   (:import [java.io File]))
 
@@ -16,7 +17,7 @@
                   ^String category]
   Inciseable
   (rubbing [this]
-    ((layout/get (:layout this)) this))
+    ((layout/get (:layout this)) @config this))
   (incise [this]
     (spit "somewhere" (.rubbing this))
     (File. "somewhere")))
