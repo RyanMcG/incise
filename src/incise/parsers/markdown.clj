@@ -2,8 +2,10 @@
   (:require [incise.parsers.core :as pc]))
 
 (defn parse
-  "Parse markdown into html."
+  "Parse markdown file returning a Parse record."
   [^java.io.File file]
-  (spit "yay" (with-meta "<h1>Yoyoyo</h1>" {:title "Yoyoyo"})))
+  (do (println (.getPath file))
+      ^pc/Parse (pc/map->Parse {:title "Yoyoyo"
+                                :content "yoyoyo"})))
 
 (pc/register [:md :markdown] parse)

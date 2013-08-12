@@ -1,7 +1,7 @@
 (ns incise.core
   (:require (incise [server :refer [serve stop-server defserver]]
                     [watcher :refer [start-watching stop-watching]])
-            [incise.parsers.core :refer [parse]]
+            [incise.parsers.core :refer [source->html]]
             [clojure.java.classpath :refer [classpath]]
             [clojure.tools.namespace.find :as ns-tools]))
 
@@ -39,7 +39,7 @@
 
 (load-parsers-and-layouts)
 
-(def parse-on-watch (partial start-watching parse))
+(def parse-on-watch (partial start-watching source->html))
 
 (defn -main
   "Start the development server and watcher."
