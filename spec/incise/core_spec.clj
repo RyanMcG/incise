@@ -31,3 +31,5 @@
     (doseq [default-sym ['incise.parsers.markdown
                          'incise.layouts.page]]
       (should-contain default-sym @layout-and-parser-syms))))
+
+(run-specs)
