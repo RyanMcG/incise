@@ -1,6 +1,12 @@
 (ns incise.parsers.core
   (:require [clojure.string :as s]))
 
+(defrecord Parse [^String title
+                  ^String content
+                  ^String date
+                  ^clojure.lang.Seqable tags
+                  ^String category])
+
 (def parsers
   "An atom containing a mapping of extensions (strings) to parse functions. A
    parse function takes a java.io.File object and returns a string (hopefully of
