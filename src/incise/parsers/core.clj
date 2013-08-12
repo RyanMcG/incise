@@ -45,7 +45,7 @@
   "Turn the given file into a Parseable using the constructor registered to its
    extension."
   [^File file]
-  {:pre (contains? @parsers (extension file))}
+  {:pre [(contains? @parsers (extension file))]}
   ^Parse ((@parsers (extension file)) file))
 
 (defn valid-parse?
@@ -59,7 +59,7 @@
 (defn Parse->html
   "Turn a given parse into an html file."
   [^Parse parse]
-  {:pre (valid-parse? parse)}
+  {:pre [(valid-parse? parse)]}
   (.incise parse))
 
 (def source->html
