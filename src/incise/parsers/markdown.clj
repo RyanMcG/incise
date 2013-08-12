@@ -6,6 +6,7 @@
   [^java.io.File file]
   (do (println (.getPath file))
       ^pc/Parse (pc/map->Parse {:title "Yoyoyo"
+                                :layout :page
                                 :content "yoyoyo"})))
 
 (pc/register [:md :markdown] parse)
