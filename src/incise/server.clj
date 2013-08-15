@@ -28,8 +28,8 @@
 (defn getenv
   "A nice wrapper around System/getenv that allows a second argument to be
   passed in as the default."
-  ([variable default] (or (System/getenv variable) default))
-  ([variable] (getenv variable nil)))
+  [variable & [default]]
+  (or (System/getenv variable) default))
 
 (defn serve
   "Start the development server"
