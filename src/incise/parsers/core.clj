@@ -1,26 +1,24 @@
 (ns incise.parsers.core
   (:require [incise.layouts.core :as layout]
-            [incise.config :refer [config]]
+            [incise.config :as conf]
+            [incise.parsers.helpers :refer [extension]]
+            [clj-time.core :as tm]
+            [clojure.java.io :refer [file]]
             [clojure.string :as s])
   (:import [java.io File]))
 
-(defprotocol Inciseable
-  ^String (rubbing [this] "Creates a more temporary String representation of
-                           this.")
-  ^File (incise [this] "Creates a more permanent File representing this."))
-
 (defrecord Parse [^String title
+                  ^String extension
                   ^String content
                   ^String date
                   ^String layout
                   ^clojure.lang.Seqable tags
-                  ^String category]
-  Inciseable
-  (rubbing [this]
-    ((layout/get (:layout this)) @config this))
-  (incise [this]
-    (spit "somewhere" (.rubbing this))
-    (File. "somewhere")))
+                  ^String category])
+
+(defprotocol Inciseable
+  ^Parse (parse [this] "Creates a more temporary String representation of
+                        this.")
+  ^File (incise [this ^Parse parse layout] "Write the appropriate file."))
 
 (def parsers
   "An atom containing a mapping of extensions (strings) to parse functions. A
