@@ -1,21 +1,14 @@
 (ns incise.parsers.core-spec
   (:require [speclj.core :refer :all]
-            [incise.parsers.core :refer :all])
-  (:import [java.io File]))
+            [incise.core :refer [load-parsers-and-layouts]]
+            [clj-time.core :refer [date-time]]
+            [clojure.java.io :refer [file resource]]
+            [incise.parsers.core :refer :all]))
 
-(describe "extension"
-  (with coffee-file (File. "boom/my/coolio.js.coffee"))
-  (it "gets the extension of a file"
-    (should= (extension @coffee-file) "coffee"))
-
-  (with md-file (File. "my.articles/wow.pants.MARKDOWN"))
-  (it "enforces a lower-case extension"
-    (should= (extension @md-file) "markdown")))
-
-(describe "Parse record"
-  (with parse-rec (map->Parse {:title "Hey"
-                               :content "<p>some content</p>"}))
-  (it "has a title" (should (string? (:title @parse-rec))))
-  (it "have content" (should (string? (:content @parse-rec)))))
+(describe "source->output"
+  (before-all (load-parsers-and-layouts))
+  (with real-md-file (file (resource "posts/another-fogotten-binding-pry.md")))
+  (it "outputs html"
+    (source->output @real-md-file)))
 
 (run-specs)

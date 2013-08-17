@@ -9,6 +9,6 @@
 (describe "parsing"
   (with markdown-file (file (resource "spec/another-forgotten-binding-pry.md")))
   (it "does something"
-    (should (pc/Parse->html (parse @markdown-file)))))
+    (should= "" (pc/Parse->string (parse @markdown-file)))))
 
 (run-specs)
