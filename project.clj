@@ -13,6 +13,7 @@
                  [markdown-clj "0.9.29"]
                  [org.clojure/java.classpath "0.2.0"]
                  [org.clojure/tools.namespace "0.2.4"]
+                 [clj-time "0.5.1"]
                  [dieter "0.4.1"]]
   :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
   :plugins [[speclj "2.5.0"]]
