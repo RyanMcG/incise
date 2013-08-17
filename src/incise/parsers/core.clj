@@ -32,21 +32,6 @@
          merge (zipmap (map name extensions)
                        (repeat parser))))
 
-(defn extension [^File file]
-  "Get the extension, enforcing lower case, on the given file."
-  (-> file
-      (.getName)
-      (s/split #"\.")
-      (last)
-      (s/lower-case)))
-
-(defn source->Parse
-  "Turn the given file into a Parseable using the constructor registered to its
-   extension."
-  [^File file]
-  {:pre [(contains? @parsers (extension file))]}
-  ^Parse ((@parsers (extension file)) file))
-
 (defn valid-parse?
   "Predicate to determin if the given parse is valid. A valid parse must have a
    layout and title specified. The title must be non-empty and the layout name
@@ -55,12 +40,11 @@
   (and (layout/exists? (:layout parse))
        ((complement empty?) (:title parse))))
 
-(defn Parse->html
-  "Turn a given parse into an html file."
-  [^Parse parse]
-  {:pre [(valid-parse? parse)]}
-  (.incise parse))
-
-(def source->html
-  "Transform parseable file to a Parse to an html file."
-  (comp Parse->html source->Parse))
+(defn source->output
+  "Turn the given file into a Parseable using the constructor registered to its
+   extension."
+  [^File handle]
+  {:pre [(contains? @parsers (extension handle))]}
+  (let [inciseable ((@parsers (extension handle)) handle)
+        parse ^Parse (.parse inciseable)]
+        (.incise inciseable parse (layout/get (:layout parse)))))
