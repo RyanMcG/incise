@@ -1,23 +1,6 @@
 (ns incise.parsers.impl.markdown
-  (:require [incise.parsers.core :as pc]
-            [incise.parsers.helpers :as ph]
-            [incise.config :refer [config]]
-            [markdown.core :as md])
-  (:import [java.io File StringWriter]))
+  (:require (incise.parsers [core :as pc]
+                            [html :refer [html-parser]])
+            [markdown.core :as md]))
 
-(defn md-file->string
-  "Parse the given file as markdown returning html."
-  [^File file]
-  (let [output (StringWriter.)]
-    (md/md-to-html-string file output)
-    (str output)))
-
-(defrecord Markdown [file]
-  pc/Inciseable
-  (parse [this]
-    (pc/map->Parse {:content (md-file->string (:file this))}))
-  (incise [this parse layout]
-    (ph/Parse->path parse)
-    (layout @config (:content parse))))
-
-(pc/register [:md :markdown] ->Markdown)
+(pc/register [:md :markdown] (html-parser md/md-to-html-string))
