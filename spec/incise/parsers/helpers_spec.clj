@@ -5,10 +5,6 @@
             (incise.parsers [core :refer [map->Parse]]
                             [helpers :refer :all])))
 
-(describe "str->date-time"
-  (it "makes a DateTime from a string"
-    (should= (date-time 2013 8 12) (str->date-time "2013-08-12"))))
-
 (describe "date-str->path"
   (it "handles empty dates well"
     (should= "" (date-str->path "")))

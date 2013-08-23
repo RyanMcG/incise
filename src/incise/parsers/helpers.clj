@@ -22,7 +22,7 @@
 (def date-str->path (comp date-time->path tc/from-string))
 
 (defn Parse->path
-  [{:keys [date title extension]}]
+  [^Parse {:keys [date title extension]}]
   (str (date-str->path date) (dashify title) extension))
 
 (defn extension [^File file]
