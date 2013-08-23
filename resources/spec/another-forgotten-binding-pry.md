@@ -1,6 +1,6 @@
-{:layout post
+{:layout :post
  :title "Another forgotten binding.pry"
- :date 2013-08-12
+ :date "2013-08-12"
  :category :code
  :tags [:code :rails :git :debugger :pry :diff]}
 
