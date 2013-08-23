@@ -1,4 +1,4 @@
-(ns incise.parsers.markdown
+(ns incise.parsers.impl.markdown
   (:require [incise.parsers.core :as pc]
             [incise.parsers.helpers :as ph]
             [incise.config :refer [config]]

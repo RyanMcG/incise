@@ -7,7 +7,8 @@
     (doseq [ns-sym ['arbitrary.name.space 'my.parser.yay 'your.layout.boop]]
       (should-not (namespace-is-layout-or-parser? ns-sym))))
   (it "returns true for parser and layout namespaces"
-    (doseq [ns-sym ['incise.parsers.cool-thing 'incise.layouts.bootstrapped]]
+    (doseq [ns-sym ['incise.parsers.impl.cool-thing
+                    'incise.layouts.impl.bootstrapped]]
       (should (namespace-is-layout-or-parser? ns-sym)))))
 
 (describe "namespace is spec or test"
@@ -20,16 +21,13 @@
 
 (describe "finding parsers and layouts"
   (with layout-and-parser-syms (find-parser-and-layout-symbols))
-  (it "does not contain core namespaces"
-    (doseq [core-sym core-namespace-symbols]
-      (should-not-contain core-sym @layout-and-parser-syms)))
   (it "does not contain spec namespaces"
-    (doseq [spec-sym ['incise.parsers.core-spec
-                      'incise.parsers.markdown-spec]]
+    (doseq [spec-sym ['incise.layouts.impl.page-spec
+                      'incise.parsers.impl.markdown-spec]]
       (should-not-contain spec-sym @layout-and-parser-syms)))
   (it "contains default layouts and parsers"
-    (doseq [default-sym ['incise.parsers.markdown
-                         'incise.layouts.page]]
+    (doseq [default-sym ['incise.parsers.impl.markdown
+                         'incise.layouts.impl.page]]
       (should-contain default-sym @layout-and-parser-syms))))
 
 (run-specs)

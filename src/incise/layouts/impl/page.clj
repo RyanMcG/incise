@@ -1,4 +1,4 @@
-(ns incise.layouts.page
+(ns incise.layouts.impl.page
   (:require [incise.layouts.core :refer [register]]
             (hiccup [page :refer :all]
                     [core :refer :all])))

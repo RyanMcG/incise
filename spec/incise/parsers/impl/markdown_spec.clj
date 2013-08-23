@@ -1,4 +1,4 @@
-(ns incise.parsers.markdown-spec
+(ns incise.parsers.impl.markdown-spec
   (:require [speclj.core :refer :all]
             [clojure.java.io :refer [file resource]]
             [incise.core] ; Ensure that layouts have been loaded
