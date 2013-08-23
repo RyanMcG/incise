@@ -15,10 +15,14 @@
                   ^clojure.lang.Seqable tags
                   ^String category])
 
-(defprotocol Inciseable
-  ^Parse (parse [this] "Creates a more temporary String representation of
-                        this.")
-  ^File (incise [this ^Parse parse layout] "Write the appropriate file."))
+(defn valid-parse?
+  "Predicate to determin if the given parse is valid. A valid parse must have a
+   layout and title specified. The title must be non-empty and the layout name
+   must be valid (i.e. it corresponds to an existing layout function."
+  [^Parse parse]
+  (and (layout/exists? (:layout parse))
+       ((complement empty?) (:title parse))))
+
 
 (def parsers
   "An atom containing a mapping of extensions (strings) to parse functions. A
@@ -31,20 +35,8 @@
   (swap! parsers
          merge (zipmap (map name extensions)
                        (repeat parser))))
-
-(defn valid-parse?
-  "Predicate to determin if the given parse is valid. A valid parse must have a
-   layout and title specified. The title must be non-empty and the layout name
-   must be valid (i.e. it corresponds to an existing layout function."
-  [^Parse parse]
-  (and (layout/exists? (:layout parse))
-       ((complement empty?) (:title parse))))
-
-(defn source->output
-  "Turn the given file into a Parseable using the constructor registered to its
-   extension."
+(defn parse
+  "Do all the work, parse the file and output it to the proper location."
   [^File handle]
   {:pre [(contains? @parsers (extension handle))]}
-  (let [inciseable ((@parsers (extension handle)) handle)
-        parse ^Parse (.parse inciseable)]
-        (.incise inciseable parse (layout/get (:layout parse)))))
+  ((@parsers (extension handle)) handle))

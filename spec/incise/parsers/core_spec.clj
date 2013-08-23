@@ -1,14 +1,18 @@
 (ns incise.parsers.core-spec
   (:require [speclj.core :refer :all]
             [incise.core :refer [load-parsers-and-layouts]]
-            [clj-time.core :refer [date-time]]
             [clojure.java.io :refer [file resource]]
             [incise.parsers.core :refer :all]))
 
-(describe "source->output"
+(describe "register"
+  (before (reset! parsers {}))
+  (it "can register parsers to extensions"
+    (should-not-throw (register ["markdown"] (fn [_])))))
+
+(describe "parse"
   (before-all (load-parsers-and-layouts))
-  (with real-md-file (file (resource "posts/another-fogotten-binding-pry.md")))
+  (with real-md-file (file (resource "spec/another-forgotten-binding-pry.md")))
   (it "outputs html"
-    (source->output @real-md-file)))
+    (parse @real-md-file)))
 
 (run-specs)

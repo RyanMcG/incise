@@ -1,7 +1,7 @@
 (ns incise.core
   (:require (incise [server :refer [serve stop-server defserver]]
                     [watcher :refer [start-watching stop-watching]])
-            [incise.parsers.core :refer [source->output]]
+            [incise.parsers.core :refer [parse]]
             [clojure.java.classpath :refer [classpath]]
             [clojure.tools.namespace.find :as ns-tools]))
 
@@ -34,7 +34,7 @@
 (defn refresh-parsers-and-parse
   [& args]
   (load-parsers-and-layouts)
-  (apply source->output args))
+  (apply parse args))
 
 (def parse-on-watch (partial start-watching refresh-parsers-and-parse))
 
