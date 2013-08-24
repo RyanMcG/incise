@@ -12,7 +12,7 @@
         parse-meta (edn/read-string file-str)
         content (to-html (second (s/split file-str #"\}" 2)))]
     (map->Parse (assoc parse-meta
-                       :extension :html
+                       :extension "/index.html"
                        :content content))))
 
 (defn write-Parse
