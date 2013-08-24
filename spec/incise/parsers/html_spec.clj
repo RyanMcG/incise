@@ -13,6 +13,6 @@
                           :tags [:cool]
                           :category :blarg
                           :content "\n\nHey there!\n"
-                          :extension :html}) (File->Parse identity @short-md-file))))
+                          :extension "/index.html"}) (File->Parse identity @short-md-file))))
 
 (run-specs)
