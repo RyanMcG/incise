@@ -22,9 +22,9 @@
 (def date-str->path (comp date-time->path tc/from-string))
 
 (defn Parse->path
-  [^Parse {:keys [path layout date title extension]}]
+  [^Parse {:keys [path date title extension]}]
   (or path
-      (str (when (= layout :post) (date-str->path date))
+      (str (date-str->path date)
            (dashify title)
            extension)))
 
