@@ -19,7 +19,7 @@
 
 (def app (-> routes
              (wrap-static-index)
-             (wrap-reload)
+             ; (wrap-reload :dirs ["src" "spec"])
              (wrap-stacktrace)
              (asset-pipeline {:cache-mode :development
                               :engine :rhino
@@ -34,8 +34,10 @@
 (defn serve
   "Start the development server"
   [& [port thread-count]]
-  (run-server app {:port (or port (Integer. (getenv "PORT" "5000")))
-                   :thread (or thread-count (Integer. (getenv "THREAD_COUNT" "4")))}))
+  (run-server app {:port (or port
+                             (Integer. (getenv "PORT" "5000")))
+                   :thread (or thread-count
+                               (Integer. (getenv "THREAD_COUNT" "4")))}))
 
 (def server nil)
 
