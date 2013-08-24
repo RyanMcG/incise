@@ -1,4 +1,6 @@
 (ns incise.layouts.core
+  (:require [incise.parsers.core]
+            [incise.config :as conf])
   (:refer-clojure :exclude [get]))
 
 (def layouts (atom {}))
@@ -10,6 +12,10 @@
 
 (defn get [layout-name]
   (@layouts (name layout-name)))
+
+(defn Parse->string
+  [^incise.parsers.core.Parse parse-data]
+  ((get (:layout parse-data)) conf/get (:content parse-data)))
 
 (defn register
   "Register a layout function to a shortname"
