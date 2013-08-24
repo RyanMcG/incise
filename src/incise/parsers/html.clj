@@ -1,6 +1,7 @@
 (ns incise.parsers.html
-  (:require [incise.parsers.helpers :as help]
-            [incise.parsers.core :refer [map->Parse]]
+  (:require (incise.parsers [helpers :as help]
+                            [core :refer [map->Parse]])
+            [incise.layouts.core :refer [Parse->string]]
             [clojure.edn :as edn]
             [clojure.string :as s]
             [clojure.java.io :refer [reader]])
@@ -17,7 +18,12 @@
 
 (defn write-Parse
   [^incise.parsers.core.Parse parse-data]
-  (spit (str "resources/public/" (help/Parse->path parse-data))))
+  (let [file-path (File. (str "resources/public/"
+                              (help/Parse->path parse-data)))]
+    (-> file-path
+        (.getParentFile)
+        (.mkdirs))
+    (spit file-path (Parse->string parse-data))))
 
 (defn html-parser
   "Take a function that parses a string into HTML and returns an HTML parser.
