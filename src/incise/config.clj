@@ -1,7 +1,7 @@
 (ns incise.config
   (:refer-clojure :exclude [assoc get]))
 
-(def config (atom {}))
+(def ^:private config (atom {}))
 
 (defn assoc [& args]
   (apply swap! config assoc args))
