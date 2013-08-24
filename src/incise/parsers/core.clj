@@ -1,6 +1,5 @@
 (ns incise.parsers.core
-  (:require [incise.layouts.core :as layout]
-            [incise.config :as conf]
+  (:require [incise.config :as conf]
             [incise.parsers.helpers :refer [extension]]
             [clj-time.core :as tm]
             [clojure.java.io :refer [file]]
@@ -15,15 +14,6 @@
                   ^String path
                   ^clojure.lang.Seqable tags
                   ^String category])
-
-(defn valid-parse?
-  "Predicate to determin if the given parse is valid. A valid parse must have a
-   layout and title specified. The title must be non-empty and the layout name
-   must be valid (i.e. it corresponds to an existing layout function."
-  [^Parse parse]
-  (and (layout/exists? (:layout parse))
-       ((complement empty?) (:title parse))))
-
 
 (def parsers
   "An atom containing a mapping of extensions (strings) to parse functions. A
