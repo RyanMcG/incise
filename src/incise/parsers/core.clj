@@ -12,6 +12,7 @@
                   ^String content
                   ^String date
                   ^String layout
+                  ^String path
                   ^clojure.lang.Seqable tags
                   ^String category])
 
