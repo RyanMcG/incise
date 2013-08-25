@@ -42,7 +42,7 @@
   "Start the development server and watcher."
   [& args]
   (apply serve args)
-  (parse-on-watch))
+  @(parse-on-watch))
 
 (defn defserver-and-watch
   "Define a server and set up a watcher AT THE SAME TIME!"
