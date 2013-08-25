@@ -2,7 +2,8 @@
   (:require [taoensso.timbre :refer [error]]
             [clojure.stacktrace :refer [print-cause-trace]]
             [watchtower.core :refer [watcher rate file-filter extensions
-                                     on-change]]))
+                                     on-change]])
+  (:import [java.io File]))
 
 (defn log-exceptions [func]
   "Log (i.e. print) exceptions received from the given function."
@@ -21,8 +22,20 @@
     (doseq [file files]
       (change-fn file))))
 
+(def gitignore-file? [^File file]
+  (= (.getName file) ".gitignore"))
+
+(defn delete-recursively
+  "Delete a directory tree."
+  [^File root]
+  (when (.isDirectory root)
+    (doseq [file (remove gitignore-file? (.listFiles root))]
+      (delete-recursively file)))
+  (.delete root))
+
 (defn watch
   [change-fn]
+  (delete-recursively (File. "resources/public/"))
   (watcher ["resources/posts/" "resources/pages/"]
            (rate 300)
            (on-change (-> change-fn
