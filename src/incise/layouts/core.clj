@@ -15,7 +15,7 @@
 
 (defn Parse->string
   [^incise.parsers.core.Parse parse-data]
-  ((get (:layout parse-data)) conf/get (:content parse-data)))
+  ((get (:layout parse-data)) conf/get parse-data))
 
 (defn register
   "Register a layout function to a shortname"
