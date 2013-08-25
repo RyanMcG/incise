@@ -1,20 +1,33 @@
 (ns incise.watcher
-  (:require [watchtower.core :refer [watcher rate file-filter extensions
+  (:require [taoensso.timbre :refer [error]]
+            [clojure.stacktrace :refer [print-stack-trace]]
+            [watchtower.core :refer [watcher rate file-filter extensions
                                      on-change]]))
 
-(defn log-exceptions [func & args]
+(defn log-exceptions [func]
   "Log (i.e. print) exceptions received from the given function."
-  (try
-    (apply func args)
-    (catch Exception e
-      (println (.getMessage e)))))
+  (let [out *out*
+        err *err*]
+    (fn [& args]
+      (binding [*out* out
+                *err* err]
+        (try
+          (apply func args)
+          (catch Exception e
+            (error (with-out-str (print-stack-trace e)))))))))
 
+(defn per-change [change-fn]
+  (fn [files]
+    (doseq [file files]
+      (change-fn file))))
 
 (defn watch
   [change-fn]
   (watcher ["resources/posts/" "resources/pages/"]
            (rate 300)
-           (on-change (partial log-exceptions change-fn))))
+           (on-change (-> change-fn
+                          per-change
+                          log-exceptions))))
 
 (def watching nil)
 
