@@ -2,6 +2,7 @@
   (:require (incise.parsers [helpers :as help]
                             [core :refer [map->Parse]])
             [incise.layouts.core :refer [Parse->string]]
+            [taoensso.timbre :refer [info]]
             [clojure.edn :as edn]
             [clojure.string :as s]
             [clojure.java.io :refer [reader]])
@@ -23,6 +24,7 @@
     (-> file-path
         (.getParentFile)
         (.mkdirs))
+    (info "Writing" (.getPath file-path))
     (spit file-path (Parse->string parse-data))))
 
 (defn html-parser
