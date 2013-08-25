@@ -1,6 +1,6 @@
 (ns incise.watcher
   (:require [taoensso.timbre :refer [error]]
-            [clojure.stacktrace :refer [print-stack-trace]]
+            [clojure.stacktrace :refer [print-cause-trace]]
             [watchtower.core :refer [watcher rate file-filter extensions
                                      on-change]]))
 
@@ -14,7 +14,7 @@
         (try
           (apply func args)
           (catch Exception e
-            (error (with-out-str (print-stack-trace e)))))))))
+            (error (with-out-str (print-cause-trace e)))))))))
 
 (defn per-change [change-fn]
   (fn [files]
