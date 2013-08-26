@@ -19,7 +19,7 @@
 
 (def app (-> routes
              (wrap-static-index)
-             ; (wrap-reload :dirs ["src" "spec"])
+             (wrap-reload :dirs ["src" "spec"])
              (wrap-stacktrace)
              (asset-pipeline {:cache-mode :development
                               :engine :rhino

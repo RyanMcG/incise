@@ -22,7 +22,7 @@
     (doseq [file files]
       (change-fn file))))
 
-(def gitignore-file? [^File file]
+(defn gitignore-file? [^File file]
   (= (.getName file) ".gitignore"))
 
 (defn delete-recursively
@@ -36,11 +36,16 @@
 (defn watch
   [change-fn]
   (delete-recursively (File. "resources/public/"))
-  (watcher ["resources/posts/" "resources/pages/"]
-           (rate 300)
-           (on-change (-> change-fn
-                          per-change
-                          log-exceptions))))
+  (let [orig-out *out*
+        orig-err *err*]
+    (future
+      (binding [*out* orig-out
+                *err* orig-err]
+        @(watcher ["resources/content/"]
+                  (rate 300)
+                  (on-change (-> change-fn
+                                 per-change
+                                 log-exceptions)))))))
 
 (def watching nil)
 
