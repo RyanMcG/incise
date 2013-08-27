@@ -7,15 +7,11 @@
 
 (defn log-exceptions [func]
   "Log (i.e. print) exceptions received from the given function."
-  (let [out *out*
-        err *err*]
-    (fn [& args]
-      (binding [*out* out
-                *err* err]
-        (try
-          (apply func args)
-          (catch Exception e
-            (error (with-out-str (print-cause-trace e)))))))))
+  (fn [& args]
+    (try
+      (apply func args)
+      (catch Exception e
+        (error (with-out-str (print-cause-trace e)))))))
 
 (defn per-change [change-fn]
   (fn [files]
