@@ -1,5 +1,6 @@
 (ns incise.core
-  (:require (incise [server :refer [serve stop-server defserver]]
+  (:require (incise [config :as conf]
+                    [server :refer [serve stop-server defserver]]
                     [watcher :refer [start-watching stop-watching]])
             [incise.parsers.core :refer [parse]]
             [clojure.java.classpath :refer [classpath]]
@@ -31,9 +32,13 @@
   (doseq [ns-sym (find-parser-and-layout-symbols)]
     (require :reload ns-sym)))
 
+(defn load-all []
+  (load-parsers-and-layouts)
+  (conf/load))
+
 (defn refresh-parsers-and-parse
   [& args]
-  (load-parsers-and-layouts)
+  (load-all)
   (apply parse args))
 
 (def parse-on-watch (partial start-watching refresh-parsers-and-parse))
