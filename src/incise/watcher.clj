@@ -1,5 +1,6 @@
 (ns incise.watcher
   (:require [taoensso.timbre :refer [error]]
+            [incise.utils :refer [future-with-default-out]]
             [clojure.stacktrace :refer [print-cause-trace]]
             [watchtower.core :refer [watcher rate file-filter extensions
                                      on-change]])
@@ -28,17 +29,6 @@
     (doseq [file (remove gitignore-file? (.listFiles root))]
       (delete-recursively file)))
   (.delete root))
-
-(defmacro future-with-default-out
-  "Just like future, but ensures that *out* and *err* inside the future are the
-   same as the calling context."
-  [& body]
-  `(let [orig-out# *out*
-         orig-err# *err*]
-    (future
-      (binding [*out* orig-out#
-                *err* orig-err#]
-        ~@body))))
 
 (defn watch
   [change-fn]
