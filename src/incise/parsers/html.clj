@@ -1,4 +1,7 @@
 (ns incise.parsers.html
+  "Provides a function, html-parser, to create what could be considered the
+   standard parser from a function which takes the body of a file as a string
+   and returns html."
   (:require (incise.parsers [helpers :as help]
                             [core :refer [map->Parse]])
             [incise.layouts.core :refer [Parse->string]]

@@ -19,7 +19,7 @@
 
 (def parsers
   "An atom containing a mapping of extensions (strings) to parse functions. A
-   parse function takes a java.io.File and returns a Parse."
+   parse function takes a java.io.File and writes another file appropriately."
   (atom {}))
 
 (defn contains? [& args]
