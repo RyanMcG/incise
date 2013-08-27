@@ -33,19 +33,26 @@
       (delete-recursively file)))
   (.delete root))
 
+(defmacro future-with-default-out
+  "Just like future, but ensures that *out* and *err* inside the future are the
+   same as the calling context."
+  [& body]
+  `(let [orig-out# *out*
+         orig-err# *err*]
+    (future
+      (binding [*out* orig-out#
+                *err* orig-err#]
+        ~@body))))
+
 (defn watch
   [change-fn]
   (delete-recursively (File. "resources/public/"))
-  (let [orig-out *out*
-        orig-err *err*]
-    (future
-      (binding [*out* orig-out
-                *err* orig-err]
-        @(watcher ["resources/content/"]
-                  (rate 300)
-                  (on-change (-> change-fn
-                                 per-change
-                                 log-exceptions)))))))
+  (future-with-default-out
+    @(watcher ["resources/content/"]
+              (rate 300)
+              (on-change (-> change-fn
+                             per-change
+                             log-exceptions)))))
 
 (def watching nil)
 
