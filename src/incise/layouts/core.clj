@@ -10,12 +10,12 @@
   [layout-with-name]
   (contains? @layouts (name layout-with-name)))
 
-(defn get [layout-name]
-  (@layouts (name layout-name)))
+(defn get [layout-name & more]
+  (apply @layouts (name layout-name) more))
 
 (defn Parse->string
   [^incise.parsers.core.Parse parse-data]
-  ((get (:layout parse-data)) conf/get parse-data))
+  ((get (:layout parse-data)) (conf/get) parse-data))
 
 (defn register
   "Register a layout function to a shortname"
