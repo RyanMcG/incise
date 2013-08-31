@@ -1,4 +1,3 @@
-//
 // Code (inline and blocK)
 // --------------------------------------------------
 
@@ -11,8 +10,6 @@ pre {
 
 // Inline code
 code {
-  padding: 2px 4px;
-  font-size: 90%;
   color: @code-color;
   background-color: @code-bg;
   white-space: nowrap;
@@ -24,13 +21,10 @@ pre {
   display: block;
   padding: ((@line-height-computed - 1) / 2);
   margin: 0 0 (@line-height-computed / 2);
-  font-size: (@font-size-base - 1); // 14px to 13px
-  line-height: @line-height-base;
   word-break: break-all;
   word-wrap: break-word;
   color: @pre-color;
   background-color: @pre-bg;
-  border: 1px solid @pre-border-color;
   border-radius: @border-radius-base;
 
   // Make prettyprint styles more spaced out for readability

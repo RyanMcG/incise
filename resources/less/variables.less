@@ -14,6 +14,7 @@
 @gray:                   lighten(#000, 33.5%); // #555
 @gray-light:             lighten(#000, 60%);   // #999
 @gray-lighter:           lighten(#000, 93.5%); // #eee
+@almost-white:           lighten(#000, 96.5%); // #eee
 
 // Brand colors
 // -------------------------
@@ -66,36 +67,36 @@
 // -------------------------
 // Based on 14px font-size and 1.428 line-height (~20px to start)
 
-@padding-base-vertical:          6px;
-@padding-base-horizontal:        12px;
+@padding-base-vertical:          .6em;
+@padding-base-horizontal:        1.2em;
 
-@padding-large-vertical:         10px;
-@padding-large-horizontal:       16px;
+@padding-large-vertical:         1em;
+@padding-large-horizontal:       1.6em;
 
-@padding-small-vertical:         5px;
-@padding-small-horizontal:       10px;
+@padding-small-vertical:         .5em;
+@padding-small-horizontal:       1em;
 
-@line-height-large:              1.33;
-@line-height-small:              1.5;
+@line-height-large:              1.33em;
+@line-height-small:              1.5em;
 
-@border-radius-base:             4px;
-@border-radius-large:            6px;
-@border-radius-small:            3px;
+@border-radius-base:             .4em;
+@border-radius-large:            .6em;
+@border-radius-small:            .2em;
 
 @component-active-bg:            @brand-primary;
 
-@caret-width-base:               4px;
-@caret-width-large:              5px;
+@caret-width-base:               .4em;
+@caret-width-large:              .5em;
 
 // Tables
 // -------------------------
 
-@table-cell-padding:                 8px;
-@table-condensed-cell-padding:       5px;
+@table-cell-padding:                 .8em;
+@table-condensed-cell-padding:       .5em;
 
 @table-bg:                           transparent; // overall background-color
 @table-bg-accent:                    #f9f9f9; // for striping
-@table-bg-hover:                     #f5f5f5;
+@table-bg-hover:                     @almost-white;
 @table-bg-active:                    @table-bg-hover;
 
 @table-border-color:                 #ddd; // table and cell border
@@ -461,7 +462,7 @@
 
 // Progress bars
 // -------------------------
-@progress-bg:                 #f5f5f5;
+@progress-bg:                 @almost-white;
 @progress-bar-color:          #fff;
 
 @progress-bar-bg:             @brand-primary;
@@ -477,7 +478,7 @@
 @list-group-border:           #ddd;
 @list-group-border-radius:    @border-radius-base;
 
-@list-group-hover-bg:         #f5f5f5;
+@list-group-hover-bg:         @almost-white;
 @list-group-active-color:     #fff;
 @list-group-active-bg:        @component-active-bg;
 @list-group-active-border:    @list-group-active-bg;
@@ -491,11 +492,11 @@
 @panel-bg:                    #fff;
 @panel-inner-border:          #ddd;
 @panel-border-radius:         @border-radius-base;
-@panel-footer-bg:             #f5f5f5;
+@panel-footer-bg:             @almost-white;
 
 @panel-default-text:          @gray-dark;
 @panel-default-border:        #ddd;
-@panel-default-heading-bg:    #f5f5f5;
+@panel-default-heading-bg:    @almost-white;
 
 @panel-primary-text:          #fff;
 @panel-primary-border:        @brand-primary;
@@ -531,7 +532,7 @@
 
 // Wells
 // -------------------------
-@well-bg:                     #f5f5f5;
+@well-bg:                     @almost-white;
 
 
 // Badges
@@ -550,7 +551,7 @@
 
 // Breadcrumbs
 // -------------------------
-@breadcrumb-bg:               #f5f5f5;
+@breadcrumb-bg:               @almost-white;
 @breadcrumb-color:            #ccc;
 @breadcrumb-active-color:     @gray-light;
 
@@ -583,7 +584,7 @@
 @code-color:                  #c7254e;
 @code-bg:                     #f9f2f4;
 
-@pre-bg:                      #f5f5f5;
+@pre-bg:                      @almost-white;
 @pre-color:                   @gray-dark;
 @pre-border-color:            #ccc;
 @pre-scrollable-max-height:   340px;
