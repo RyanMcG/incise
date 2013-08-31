@@ -43,7 +43,7 @@
              (wrap-stacktrace)
              (wrap-log-exceptions)
              (asset-pipeline {:cache-mode :development
-                              :engine :rhino
+                              :engine :v8
                               :compress false})))
 
 (defn getenv
