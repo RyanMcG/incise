@@ -2,9 +2,13 @@
   (:require (compojure [route :refer [resources not-found]]
                        [core :refer [defroutes]])
             (hiccup [page :refer [html5]])
+            [incise.load :refer [load-all]]
             (ring.middleware [reload :refer [wrap-reload]]
+                             [incise :refer [wrap-incise]]
                              [stacktrace :refer [wrap-stacktrace]])
             [dieter.core :refer [asset-pipeline]]
+            [taoensso.timbre :refer [error]]
+            [clojure.stacktrace :refer [print-cause-trace]]
             [org.httpkit.server :refer [run-server]]))
 
 (defroutes routes
@@ -17,10 +21,27 @@
                (assoc request :uri (str uri "index.html"))
                request))))
 
+(defn wrap-parsers-reload [handler]
+  (fn [request]
+    (load-all)
+    (handler request)))
+
+(defn wrap-log-exceptions [func]
+  "Log (i.e. print) exceptions received from the given function."
+  (fn [& args]
+    (try
+      (apply func args)
+      (catch Exception e
+        (error (with-out-str (print-cause-trace e)))))))
+
 (def app (-> routes
              (wrap-static-index)
              (wrap-reload :dirs ["src" "spec"])
+             (wrap-incise :out "resources/public"
+                          :in "resources/content")
+             (wrap-parsers-reload)
              (wrap-stacktrace)
+             (wrap-log-exceptions)
              (asset-pipeline {:cache-mode :development
                               :engine :rhino
                               :compress false})))
@@ -34,17 +55,20 @@
 (defn serve
   "Start the development server"
   [& [port thread-count]]
+  (load-all)
   (run-server app {:port (or port
                              (Integer. (getenv "PORT" "5000")))
                    :thread (or thread-count
                                (Integer. (getenv "THREAD_COUNT" "4")))}))
 
-(def server nil)
+(def server (atom nil))
 
 (defn defserver
   "Start a server and bind the result to a var, 'server'."
   [& args]
-  (alter-var-root #'server (fn [& _] (apply serve args))))
+  (reset! server (apply serve args)))
 
 (defn stop-server []
-  (when server (server)))
+  (when @server
+    (@server)
+    (reset! server nil)))
