@@ -5,7 +5,7 @@
             [incise.load :refer [load-all]]
             (ring.middleware [reload :refer [wrap-reload]]
                              [incise :refer [wrap-incise]]
-                             [stacktrace :refer [wrap-stacktrace]])
+                             [stacktrace :refer [wrap-stacktrace-web]])
             [dieter.core :refer [asset-pipeline]]
             [taoensso.timbre :refer [error]]
             [clojure.stacktrace :refer [print-cause-trace]]
@@ -32,7 +32,8 @@
     (try
       (apply func args)
       (catch Exception e
-        (error (with-out-str (print-cause-trace e)))))))
+        (error (with-out-str (print-cause-trace e)))
+        (throw e)))))
 
 (def app (-> routes
              (wrap-static-index)
@@ -40,8 +41,8 @@
              (wrap-incise :out "resources/public"
                           :in "resources/content")
              (wrap-parsers-reload)
-             (wrap-stacktrace)
              (wrap-log-exceptions)
+             (wrap-stacktrace-web)
              (asset-pipeline {:cache-mode :development
                               :engine :v8
                               :compress false})))
