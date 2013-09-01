@@ -1,5 +1,6 @@
 (ns ring.middleware.incise
   (:require [clojure.java.io :refer [file]]
+            [ns-tracker.core :refer [ns-tracker]]
             [incise.parsers.core :refer [parse]])
   (:import [java.io File]))
 
@@ -25,7 +26,7 @@
     (or (nil? previous-modification-time)
         (< previous-modification-time last-modification-time))))
 
-(defn wrap-incise
+(defn wrap-incise-parse
   "Call parse on each modified file in the given dir with each request."
   [handler & {:keys [in out]}]
   (let [orig-out *out*
@@ -41,3 +42,23 @@
              (map parse)
              (dorun)))
       (handler request))))
+
+(defn wrap-reset-modified-files-with-source-change
+  "An almost copy of wrap-reload, but instead of reloading modified files this
+   ensurs that the next time parse is called all content files are reparsed.
+
+   Takes the following options:
+     :dirs - A list of directories that contain the source files.
+             Defaults to [\"src\"]."
+  [handler & [options]]
+  (let [source-dirs (:dirs options ["src"])
+        modified-namespaces (ns-tracker source-dirs)]
+    (fn [request]
+      (when-not (empty? (modified-namespaces))
+        (reset! file-modification-times {}))
+      (handler request))))
+
+(defn wrap-incise
+  [handler & args]
+  (-> (apply wrap-incise-parse handler args)
+      (wrap-reset-modified-files-with-source-change)))
