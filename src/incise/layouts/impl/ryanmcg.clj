@@ -1,5 +1,6 @@
 (ns incise.layouts.impl.ryanmcg
-  (:require (incise.layouts [html :refer [use-layout deflayout defpartial]]
+  (:require (incise.layouts [html :refer [repartial use-layout
+                                          deflayout defpartial]]
                             [core :refer [register]])
             [robert.hooke :refer [add-hook]]
             [incise.layouts.impl.page :refer [page]]
@@ -22,7 +23,7 @@
 
 (defpartial footer
   "A footer parital with a Creative Commons license attached."
-  [_ {:keys [contacts author]}]
+  [{:keys [contacts author]} _]
   [:hr]
   [:footer
    [:div.row
