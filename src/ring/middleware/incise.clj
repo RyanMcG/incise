@@ -1,7 +1,8 @@
 (ns ring.middleware.incise
   (:require [clojure.java.io :refer [file]]
             [ns-tracker.core :refer [ns-tracker]]
-            [incise.utils :refer [delete-recursively]]
+            (incise [utils :refer [delete-recursively]]
+                    [config :as conf])
             [incise.parsers.core :refer [parse]])
   (:import [java.io File]))
 
@@ -18,14 +19,14 @@
 
 (defn wrap-incise-parse
   "Call parse on each modified file in the given dir with each request."
-  [handler & {:keys [in out]}]
+  [handler]
   (let [orig-out *out*
         orig-err *err*]
-    (delete-recursively (file out))
+    (delete-recursively (file (conf/get :out-dir)))
     (fn [request]
       (binding [*out* orig-out
                 *err* orig-err]
-        (->> in
+        (->> (conf/get :in-dir)
              (file)
              (file-seq)
              (filter modified?)
@@ -49,6 +50,6 @@
       (handler request))))
 
 (defn wrap-incise
-  [handler & args]
-  (-> (apply wrap-incise-parse handler args)
+  [handler]
+  (-> (apply wrap-incise-parse handler)
       (wrap-reset-modified-files-with-source-change)))
