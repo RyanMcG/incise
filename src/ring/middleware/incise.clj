@@ -51,5 +51,7 @@
 
 (defn wrap-incise
   [handler]
-  (-> (apply wrap-incise-parse handler)
+  (conf/load)
+  (-> handler
+      (wrap-incise-parse)
       (wrap-reset-modified-files-with-source-change)))
