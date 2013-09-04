@@ -38,8 +38,7 @@
 (def app (-> routes
              (wrap-static-index)
              (wrap-reload :dirs ["src" "spec"])
-             (wrap-incise :out "resources/public"
-                          :in "resources/content")
+             (wrap-incise)
              (wrap-parsers-reload)
              (wrap-log-exceptions)
              (wrap-stacktrace-web)
