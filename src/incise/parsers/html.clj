@@ -5,10 +5,11 @@
   (:require (incise.parsers [helpers :as help]
                             [core :refer [map->Parse]])
             [incise.layouts.core :refer [Parse->string]]
+            [incise.config :as conf]
             [taoensso.timbre :refer [info]]
             [clojure.edn :as edn]
             [clojure.string :as s]
-            [clojure.java.io :refer [reader]])
+            [clojure.java.io :refer [file reader]])
   (:import [java.io File]))
 
 (defn File->Parse
@@ -22,8 +23,8 @@
 
 (defn write-Parse
   [^incise.parsers.core.Parse parse-data]
-  (let [file-path (File. (str "resources/public/"
-                              (help/Parse->path parse-data)))]
+  (let [file-path (file (str (conf/get :out-dir) File/separator
+                             (help/Parse->path parse-data)))]
     (-> file-path
         (.getParentFile)
         (.mkdirs))
