@@ -1,13 +1,13 @@
-(ns incise.utils)
+(ns incise.utils
+  (:import [java.io File]))
 
-(defmacro future-with-default-out
-  "Just like future, but ensures that *out* and *err* inside the future are the
-   same as the calling context."
-  [& body]
-  `(let [orig-out# *out*
-         orig-err# *err*]
-    (future
-      (binding [*out* orig-out#
-                *err* orig-err#]
-        ~@body))))
+(defn- gitignore-file? [^File file]
+  (= (.getName file) ".gitignore"))
 
+(defn delete-recursively
+  "Delete a directory tree."
+  [^File root]
+  (when (.isDirectory root)
+    (doseq [file (remove gitignore-file? (.listFiles root))]
+      (delete-recursively file)))
+  (.delete root))

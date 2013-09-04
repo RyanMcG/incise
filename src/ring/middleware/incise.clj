@@ -1,19 +1,9 @@
 (ns ring.middleware.incise
   (:require [clojure.java.io :refer [file]]
             [ns-tracker.core :refer [ns-tracker]]
+            [incise.utils :refer [delete-recursively]]
             [incise.parsers.core :refer [parse]])
   (:import [java.io File]))
-
-(defn- gitignore-file? [^File file]
-  (= (.getName file) ".gitignore"))
-
-(defn- delete-recursively
-  "Delete a directory tree."
-  [^File root]
-  (when (.isDirectory root)
-    (doseq [file (remove gitignore-file? (.listFiles root))]
-      (delete-recursively file)))
-  (.delete root))
 
 (def ^:private file-modification-times (atom {}))
 
