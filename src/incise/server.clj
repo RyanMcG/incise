@@ -61,7 +61,7 @@
                    :thread (or thread-count
                                (Integer. (getenv "THREAD_COUNT" "4")))}))
 
-(def server (atom nil))
+(defonce server (atom nil))
 
 (defn defserver
   "Start a server and bind the result to a var, 'server'."
