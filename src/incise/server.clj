@@ -49,12 +49,10 @@
 
 (defn serve
   "Start the development server"
-  [& [port thread-count]]
-  (load-all)
-  (run-server app {:port (or port
-                             (Integer. (getenv "PORT" "5000")))
-                   :thread (or thread-count
-                               (Integer. (getenv "THREAD_COUNT" "4")))}))
+  []
+  (run-server app {:port (Integer. (conf/get :port (getenv "PORT" "5000")))
+                   :thread (Integer. (conf/get :thread-count
+                                               (getenv "THREAD_COUNT" "4")))}))
 
 (defonce server (atom nil))
 
