@@ -23,8 +23,7 @@
   (conf/merge config)
   (let [out-dir (conf/get :out-dir)
         stefon-pre-opts {:cache-mode :production
-                         :compress false
-                         :engine :v8
+                         :compress true
                          :serving-root out-dir
                          :precompiles (conf/get :precompiles)}]
     (info "Clearing out" (str \" out-dir \"))
