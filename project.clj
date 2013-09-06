@@ -13,6 +13,7 @@
                  [me.raynes/cegdown "0.1.0"]
                  [org.clojure/java.classpath "0.2.0"]
                  [org.clojure/tools.namespace "0.2.4"]
+                 [org.clojure/tools.cli "0.2.4"]
                  [clj-time "0.5.1"]
                  [com.taoensso/timbre "2.6.1"]
                  [com.ryanmcg/stefon "0.5.1"]]
