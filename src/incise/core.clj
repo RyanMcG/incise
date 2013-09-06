@@ -5,8 +5,11 @@
             [incise.parsers.core :refer [parse]]
             [taoensso.timbre :refer [info]]
             (dieter [settings :refer [with-options]]
-                    [core :as dc])
+                    [core :as dc]
+                    [path :refer [adrf->uri]]
+                    [cache :as dcache])
             [clojure.java.io :refer [file]]
+            [robert.hooke :refer [add-hook]]
             [clojure.string :as s]
             [incise.server :refer [wrap-log-exceptions serve stop-server
                                    defserver]])
@@ -20,12 +23,22 @@
 (defn once [& {:as config}]
   (load-all)
   (conf/merge config)
-  (delete-recursively (file (conf/get :out-dir)))
-  (let [dieter-pre-opts {:cache-mode :production
+  (let [out-dir (conf/get :out-dir)
+        dieter-pre-opts {:cache-mode :production
                          :compress false
                          :engine :v8
                          :precompiles (conf/get :precompiles)
-                         :cache-root (conf/get :out-dir)}]
+                         :cache-root out-dir}]
+    (info "Clearing out" (str \" out-dir \"))
+    (delete-recursively (file out-dir))
+    (add-hook #'dieter.cache/cached-file-path
+              (fn [f & more]
+                (let [[adrf] more
+                      cached-path (apply f more)]
+                  (dcache/add-cached-uri (adrf->uri adrf)
+                                         (.substring cached-path
+                                                     (count out-dir)))
+                  cached-path)))
     (with-options dieter-pre-opts
       (info "Precompiling assets...")
       (info (with-out-str (dc/precompile dieter-pre-opts)))
