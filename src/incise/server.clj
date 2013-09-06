@@ -6,7 +6,7 @@
             (ring.middleware [reload :refer [wrap-reload]]
                              [incise :refer [wrap-incise]]
                              [stacktrace :refer [wrap-stacktrace-web]])
-            [dieter.core :refer [asset-pipeline]]
+            [stefon.core :refer [asset-pipeline]]
             [taoensso.timbre :refer [error]]
             [clojure.stacktrace :refer [print-cause-trace]]
             [org.httpkit.server :refer [run-server]]))

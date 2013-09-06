@@ -1,7 +1,7 @@
 (ns incise.layouts.impl.page
   (:require (incise.layouts [core :refer [register]]
                             [html :refer [deflayout defpartial]])
-            [dieter.core :refer [link-to-asset]]
+            [stefon.core :refer [link-to-asset]]
             (hiccup [def :refer :all]
                     [page :refer :all]
                     [element :refer :all]
@@ -22,10 +22,10 @@
     (link-to "https://github.com/RyanMcG/incise" "incise") "d."]])
 
 (defn stylesheets []
-  [(link-to-asset "stylesheets/app.css.dieter")])
+  [(link-to-asset "stylesheets/app.css.stefon")])
 
 (defn javascripts []
-   [(link-to-asset "javascripts/app.js.dieter")])
+   [(link-to-asset "javascripts/app.js.stefon")])
 
 (deflayout page
   "The default page/post layout."
