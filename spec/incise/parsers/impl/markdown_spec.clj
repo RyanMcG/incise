@@ -1,7 +1,7 @@
 (ns incise.parsers.impl.markdown-spec
   (:require [speclj.core :refer :all]
             [clojure.java.io :refer [file resource]]
-            [incise.core :refer (load-parsers-and-layouts)]
+            [incise.load :refer (load-parsers-and-layouts)]
             (incise.parsers [core :as pc]
                             [html :refer [html-parser]])
             [incise.parsers.impl.markdown :refer :all]

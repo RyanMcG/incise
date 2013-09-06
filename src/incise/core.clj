@@ -1,5 +1,6 @@
 (ns incise.core
-  (:require (incise [load :refer [load-all]]
+  "A tool for incising."
+  (:require (incise [load :refer [load-parsers-and-layouts]]
                     [config :as conf]
                     [utils :refer [delete-recursively]])
             [incise.parsers.core :refer [parse]]

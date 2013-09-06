@@ -2,7 +2,8 @@
   (:require (compojure [route :refer [resources not-found]]
                        [core :refer [defroutes]])
             (hiccup [page :refer [html5]])
-            [incise.load :refer [load-all]]
+            (incise [config :as conf]
+                    [load :refer [load-parsers-and-layouts]])
             (ring.middleware [reload :refer [wrap-reload]]
                              [incise :refer [wrap-incise]]
                              [stacktrace :refer [wrap-stacktrace-web]])
@@ -21,11 +22,6 @@
                (assoc request :uri (str uri "index.html"))
                request))))
 
-(defn wrap-parsers-reload [handler]
-  (fn [request]
-    (load-all)
-    (handler request)))
-
 (defn wrap-log-exceptions [func]
   "Log (i.e. print) exceptions received from the given function."
   (fn [& args]
@@ -39,7 +35,6 @@
              (wrap-static-index)
              (wrap-reload :dirs ["src" "spec"])
              (wrap-incise)
-             (wrap-parsers-reload)
              (wrap-log-exceptions)
              (wrap-stacktrace-web)
              (asset-pipeline {:cache-mode :development

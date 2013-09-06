@@ -2,6 +2,7 @@
   (:require [clojure.java.io :refer [file]]
             [ns-tracker.core :refer [ns-tracker]]
             (incise [utils :refer [delete-recursively]]
+                    [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
             [incise.parsers.core :refer [parse]])
   (:import [java.io File]))
@@ -49,9 +50,17 @@
         (reset! file-modification-times {}))
       (handler request))))
 
+(defn wrap-parsers-reload
+  "Reload all parsers and layouts with each request."
+  [handler]
+  (fn [request]
+    (load-parsers-and-layouts)
+    (handler request)))
+
 (defn wrap-incise
   [handler]
   (conf/load)
   (-> handler
       (wrap-incise-parse)
-      (wrap-reset-modified-files-with-source-change)))
+      (wrap-reset-modified-files-with-source-change)
+      (wrap-parsers-reload)))

@@ -3,18 +3,18 @@
             [clojure.java.classpath :refer [classpath]]
             [clojure.tools.namespace.find :as ns-tools]))
 
-(defn namespace-is-layout-or-parser?
+(defn- namespace-is-layout-or-parser?
   "Predicate to determine if the given symbol is a namespace for a layout or
    parser. It would be a namespace under incise.layouts or incise.parsers."
   [namespace-sym]
   (re-find #"incise\.(layouts|parsers)\.impl\..+" (str namespace-sym)))
 
-(defn namespace-is-spec-or-test?
+(defn- namespace-is-spec-or-test?
   "Predicate to determine if the given namespace is a spec or test."
   [namespace-sym]
   (re-find #"-(test|spec)$" (str namespace-sym)))
 
-(defn find-parser-and-layout-symbols
+(defn- find-parser-and-layout-symbols
   "Find symbols for namespaces on the classpath that are valid layouts and
    parsers."
   []
@@ -28,7 +28,3 @@
   []
   (doseq [ns-sym (find-parser-and-layout-symbols)]
     (require :reload ns-sym)))
-
-(defn load-all []
-  (load-parsers-and-layouts)
-  (conf/load))
