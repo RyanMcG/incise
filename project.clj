@@ -8,7 +8,7 @@
                  [ring "1.2.0"]
                  [hiccup "1.0.2"]
                  [compojure "1.1.5"]
-                 [http-kit "2.1.1"]
+                 [http-kit "2.1.10"]
                  [robert/hooke "1.3.0"]
                  [me.raynes/cegdown "0.1.0"]
                  [org.clojure/java.classpath "0.2.0"]
@@ -16,7 +16,7 @@
                  [org.clojure/tools.cli "0.2.4"]
                  [clj-time "0.5.1"]
                  [com.taoensso/timbre "2.6.1"]
-                 [com.ryanmcg/stefon "0.5.1"]]
+                 [com.ryanmcg/stefon "0.5.0"]]
   :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
   :plugins [[speclj "2.5.0"]]
   :test-paths ["spec/"]
