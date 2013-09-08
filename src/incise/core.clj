@@ -74,7 +74,8 @@
       (serve))))
 
 (defn restart
-  "Define a server and set up a watcher AT THE SAME TIME!"
+  "Stop a server if it is already started and start a new one."
   [& args]
   (stop-server)
+  (require :reload 'incise.server)
   (apply defserver args))
