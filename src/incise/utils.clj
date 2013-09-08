@@ -7,7 +7,8 @@
 (defn delete-recursively
   "Delete a directory tree."
   [^File root]
-  (when (.isDirectory root)
-    (doseq [file (remove gitignore-file? (.listFiles root))]
-      (delete-recursively file)))
-  (.delete root))
+  (when root
+    (when (.isDirectory root)
+      (doseq [file (remove gitignore-file? (.listFiles root))]
+        (delete-recursively file)))
+    (.delete root)))
