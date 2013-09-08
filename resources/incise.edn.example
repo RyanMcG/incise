@@ -1,1 +1,6 @@
-{:site-title "My Incised Website"}
+{:site-title "My Website"
+ :author "Your Name Here"
+ :in-dir "resources/content"
+ :out-dir "resources/public"
+ :precompiles ["javascripts/app.js.stefon"
+               "stylesheets/app.css.stefon"]}
