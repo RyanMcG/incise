@@ -16,7 +16,7 @@
                  [org.clojure/tools.cli "0.2.4"]
                  [clj-time "0.5.1"]
                  [com.taoensso/timbre "2.6.1"]
-                 [com.ryanmcg/stefon "0.5.0"]]
+                 [com.ryanmcg/stefon "0.5.0-SNAPSHOT"]]
   :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
   :plugins [[speclj "2.5.0"]]
   :test-paths ["spec/"]
