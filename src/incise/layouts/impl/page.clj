@@ -18,7 +18,7 @@
   [_ {:keys [contacts author]}]
   [:footer
    [:p
-    "This website is "
+    "This website was "
     (link-to "https://github.com/RyanMcG/incise" "incise") "d."]])
 
 (defn stylesheets []
