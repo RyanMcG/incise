@@ -18,6 +18,7 @@
                  [com.taoensso/timbre "2.6.1"]
                  [com.ryanmcg/stefon "0.5.0-SNAPSHOT"]]
   :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
+  :repl-options {:init-ns incise.repl}
   :plugins [[speclj "2.5.0"]]
   :test-paths ["spec/"]
   :main incise.core)
