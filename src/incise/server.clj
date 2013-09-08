@@ -37,9 +37,7 @@
              (wrap-incise)
              (wrap-log-exceptions)
              (wrap-stacktrace-web)
-             (asset-pipeline {:cache-mode :development
-                              :engine :v8
-                              :compress false})))
+             (asset-pipeline)))
 
 (defn getenv
   "A nice wrapper around System/getenv that allows a second argument to be
@@ -59,6 +57,7 @@
 (defn defserver
   "Start a server and bind the result to a var, 'server'."
   [& args]
+  (conf/load)
   (reset! server (apply serve args)))
 
 (defn stop-server []
