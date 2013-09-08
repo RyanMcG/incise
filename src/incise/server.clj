@@ -8,7 +8,7 @@
                              [incise :refer [wrap-incise]]
                              [stacktrace :refer [wrap-stacktrace-web]])
             [stefon.core :refer [asset-pipeline]]
-            [taoensso.timbre :refer [info error]]
+            [taoensso.timbre :refer [info error fatal]]
             [clojure.stacktrace :refer [print-cause-trace]]
             [org.httpkit.server :refer [run-server]]))
 
@@ -29,7 +29,7 @@
     (try
       (apply func args)
       (catch Exception e
-        (error (with-out-str (print-cause-trace e)))
+        ((if bubble error fatal) (with-out-str (print-cause-trace e)))
         (when bubble (throw e))))))
 
 (def app (-> routes
