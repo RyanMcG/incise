@@ -8,7 +8,7 @@
                              [incise :refer [wrap-incise]]
                              [stacktrace :refer [wrap-stacktrace-web]])
             [stefon.core :refer [asset-pipeline]]
-            [taoensso.timbre :refer [error]]
+            [taoensso.timbre :refer [info error]]
             [clojure.stacktrace :refer [print-cause-trace]]
             [org.httpkit.server :refer [run-server]]))
 
@@ -48,9 +48,14 @@
 (defn serve
   "Start the development server"
   []
-  (run-server app {:port (Integer. (conf/get :port (getenv "PORT" "5000")))
-                   :thread (Integer. (conf/get :thread-count
-                                               (getenv "THREAD_COUNT" "4")))}))
+  (let [port (Integer. (conf/get :port (getenv "PORT" 5000)))]
+    (info "Serving at"
+          (str "http://" (.getCanonicalHostName
+                           (java.net.InetAddress/getLocalHost)) \: port \/))
+    (run-server app {:port port
+                     :thread (Integer.
+                               (conf/get :thread-count
+                                         (getenv "THREAD_COUNT" 4)))})))
 
 (defonce server (atom nil))
 
