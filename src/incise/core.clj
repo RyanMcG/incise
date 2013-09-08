@@ -6,7 +6,7 @@
             [incise.parsers.core :refer [parse]]
             [taoensso.timbre :refer [info]]
             (stefon [settings :refer [with-options]]
-                    [core :as dc])
+                    [core :refer [precompile]])
             [clojure.java.io :refer [file]]
             [clojure.tools.cli :refer [cli]]
             [robert.hooke :refer [add-hook]]
@@ -55,7 +55,7 @@
     (delete-recursively (file out-dir))
     (with-options stefon-pre-opts
       (info "Precompiling assets...")
-      (info (with-out-str (dc/precompile)))
+      (info (with-out-str (precompile)))
       (info "Done.")
       (load-parsers-and-layouts)
       (->> (conf/get :in-dir)
