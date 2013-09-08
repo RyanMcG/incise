@@ -48,8 +48,7 @@
   [& [load-config]]
   (when-not (false? load-config) (conf/load))
   (let [out-dir (conf/get :out-dir)
-        stefon-pre-opts {:cache-mode :production
-                         :compress true
+        stefon-pre-opts {:mode :production
                          :serving-root out-dir
                          :precompiles (conf/get :precompiles)}]
     (info "Clearing out" (str \" out-dir \"))
