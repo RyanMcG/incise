@@ -20,7 +20,6 @@
 (defn register
   "Register a layout function to a shortname"
   [short-names layout-fn]
-  (dosync
-    (doseq [short-name short-names]
-      (swap! layouts
-             assoc (name short-name) layout-fn))))
+  (swap! layouts
+         merge (zipmap (map name short-names)
+                       (repeat layout-fn))))
