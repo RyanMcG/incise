@@ -1,5 +1,4 @@
 (ns incise.core
-  "A tool for incising."
   (:require (incise [load :refer [load-parsers-and-layouts]]
                     [config :as conf]
                     [utils :refer [delete-recursively]])
@@ -26,7 +25,7 @@
   (conf/load)
   (let [[options cli-args banner]
         (cli args
-             (:doc (meta (the-ns 'incise.core)))
+             "A tool for incising."
              ["-h" "--help" "Print this help." :default false :flag true]
              ["-1" "--once" "Instead of running in server mode run once."
               :default false :flag true]
