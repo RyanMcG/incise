@@ -23,14 +23,14 @@
                (assoc request :uri (str uri "index.html"))
                request))))
 
-(defn wrap-log-exceptions [func]
+(defn wrap-log-exceptions [func & {:keys [bubble] :or {bubble true}}]
   "Log (i.e. print) exceptions received from the given function."
   (fn [& args]
     (try
       (apply func args)
       (catch Exception e
         (error (with-out-str (print-cause-trace e)))
-        (throw e)))))
+        (when bubble (throw e))))))
 
 (def app (-> routes
              (wrap-static-index)
