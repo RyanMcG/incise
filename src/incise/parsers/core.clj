@@ -3,7 +3,7 @@
             [incise.parsers.helpers :refer [extension]]
             [clj-time.core :as tm]
             [clojure.java.io :refer [file]]
-            [taoensso.timbre :refer [with-default-outs spy trace debug info warn error fatal]]
+            [taoensso.timbre :refer [info]]
             [clojure.string :as s])
   (:import [java.io File])
   (:refer-clojure :exclude [contains?]))
