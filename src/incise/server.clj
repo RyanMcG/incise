@@ -1,5 +1,5 @@
 (ns incise.server
-  (:require (compojure [route :refer [resources not-found]]
+  (:require (compojure [route :refer [files not-found]]
                        [core :refer [defroutes]])
             (hiccup [page :refer [html5]])
             (incise [config :as conf]
@@ -12,8 +12,9 @@
             [clojure.stacktrace :refer [print-cause-trace]]
             [org.httpkit.server :refer [run-server]]))
 
+(conf/load)
 (defroutes routes
-  (resources "/")
+  (files "/" {:root (conf/get :out-dir)})
   (not-found (html5 [:h1 "404"])))
 
 (defn wrap-static-index [handler]
@@ -62,7 +63,6 @@
 (defn defserver
   "Start a server and bind the result to a var, 'server'."
   [& args]
-  (conf/load)
   (reset! server (apply serve args)))
 
 (defn stop-server []
