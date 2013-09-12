@@ -1,18 +1,19 @@
 (ns incise.deploy.core
-  (:require [taoensso.timbre :refer [warn]])
-  (:clojure-refer :exclude [get]))
+  (:require [incise.config :as conf]
+            [taoensso.timbre :refer [fatal]])
+  (:refer-clojure :exclude [get]))
 
 (def workflows (atom {}))
 
 (defn get [& args]
-  (apply clojure.core/get @workflow args))
+  (apply clojure.core/get @workflows args))
 
 (defn deploy []
   (let [{workflow-name :workflow :as settings} (conf/get :deploy)
-        [workflow (get workflow-name)]]
+        workflow (get workflow-name)]
     (if workflow
       (workflow settings)
-      (warn "No workflow registered as" workflow-name))))
+      (fatal "No workflow registered as" workflow-name))))
 
 (defn register
   "Register a deployment workflow."
