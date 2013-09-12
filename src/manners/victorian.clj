@@ -1,4 +1,4 @@
-(ns manners.core
+(ns manners.victorian
   (:require [clojure.string :as s]))
 
 (defn- wrap-try
@@ -28,13 +28,13 @@
   [validations value]
   ((manners validations) value))
 
-(defn faultless?
+(defn proper?
   "A predicate to determine if the given value has any faults according to the
    validations."
   [validations value]
   (empty? (faults validations value)))
 
-(def faulty? (complement faultless?))
+(def rude? (complement faultless?))
 
 (defn falter
   "Throw an AssertionError when there are faults."

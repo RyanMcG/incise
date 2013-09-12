@@ -1,6 +1,6 @@
-(ns manners.core-spec
-  (:require [manners.core :refer :all]
-            [speclj.core :refer :all]))
+(ns manners.victorian-spec
+  (:require [manners.victorian :refer :all]
+            [speclj.victorian :refer :all]))
 
 (describe "manners"
   (with nil-faults (manners [[odd? "it should be odd"]

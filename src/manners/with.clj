@@ -1,13 +1,13 @@
 (ns manners.with
-  (:require [manners.core :as core]))
+  (:require [manners.victorian :as victorian]))
 
 (declare ^:private ^:dynamic *validations*)
 
 (doseq [fault-sym ['faults 'faulty?
                    'faultless? 'faultless! 'manners]]
-  (let [core-sym (symbol (str "core/" fault-sym))]
+  (let [victorian-sym (symbol (str "victorian/" fault-sym))]
     (eval `(defn ~fault-sym [value#]
-             (~core-sym *validations* value#)))))
+             (~victorian-sym *validations* value#)))))
 
 (defmacro with-validations
   "Start a scope with the given validations as the base."
