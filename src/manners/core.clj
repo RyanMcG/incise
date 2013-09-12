@@ -1,4 +1,4 @@
-(ns faulter.core
+(ns manners.core
   (:require [clojure.string :as s]))
 
 (defn- wrap-try
@@ -8,7 +8,7 @@
   (fn [& more]
     (try (apply func more) (catch Exception _))))
 
-(defn- unmemoized-faulter
+(defn- unmemoized-manners
   "Return a memoized function which takes a value to run the given validations
    on."
   [validations]
@@ -18,15 +18,15 @@
                    :when ((-> predicate wrap-try complement) value)]
                (apply str message)))))
 
-(def faulter
+(def manners
   "Create a function from a sequence of validators that returns a sequence of
    faults."
-  (memoize unmemoized-faulter))
+  (memoize unmemoized-manners))
 
 (defn faults
   "Return all faults found with the given validations on the given value."
   [validations value]
-  ((faulter validations) value))
+  ((manners validations) value))
 
 (defn faultless?
   "A predicate to determine if the given value has any faults according to the
@@ -50,7 +50,7 @@
   ([prefix validations value] (falter prefix (faults validations value)))
   ([validations value] (faultless! nil validations value)))
 
-(defmacro defaulters
+(defmacro demannerss
   [obj-sym & validations]
   (let [faults-sym (symbol (str obj-sym "-faults"))
         faultless?-sym (symbol (str "faultless-" obj-sym \?))

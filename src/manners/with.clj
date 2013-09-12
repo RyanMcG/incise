@@ -1,10 +1,10 @@
-(ns faulter.with
-  (:require [faulter.core :as core]))
+(ns manners.with
+  (:require [manners.core :as core]))
 
 (declare ^:private ^:dynamic *validations*)
 
-(doseq [fault-sym ['faulter 'faults 'faulty?
-                   'faultless? 'faultless! 'faulter]]
+(doseq [fault-sym ['faults 'faulty?
+                   'faultless? 'faultless! 'manners]]
   (let [core-sym (symbol (str "core/" fault-sym))]
     (eval `(defn ~fault-sym [value#]
              (~core-sym *validations* value#)))))

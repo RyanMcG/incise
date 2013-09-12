@@ -1,9 +1,9 @@
-(ns faulter.core-spec
-  (:require [faulter.core :refer :all]
+(ns manners.core-spec
+  (:require [manners.core :refer :all]
             [speclj.core :refer :all]))
 
-(describe "faulter"
-  (with nil-faults (faulter [[odd? "it should be odd"]
+(describe "manners"
+  (with nil-faults (manners [[odd? "it should be odd"]
                              [number? "it should be a number"]]))
   (it "Always returns a sequence"
     (should (sequential? (@nil-faults nil)))

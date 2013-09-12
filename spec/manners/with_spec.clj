@@ -1,6 +1,6 @@
-(ns faulter.with-spec
+(ns manners.with-spec
   (:require [speclj.core :refer :all]
-            [faulter.with :refer :all]))
+            [manners.with :refer :all]))
 
 (describe "with-validations"
   (with validations [[odd? "it is odd"]
