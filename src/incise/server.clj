@@ -29,7 +29,10 @@
     (try
       (apply func args)
       (catch Exception e
-        ((if bubble error fatal) (with-out-str (print-cause-trace e)))
+        (let [cause-trace (with-out-str (print-cause-trace e))]
+         (if bubble
+           (error cause-trace)
+           (fatal cause-trace)))
         (when bubble (throw e))))))
 
 (def app (-> routes
