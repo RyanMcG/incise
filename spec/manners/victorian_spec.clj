@@ -1,46 +1,46 @@
 (ns manners.victorian-spec
   (:require [manners.victorian :refer :all]
-            [speclj.victorian :refer :all]))
+            [speclj.core :refer :all]))
 
 (describe "manners"
-  (with nil-faults (manners [[odd? "it should be odd"]
-                             [number? "it should be a number"]]))
+  (with nil-coach (coach [[odd? "it should be odd"]
+                           [number? "it should be a number"]]))
   (it "Always returns a sequence"
-    (should (sequential? (@nil-faults nil)))
-    (should (sequential? (@nil-faults 3737))))
+    (should (sequential? (@nil-coach nil)))
+    (should (sequential? (@nil-coach 3737))))
   (it "is empty when all predicates pass"
-    (should (empty? (@nil-faults 3))))
+    (should (empty? (@nil-coach 3))))
   (it "is a sequence of error messages if it does not pass."
-    (should= (list "it should be odd") (@nil-faults 2))
-    (should-contain "it should be a number" (@nil-faults nil))))
+    (should= (list "it should be odd") (@nil-coach 2))
+    (should-contain "it should be a number" (@nil-coach nil))))
 
-(describe "faults"
+(describe "bad-manners"
   (with validations [[odd? "it should be odd"]
                      [number? "it should be a number"]])
-  (it "finds faults"
+  (it "finds bad-manners"
     (should= (list "it should be odd" "it should be a number")
-             (faults @validations nil))
-    (should= (list "it should be odd") (faults @validations 2))
-    (should= (list) (faults @validations 3))))
+             (bad-manners @validations nil))
+    (should= (list "it should be odd") (bad-manners @validations 2))
+    (should= (list) (bad-manners @validations 3))))
 
-(describe "faulty? and faultless?"
+(describe "rude? and proper?"
   (with validations [[odd? "it should be odd"]
                      [number? "it should be a number"]])
   (it "complements"
-    (should (faulty? @validations 2))
-    (should-not (faultless? @validations 2))
-    (should-not (faulty? @validations 1))
-    (should (faultless? @validations 1))))
+    (should (rude? @validations 2))
+    (should-not (proper? @validations 2))
+    (should-not (rude? @validations 1))
+    (should (proper? @validations 1))))
 
-(describe "faultless!"
+(describe "avow!"
   (with validations [[odd? "it should be odd"]
                      [number? "it should be a number"]])
-  (it "throws an error when faults are found"
+  (it "throws an error when bad manners are found"
     (should-throw AssertionError "it should be odd, it should be a number"
-                  (faultless! @validations nil))
+                  (avow! @validations nil))
     (should-throw AssertionError "Invalid odd-number: it should be odd"
-                  (faultless! 'odd-number @validations 2)))
-  (it "does nothing when no faults are found"
-    (should-not-throw (faultless! @validations 3))))
+                  (avow! 'odd-number @validations 2)))
+  (it "does nothing when no bad manners are found"
+    (should-not-throw (avow! @validations 3))))
 
 (run-specs)
