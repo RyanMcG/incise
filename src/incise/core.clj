@@ -1,19 +1,14 @@
 (ns incise.core
   (:require (incise [load :refer [load-parsers-and-layouts]]
                     [config :as conf]
+                    [once :refer [once]]
                     [utils :refer [delete-recursively]])
             [incise.deploy.core :refer [deploy]]
-            [incise.parsers.core :refer [parse]]
-            [taoensso.timbre :refer [info warn]]
-            (stefon [settings :refer [with-options]]
-                    [core :refer [precompile]])
-            [clojure.java.io :refer [file]]
-            [clojure.tools.cli :refer [cli]]
-            [robert.hooke :refer [add-hook]]
+            [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
+            [clojure.tools.cli :refer [cli]]
             [incise.server :refer [wrap-log-exceptions serve stop-server
-                                   defserver]])
-  (:import [java.io File]))
+                                   defserver]]))
 
 (def ^:private valid-methods #{"serve" "once" "deploy"})
 (defn- parse-method [method]
@@ -53,27 +48,6 @@
   "Take arguments parsing them using cli and handle help accordingly."
   [args & body]
   `(with-args* ~args (fn [~'args] ~@body)))
-
-(defn once
-  "Incise just once."
-  [& [load-config]]
-  (when-not (false? load-config) (conf/load))
-  (let [out-dir (conf/get :out-dir)
-        stefon-pre-opts {:mode :production
-                         :serving-root out-dir
-                         :precompiles (conf/get :precompiles)}]
-    (info "Clearing out" (str \" out-dir \"))
-    (delete-recursively (file out-dir))
-    (with-options stefon-pre-opts
-      (info "Precompiling assets...")
-      (info (with-out-str (precompile)))
-      (info "Done.")
-      (load-parsers-and-layouts)
-      (->> (conf/get :in-dir)
-           (file)
-           (file-seq)
-           (map parse)
-           (dorun)))))
 
 (defn -main
   "Start the development server and watcher."
