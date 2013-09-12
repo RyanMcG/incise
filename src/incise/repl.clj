@@ -1,2 +1,3 @@
 (ns incise.repl
-  (:require [incise.core :refer :all]))
+  (:require [clojure.tools.namespace.repl :refer :all]
+            [incise.core :refer :all]))
