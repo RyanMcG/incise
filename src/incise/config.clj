@@ -22,7 +22,7 @@
   "Throws an AssertionError unless the given config map, or @config if not
   supplied, has no faults."
   [& [given-config]]
-  (avow! 'config validations (or given-config @config)))
+  (avow! 'incise.config/config validations (or given-config @config)))
 
 (defn get [& more]
   (avow-config!)
