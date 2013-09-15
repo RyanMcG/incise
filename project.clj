@@ -4,7 +4,6 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [speclj "2.1.2"]
                  [ring "1.2.0"]
                  [hiccup "1.0.2"]
                  [compojure "1.1.5"]
@@ -16,7 +15,8 @@
                  [org.clojure/tools.cli "0.2.4"]
                  [clj-time "0.5.1"]
                  [com.taoensso/timbre "2.6.1"]
-                 [com.ryanmcg/stefon "0.5.0-SNAPSHOT"]]
+                 [com.ryanmcg/stefon "0.5.0-SNAPSHOT"]
+                 [manners "0.1.0-SNAPSHOT"]]
   :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
   :repl-options {:init-ns incise.repl}
   :plugins [[speclj "2.5.0"]]
