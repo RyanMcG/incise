@@ -9,7 +9,7 @@
                     [core :refer [precompile]])))
 
 (defn once
-  "Incise just once."
+  "Incise just once. This requires that config is already loaded."
   []
   (let [out-dir (conf/get :out-dir)
         stefon-pre-opts {:mode :production
