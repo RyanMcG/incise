@@ -57,8 +57,7 @@
     (case (conf/get :method)
       :deploy (do ((wrap-log-exceptions deploy :bubble false))
                   (System/exit 0))
-      :once (do ((wrap-log-exceptions (partial once false)
-                                      :bubble false))
+      :once (do ((wrap-log-exceptions once :bubble false))
                 (System/exit 0))
       (serve))))
 

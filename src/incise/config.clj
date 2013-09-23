@@ -1,11 +1,11 @@
 (ns incise.config
   (:require [clojure.java.io :refer [reader file resource]]
             [clojure.edn :as edn]
-            [manners.victorian :refer [avow!]])
+            [manners.victorian :refer [defmannerisms]])
   (:import [java.io PushbackReader])
   (:refer-clojure :exclude [merge load assoc get]))
 
-(def ^:private config (atom {}))
+(defonce ^:private config (atom {}))
 
 (defn load []
   (when-let [config-file (file (resource "incise.edn"))]
@@ -14,18 +14,12 @@
 (defn assoc [& more]
   (apply swap! config clojure.core/assoc more))
 
-(def ^:private validations
-  [[(comp string? :in-dir) "must have an input dir"]
-   [(comp string? :out-dir) "must have an output dir"]])
-
-(defn avow-config!
-  "Throws an AssertionError unless the given config map, or @config if not
-  supplied, has no faults."
-  [& [given-config]]
-  (avow! 'incise.config/config validations (or given-config @config)))
+(defmannerisms config
+  [(comp string? :in-dir) "must have an input dir"]
+  [(comp string? :out-dir) "must have an output dir"])
 
 (defn get [& more]
-  (avow-config!)
+  (avow-config! @config)
   (if (empty? more)
     @config
     (apply @config more)))
