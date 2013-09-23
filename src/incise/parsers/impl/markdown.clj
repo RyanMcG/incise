@@ -12,4 +12,6 @@
                           :smarts
                           :smartypants])
 
-(pc/register [:md :markdown] (html-parser #(md/to-html % *options*)))
+(def parser (html-parser #(md/to-html % *options*)))
+
+(pc/register [:md :markdown] parser)
