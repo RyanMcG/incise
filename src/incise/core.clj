@@ -16,18 +16,18 @@
     (keyword method)
     (do
       (when-not (empty? method)
-      (warn (str \" method
-                 "\" is not a valid method (must be in "
-                 (s/join ", " valid-methods) "). Defaulting to serve.")))
+        (warn (str \" method
+                   "\" is not a valid method (must be in "
+                   (s/join ", " valid-methods) "). Defaulting to serve.")))
       :serve)))
 
 (defn- with-args*
   "A helper function to with-args macro which does all the work.
 
-   1.  Load in the config
-   2.  Parse arguments
-   3.  Merge into config
-   4.  Handle help or continue"
+  1.  Load in the config
+  2.  Parse arguments
+  3.  Merge into config
+  4.  Handle help or continue"
   [args body-fn]
   (conf/load)
   (let [[options cli-args banner]
@@ -50,7 +50,8 @@
   `(with-args* ~args (fn [~'args] ~@body)))
 
 (defn -main
-  "Start the development server and watcher."
+  "Based on the given args either deploy, compile or start the development
+  server."
   [& args]
   (with-args args
     (case (conf/get :method)
