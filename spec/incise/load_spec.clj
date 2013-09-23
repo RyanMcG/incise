@@ -20,7 +20,8 @@
       (should-not (#'incise.load/namespace-is-spec-or-test? ns-sym)))))
 
 (describe "finding parsers and layouts"
-  (with layout-and-parser-syms (#'incise.load/find-parser-and-layout-symbols))
+  (with layout-and-parser-syms (#'incise.load/filter-namespaces
+                                 #'incise.load/namespace-is-layout-or-parser?))
   (it "does not contain spec namespaces"
     (doseq [spec-sym ['incise.layouts.impl.page-spec
                       'incise.parsers.impl.markdown-spec]]
