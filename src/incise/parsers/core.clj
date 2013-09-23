@@ -5,8 +5,7 @@
             [clojure.java.io :refer [file]]
             [taoensso.timbre :refer [info]]
             [clojure.string :as s])
-  (:import [java.io File])
-  (:refer-clojure :exclude [contains?]))
+  (:import [java.io File]))
 
 (defrecord Parse [^String title
                   ^String extension
@@ -23,9 +22,6 @@
   parsers
   (atom {}))
 
-(defn contains? [& args]
-  (apply clojure.core/contains? @parsers args))
-
 (defn register
   "Register a parser for the given file extensions."
   [extensions parser]
@@ -38,6 +34,6 @@
   [^File handle]
   {:pre [(instance? File handle)]}
   (let [ext (extension handle)]
-    (when (contains? ext)
+    (when (contains? @parsers ext)
       (info "Parsing" (.getPath handle))
       ((@parsers ext) handle))))
