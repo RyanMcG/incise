@@ -7,8 +7,7 @@
             [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
             [clojure.tools.cli :refer [cli]]
-            [incise.server :refer [wrap-log-exceptions serve stop-server
-                                   defserver]]))
+            [incise.server :refer [wrap-log-exceptions serve]]))
 
 (def ^:private valid-methods #{"serve" "once" "deploy"})
 (defn- parse-method [method]
@@ -75,11 +74,4 @@
     (case (conf/get :method)
       :deploy (wrap-main deploy)
       :once (wrap-main once)
-      (serve))))
-
-(defn restart
-  "Stop a server if it is already started and start a new one."
-  [& args]
-  (stop-server)
-  (require :reload 'incise.server)
-  (apply defserver args))
+      ((wrap-pre serve conf/load)))))
