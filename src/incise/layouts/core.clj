@@ -3,7 +3,7 @@
             [incise.config :as conf])
   (:refer-clojure :exclude [get]))
 
-(def layouts (atom {}))
+(defonce layouts (atom {}))
 
 (defn exists?
   "Check for the existance of a layout with the given name."

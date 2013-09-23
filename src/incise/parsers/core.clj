@@ -17,9 +17,10 @@
                   ^clojure.lang.Seqable tags
                   ^String category])
 
-(def parsers
-  "An atom containing a mapping of extensions (strings) to parse functions. A
-   parse function takes a java.io.File and writes another file appropriately."
+(defonce ^{:doc "An atom containing a mapping of extensions (strings) to parse
+                functions. A parse function takes a java.io.File and writes
+                another file appropriately."}
+  parsers
   (atom {}))
 
 (defn contains? [& args]
