@@ -12,7 +12,6 @@
             [clojure.stacktrace :refer [print-cause-trace]]
             [org.httpkit.server :refer [run-server]]))
 
-(conf/load)
 (defroutes routes
   (files "/" {:root (conf/get :out-dir)})
   (not-found (html5 [:h1 "404"])))
