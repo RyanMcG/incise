@@ -49,16 +49,32 @@
   [args & body]
   `(with-args* ~args (fn [~'args] ~@body)))
 
+(defn wrap-pre [func pre-func & more]
+  (fn [& args]
+    (apply pre-func more)
+    (apply func args)))
+
+(defn wrap-post [func post-func & more]
+  (fn [& args]
+    (let [return-value (apply func args)]
+      (apply post-func more)
+      return-value)))
+
+(defn wrap-main
+  [main-func]
+  (-> main-func
+      (wrap-pre conf/load)
+      (wrap-post #(System/exit 0))
+      (wrap-log-exceptions :bubble false)))
+
 (defn -main
   "Based on the given args either deploy, compile or start the development
   server."
   [& args]
   (with-args args
     (case (conf/get :method)
-      :deploy (do ((wrap-log-exceptions deploy :bubble false))
-                  (System/exit 0))
-      :once (do ((wrap-log-exceptions once :bubble false))
-                (System/exit 0))
+      :deploy (wrap-main deploy)
+      :once (wrap-main once)
       (serve))))
 
 (defn restart
