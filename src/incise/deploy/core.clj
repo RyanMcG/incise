@@ -3,7 +3,7 @@
             [taoensso.timbre :refer [fatal]])
   (:refer-clojure :exclude [get]))
 
-(def workflows (atom {}))
+(defonce ^:private workflows (atom {}))
 
 (defn get [& args]
   (apply clojure.core/get @workflows args))
