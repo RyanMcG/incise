@@ -23,13 +23,14 @@
 
 (defn write-Parse
   [^incise.parsers.core.Parse parse-data]
-  (let [file-path (file (str (conf/get :out-dir) File/separator
+  (let [out-file (file (str (conf/get :out-dir) File/separator
                              (help/Parse->path parse-data)))]
-    (-> file-path
+    (-> out-file
         (.getParentFile)
         (.mkdirs))
-    (info "Writing" (.getPath file-path))
-    (spit file-path (Parse->string parse-data))))
+    (info "Writing" (.getPath out-file))
+    (spit out-file (Parse->string parse-data))
+    out-file))
 
 (defn html-parser
   "Take a function that parses a string into HTML and returns an HTML parser.
