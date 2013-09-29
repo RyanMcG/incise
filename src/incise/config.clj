@@ -18,6 +18,8 @@
   [(comp string? :in-dir) "must have an input dir"]
   [(comp string? :out-dir) "must have an output dir"])
 
+(defn avow! [] (avow-config! @config))
+
 (defn get [& more]
   (if (empty? more)
     @config
