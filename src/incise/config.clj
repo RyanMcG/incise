@@ -19,7 +19,6 @@
   [(comp string? :out-dir) "must have an output dir"])
 
 (defn get [& more]
-  (avow-config! @config)
   (if (empty? more)
     @config
     (apply @config more)))
