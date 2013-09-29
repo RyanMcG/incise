@@ -23,11 +23,8 @@
   (fn [& args]
     (try
       (apply func args)
-      (catch Exception e
-        (let [cause-trace (with-out-str (print-cause-trace e))]
-         (if bubble
-           (error cause-trace)
-           (fatal cause-trace)))
+      (catch Throwable e
+        (error (with-out-str (print-cause-trace e)))
         (when bubble (throw e))))))
 
 (defn create-app
