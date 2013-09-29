@@ -59,12 +59,18 @@
       (apply post-func more)
       return-value)))
 
+(defn wrap-serve
+  [main-func]
+  (-> main-func
+      (wrap-pre conf/avow!)
+      (wrap-pre conf/load)
+      (wrap-log-exceptions :bubble false)))
+
 (defn wrap-main
   [main-func]
   (-> main-func
-      (wrap-pre conf/load)
-      (wrap-post #(System/exit 0))
-      (wrap-log-exceptions :bubble false)))
+      (wrap-serve)
+      (wrap-post #(System/exit 0))))
 
 (defn -main
   "Based on the given args either deploy, compile or start the development
