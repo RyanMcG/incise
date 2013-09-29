@@ -77,7 +77,7 @@
   server."
   [& args]
   (with-args args
-    (case (conf/get :method)
-      :deploy (wrap-main deploy)
-      :once (wrap-main once)
-      ((wrap-pre serve conf/load)))))
+    ((case (:method options)
+       :deploy (wrap-main deploy)
+       :once (wrap-main once)
+       :serve (wrap-serve serve)))))
