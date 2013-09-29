@@ -41,12 +41,12 @@
     (if (:help options)
       (do (println banner)
           (System/exit 0))
-      ((wrap-log-exceptions body-fn) cli-args))))
+      (body-fn options cli-args))))
 
 (defmacro with-args
   "Take arguments parsing them using cli and handle help accordingly."
   [args & body]
-  `(with-args* ~args (fn [~'args] ~@body)))
+  `(with-args* ~args (fn [~'options ~'cli-args] ~@body)))
 
 (defn wrap-pre [func pre-func & more]
   (fn [& args]
