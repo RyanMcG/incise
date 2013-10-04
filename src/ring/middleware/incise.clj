@@ -1,7 +1,6 @@
 (ns ring.middleware.incise
   (:require [clojure.java.io :refer [file]]
             [ns-tracker.core :refer [ns-tracker]]
-            [clojure.core.reducers :as re]
             (incise [utils :refer [delete-recursively]]
                     [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
@@ -31,9 +30,9 @@
         (->> (conf/get :in-dir)
              (file)
              (file-seq)
-             (re/filter modified?)
-             (re/map parse)
-             (re/fold (constantly nil))))
+             (filter modified?)
+             (pmap parse)
+             (dorun)))
       (handler request))))
 
 (defn wrap-reset-modified-files-with-source-change
