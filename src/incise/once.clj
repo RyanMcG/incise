@@ -10,7 +10,8 @@
 
 (defn once
   "Incise just once. This requires that config is already loaded."
-  []
+  [& {:as config}]
+  (conf/merge config)
   (let [out-dir (conf/get :out-dir)
         stefon-pre-opts {:mode :production
                          :serving-root out-dir
@@ -26,4 +27,4 @@
            (file)
            (file-seq)
            (map parse)
-           (dorun)))))
+           (doall)))))
