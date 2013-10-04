@@ -5,7 +5,7 @@
   (:import [java.io PushbackReader])
   (:refer-clojure :exclude [merge load assoc get]))
 
-(defonce ^:private config (atom {}))
+(defonce config (atom {}))
 
 (defn load []
   (when-let [config-file (file (resource "incise.edn"))]
