@@ -1,6 +1,7 @@
 (ns incise.parsers.core-spec
   (:require [speclj.core :refer :all]
-            [incise.load :refer [load-parsers-and-layouts]]
+            (incise [load :refer [load-parsers-and-layouts]]
+                    [config :as conf])
             [clojure.java.io :refer [file resource]]
             [incise.parsers.core :refer :all]))
 
