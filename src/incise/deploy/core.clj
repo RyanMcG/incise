@@ -19,4 +19,4 @@
   "Register a deployment workflow."
   [workflow-name workflow]
   (swap! workflows
-         assoc (name workflow-name) workflow))
+         assoc workflow-name workflow))
