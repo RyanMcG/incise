@@ -19,14 +19,17 @@
       (.getDirectory)
       (file subdir)))
 
+(defn work-tree [repo]
+  (-> repo
+      (.getRepository)
+      (.getWorkTree)))
+
 (defmacro with-repo [path & body]
-  `(binding [*repo* (load-repo ~path)
-             *out-dir* (git-sub-dir-from-repo *repo*)
-             *work-dir* (-> *repo*
-                            (.getRepository)
-                            (.getWorkTree))]
-     (with-sh-dir *work-dir*
-       ~@body)))
+  `(binding [~'*repo* (load-repo ~path)]
+     (binding [~'*out-dir* (git-sub-dir-from-repo ~'*repo*)
+               ~'*work-dir* (work-tree ~'*repo*)]
+       (with-sh-dir *work-dir*
+         ~@body))))
 
 (defn branch-exists?
   [branch]
@@ -69,7 +72,7 @@
 
 (defn add-files [files]
   (doseq [afile files]
-    (git-add *repo* (.getPath output-file))))
+    (git-add *repo* (.getPath afile))))
 
 (defn deploy
   "Deploy to the given branch. Follow options for commit and push behaviour."
@@ -81,7 +84,7 @@
   {:pre [(string? branch)]}
   (with-repo path
     (let [{source-commit-hash :id} (head-info)
-          output-files (once-in-git-dir)]
+          output-files (once-in-out-dir)]
       (setup-branch)
       (->> output-files
           (map move-to-work-dir)
