@@ -14,6 +14,7 @@
                  [org.clojure/tools.namespace "0.2.4"]
                  [org.clojure/tools.cli "0.2.4"]
                  [clj-time "0.5.1"]
+                 [clj-jgit "0.4.0"]
                  [com.taoensso/timbre "2.6.1"]
                  [com.ryanmcg/stefon "0.5.0-SNAPSHOT"]
                  [manners "0.1.0"]]
