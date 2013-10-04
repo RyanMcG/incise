@@ -5,7 +5,8 @@
             (hiccup [def :refer :all]
                     [page :refer :all]
                     [element :refer :all]
-                    [core :refer :all])))
+                    [core :refer :all]))
+  (:import [java.io FileNotFoundException]))
 
 (defpartial header
   "A very basic header partial."
@@ -21,11 +22,18 @@
     "This website was "
     (link-to "https://github.com/RyanMcG/incise" "incise") "d."]])
 
+(defn- attempt-link-to-asset
+  "Return nil if the asset is not found othewise return a url for the asset."
+  [asset-name]
+  (try
+    (link-to-asset asset-name)
+    (catch FileNotFoundException _ nil)))
+
 (defn stylesheets []
-  [(link-to-asset "stylesheets/app.css.stefon")])
+  [(attempt-link-to-asset "stylesheets/app.css.stefon")])
 
 (defn javascripts []
-   [(link-to-asset "javascripts/app.js.stefon")])
+   [(attempt-link-to-asset "javascripts/app.js.stefon")])
 
 (deflayout page
   "The default page/post layout."
@@ -33,12 +41,12 @@
    [:title (str site-title (when title (str " - " title)))]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1.0"}]
-   (apply include-css (stylesheets))]
+   (apply include-css (remove nil? (stylesheets)))]
   [:body#page
    [:div.container
     (header)
     [:div#content content]
     (footer)]
-   (apply include-js (javascripts))])
+   (apply include-js (remove nil? (javascripts)))])
 
 (register [:post :page] page)
