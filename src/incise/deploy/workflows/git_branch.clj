@@ -60,15 +60,17 @@
   "Remove the *out-dir* prefix from the given path."
   [path]
   (->> path
-       (drop (count *out-dir*))
+       (file)
+       (.getCanonicalPath)
+       (drop (inc (count (.getCanonicalPath *out-dir*))))
        (apply str)))
 
 (defn move-to-work-dir
   "Move the given file to the working tree directory."
-  [output-file]
-  (.renameTo output-file
-             (file (str *work-dir*
-                        (remove-out-dir (.getPath output-file))))))
+  [from-file]
+  (let [to-file (file *work-dir* (remove-out-dir from-file))]
+    (.renameTo from-file to-file)
+    to-file))
 
 (defn add-files [files]
   (doseq [afile files]
