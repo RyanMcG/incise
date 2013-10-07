@@ -13,7 +13,15 @@
   "Create a git repository in a temporary directory."
   []
   (let [tmp-dir (spec-temp-dir)
-        repo (git-init tmp-dir)]
+        repo (git-init tmp-dir)
+        gstring "garbage..."
+        gitignore-file (file tmp-dir ".gitignore")
+        files [gitignore-file
+               (file tmp-dir "y")
+               (file tmp-dir "x")]]
+    (dorun (map #(spit % gstring) files))
+    (spit gitignore-file "/x")
+    (git-add repo ".")
     (git-commit repo "Initial commit.")
     tmp-dir))
 
