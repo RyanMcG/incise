@@ -36,8 +36,10 @@
   (contains? (git-branch-list *repo*) branch))
 
 (defn checkout-orphaned-branch [branch]
-  (sh "git checkout --orphan" branch)
-  (git-rm *repo* "."))
+  (let [{:keys [exit err]} (sh "git" "checkout" "--orphan" branch)]
+    (if (= 0 exit)
+      (git-rm *repo* ".")
+      (throw (RuntimeException. err)))))
 
 (defn setup-branch
   "Setup the given branch if it does not already exist and check it out."
