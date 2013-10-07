@@ -31,7 +31,7 @@
        (with-sh-dir *work-dir*
          ~@body))))
 
-(defn branch-exists?
+(defn- branch-exists?
   [branch]
   (contains? (git-branch-list *repo*) branch))
 
@@ -46,11 +46,11 @@
     checkout-orphaned-branch
     (partial git-checkout *repo*)) branch))
 
-(defn once-in-out-dir []
+(defn- once-in-out-dir []
   (.mkdirs *out-dir*)
   (once :out-dir (.getPath *out-dir*)))
 
-(defn head-info []
+(defn- head-info []
   (commit-info
     (find-rev-commit *repo*
                      (create-tree-walk *repo*)
