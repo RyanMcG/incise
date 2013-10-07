@@ -87,7 +87,7 @@
   (with-repo path
     (let [{source-commit-hash :id} (head-info)
           output-files (once-in-out-dir)]
-      (setup-branch)
+      (setup-branch branch)
       (->> output-files
           (map move-to-work-dir)
           (add-files))
