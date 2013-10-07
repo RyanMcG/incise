@@ -1,5 +1,5 @@
 (ns incise.deploy.workflows.git-branch-spec
-  (:require stefon.util
+  (:require [stefon.util :refer [temp-dir]]
             [speclj.core :refer :all]
             (clojure.java [io :refer [file]]
                          [shell :refer [with-sh-dir]])
@@ -7,18 +7,15 @@
             [incise.deploy.workflows.git-branch :refer :all])
   (:import [org.eclipse.jgit.api Git]))
 
+(def spec-temp-dir (partial temp-dir "incise-deploy-git-branch-spec"))
+
 (defn- create-dummy-repo
+  "Create a git repository in a temporary directory."
   []
-  (let [tmp-dir (stefon.util/temp-dir "incise-deploy-git-branch-spec")
+  (let [tmp-dir (spec-temp-dir)
         repo (git-init tmp-dir)]
     (git-commit repo "Initial commit.")
     tmp-dir))
-
-(defn- same-file?
-  "Compare the canonical paths of the two file like values."
-  [afile-like bfile-like]
-  (= (.getCanonicalPath (file afile-like))
-     (.getCanonicalPath (file bfile-like))))
 
 (describe "with-repo"
   (with repo-dir (create-dummy-repo))
@@ -29,8 +26,25 @@
   (it "binds *repo* to a Git instance"
     (should (instance? Git *repo*)))
   (it "binds *work-dir* to the working tree directory"
-    (should (same-file? @repo-dir *work-dir*)))
+    (should= @repo-dir *work-dir*))
   (it "binds *out-dir* to a directory nested within the git dir."
-    (should (same-file? (file @repo-dir ".git/_incise") *out-dir*))))
+    (should= (file @repo-dir ".git/_incise") *out-dir*)))
+
+(describe "move-to-work-dir:"
+  (with-all work-dir (spec-temp-dir))
+  (with-all out-dir (spec-temp-dir))
+  (with-all file-name "my-cool-file")
+  (with ex-file (file @out-dir @file-name))
+  (around [it] (binding [*work-dir* @work-dir
+                         *out-dir* @out-dir]
+                 (it)))
+  (context "remove-out-dir"
+    (it "removes the prefixed out-dir returning a relative path"
+      (should= @file-name (#'incise.deploy.workflows.git-branch/remove-out-dir
+                            (.getCanonicalPath (file @out-dir @file-name))))))
+  (context "move-to-work-dir"
+    (it "moves a file from out-dir to work-dir"
+      (should= (file @work-dir @file-name)
+               (move-to-work-dir @ex-file)))))
 
 (run-specs)
