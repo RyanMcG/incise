@@ -55,4 +55,12 @@
       (should= (file @work-dir @file-name)
                (move-to-work-dir @ex-file)))))
 
+(describe "add-files"
+  (with repo-dir (create-dummy-repo))
+  (around [it] (with-repo @repo-dir (it)))
+  (with files (map (partial file @repo-dir)
+                   ["a" "b" "c"]))
+  (it "adds files"
+    (should-not-throw (add-files @files))))
+
 (run-specs)
