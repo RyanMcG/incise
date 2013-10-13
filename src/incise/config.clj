@@ -15,8 +15,10 @@
   (apply swap! config clojure.core/assoc more))
 
 (defmannerisms config
-  [(comp string? :in-dir) "must have an input dir"]
-  [(comp string? :out-dir) "must have an output dir"])
+  [:in-dir "must have an in-dir"]
+  [(comp string? :in-dir) "in-dir must be a string (like a path)"]
+  [:out-dir "must have an output dir"]
+  [(comp string? :out-dir) "out-dir must be a string (like a path)"])
 
 (defn avow! [] (avow-config! @config))
 
