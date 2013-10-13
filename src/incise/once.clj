@@ -12,6 +12,7 @@
   "Incise just once. This requires that config is already loaded."
   [& {:as config}]
   (conf/merge config)
+  (conf/avow!)
   (let [out-dir (conf/get :out-dir)
         stefon-pre-opts {:mode :production
                          :serving-root out-dir
