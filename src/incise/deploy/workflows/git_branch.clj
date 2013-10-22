@@ -79,6 +79,13 @@
   (doseq [afile files]
     (git-add *repo* (.getPath afile))))
 
+(defn git-push
+  "Shell out to git and push the current branch to the given remote and branch."
+  [remote branch]
+  (let [{:keys [exit err]} (sh "git" "push" "-f" remote branch)]
+    (when-not (= exit 0)
+      (throw (RuntimeException. err)))))
+
 (defn deploy
   "Deploy to the given branch. Follow options for commit and push behaviour."
   [{:keys [path branch commit push]
