@@ -3,9 +3,9 @@
             [incise.deploy.core :refer [register]]
             [clj-time.core :as tc]
             [clojure.java.io :refer [file]]
-            (clj-jgit [porcelain :refer :all :exclude [with-repo]]
-                      [querying :refer [commit-info find-rev-commit
-                                        create-tree-walk]])
+            (clj-jgit [porcelain :refer :all :exclude [git-push with-repo]]
+                      [querying :refer [commit-info find-rev-commit]]
+                      [internal :refer [new-rev-walk]])
             [clojure.java.shell :refer [with-sh-dir sh]]))
 
 (declare ^:dynamic *repo*)
@@ -54,10 +54,10 @@
   (once :out-dir (.getPath *out-dir*)))
 
 (defn- head-info []
-  (commit-info
-    (find-rev-commit *repo*
-                     (create-tree-walk *repo*)
-                     "HEAD")))
+  (when-let [commit (find-rev-commit *repo*
+                                   (new-rev-walk *repo*)
+                                   "HEAD")]
+    (commit-info *repo* commit)))
 
 (defn- remove-out-dir
   "Remove the *out-dir* prefix from the given path."
