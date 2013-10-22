@@ -31,9 +31,10 @@
        (with-sh-dir *work-dir*
          ~@body))))
 
-(defn- branch-exists?
+(defn branch-exists?
   [branch]
-  (contains? (git-branch-list *repo*) branch))
+  (boolean (some #{(str "refs/heads/" branch)}
+                 (map #(.getName %) (git-branch-list *repo*)))))
 
 (defn checkout-orphaned-branch [branch]
   (let [{:keys [exit err]} (sh "git" "checkout" "--orphan" branch)]
