@@ -62,8 +62,8 @@
 (defn wrap-serve
   [main-func]
   (-> main-func
-      (wrap-pre conf/avow!)
       (wrap-pre conf/load)
+      (wrap-pre conf/avow!)
       (wrap-log-exceptions :bubble false)))
 
 (defn wrap-main
