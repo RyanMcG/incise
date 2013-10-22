@@ -1,5 +1,6 @@
 (ns incise.deploy.core
-  (:require [incise.config :as conf])
+  (:require (incise [config :as conf]
+                    [load :refer [load-deployment-workflows]]))
   (:refer-clojure :exclude [get]))
 
 (defonce workflows (atom {}))
@@ -11,6 +12,7 @@
   "Deploy using the user's specified workflow."
   [& {:as config}]
   (conf/merge config)
+  (load-deployment-workflows)
   (let [{workflow-name :workflow :as settings} (conf/get :deploy)
         workflow (get workflow-name)]
     (if workflow
