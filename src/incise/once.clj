@@ -28,4 +28,5 @@
            (file)
            (file-seq)
            (map parse)
+           (keep identity)
            (doall)))))
