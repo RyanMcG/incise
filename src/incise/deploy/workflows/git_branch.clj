@@ -88,15 +88,17 @@
 
 (defn deploy
   "Deploy to the given branch. Follow options for commit and push behaviour."
-  [{:keys [path branch commit push]
+  [{:keys [path remote branch commit push]
     :or {path "."
+         remote "origin"
          branch "gh-pages"
          commit true
          push true}}]
-  {:pre [(string? branch)]}
+  {:pre [(string? branch) (string? remote)]}
   (with-repo path
     (let [{source-commit-hash :id} (head-info)
-          output-files (once-in-out-dir)]
+          output-files (once-in-out-dir)
+          start-branch (git-branch-current *repo*)]
       (setup-branch branch)
       (->> output-files
           (map move-to-work-dir)
@@ -104,6 +106,8 @@
       (when commit
         (git-commit *repo* (str "Built from " source-commit-hash
                                 " at " tc/now))
-        (when push nil)))))
+        (when push
+          (git-push remote branch)
+          (git-checkout *repo* start-branch))))))
 
 (register :git-branch deploy)
