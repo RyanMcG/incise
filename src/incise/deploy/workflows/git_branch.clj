@@ -46,8 +46,8 @@
   "Setup the given branch if it does not already exist and check it out."
   [branch]
   ((if (branch-exists? branch)
-    checkout-orphaned-branch
-    (partial git-checkout *repo*)) branch))
+     (partial git-checkout *repo*)
+     checkout-orphaned-branch) branch))
 
 (defn- once-in-out-dir []
   (.mkdirs *out-dir*)
