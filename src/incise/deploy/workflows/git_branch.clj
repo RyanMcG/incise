@@ -39,7 +39,7 @@
 (defn checkout-orphaned-branch [branch]
   (let [{:keys [exit err]} (sh "git" "checkout" "--orphan" branch)]
     (if (= 0 exit)
-      (git-rm *repo* ".")
+      (sh "git" "rm" "-rf" "*")
       (throw (RuntimeException. err)))))
 
 (defn setup-branch
