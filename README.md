@@ -1,5 +1,4 @@
-# incise
-
+# incise [![Build Status](https://magnum.travis-ci.com/RyanMcG/incise.png?token=xvR7q3m9UymcEFtEtgj1&branch=master)](https://magnum.travis-ci.com/RyanMcG/incise)
 A hopefully simplified static site generator in Clojure.
 
 ## Usage
