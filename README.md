@@ -1,4 +1,4 @@
-# incise
+# ![inciꞅe](https://raw.github.com/RyanMcG/incise/master/assets/logo.png)
 
 A hopefully simplified static site generator in Clojure.
 
