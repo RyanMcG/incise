@@ -75,16 +75,14 @@
     (.renameTo from-file to-file)
     to-file))
 
-(defn add-files [files]
-  (doseq [afile files]
-    (git-add *repo* (.getPath afile))))
-
 (defn git-push
   "Shell out to git and push the current branch to the given remote and branch."
   [remote branch]
   (let [{:keys [exit err]} (sh "git" "push" "-f" remote branch)]
     (when-not (= exit 0)
       (throw (RuntimeException. err)))))
+
+(defn add-file [afile] (git-add *repo* (.getPath afile)))
 
 (defn deploy
   "Deploy to the given branch. Follow options for commit and push behaviour."
@@ -97,15 +95,17 @@
   {:pre [(string? branch) (string? remote)]}
   (with-repo path
     (let [{source-commit-hash :id} (head-info)
-          output-files (once-in-out-dir)
           start-branch (git-branch-current *repo*)]
+      (once-in-out-dir)
       (setup-branch branch)
-      (->> output-files
-          (map move-to-work-dir)
-          (add-files))
+      (->> *work-dir*
+           (file-seq)
+           (map move-to-work-dir)
+           (map add-file)
+           (dorun))
       (when commit
-        (git-commit *repo* (str "Built from " source-commit-hash
-                                " at " tc/now))
+        (git-commit *repo* (str "Built from " source-commit-hash " at "
+                                (tc/now)))
         (when push
           (git-push remote branch)
           (git-checkout *repo* start-branch))))))
