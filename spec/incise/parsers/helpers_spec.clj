@@ -30,9 +30,11 @@
   (with coffee-file (file "boom/my/coolio.js.coffee"))
   (it "gets the extension of a file"
     (should= "coffee" (extension @coffee-file)))
-
   (with md-file (file "my.articles/wow.pants.MARKDOWN"))
   (it "enforces a lower-case extension"
-    (should= "markdown" (extension @md-file))))
+    (should= "markdown" (extension @md-file)))
+  (with cname-file (file "CNAME"))
+  (it "enforces a lower-case extension"
+    (should= "cname" (extension @cname-file))))
 
 (run-specs)
