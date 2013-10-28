@@ -21,7 +21,7 @@
     (delete-recursively (file out-dir))
     (with-options stefon-pre-opts
       (info "Precompiling assets...")
-      (info (with-out-str (precompile)))
+      (precompile)
       (info "Done.")
       (load-parsers-and-layouts)
       (->> (conf/get :in-dir)
