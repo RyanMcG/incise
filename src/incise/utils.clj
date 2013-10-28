@@ -1,5 +1,14 @@
 (ns incise.utils
+  (:require [clojure.java.io :refer [file]])
   (:import [java.io File]))
+
+(defn remove-prefix-from-path
+  "Remove the given prefix from the given path."
+  [prefix-file afile]
+  (-> afile
+      (file)
+      (.getCanonicalPath)
+      (subs (count (.getCanonicalPath prefix-file)))))
 
 (defn- gitignore-file? [^File file]
   (= (.getName file) ".gitignore"))
