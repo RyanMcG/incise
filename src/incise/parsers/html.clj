@@ -17,14 +17,12 @@
   (let [file-str (slurp file)
         parse-meta (edn/read-string file-str)
         content (to-html (second (s/split file-str #"\}" 2)))]
-    (map->Parse (assoc parse-meta
-                       :extension "/index.html"
-                       :content content))))
+    (map->Parse (merge {:extension "/index.html"
+                        :content content} parse-meta))))
 
 (defn write-Parse
   [^incise.parsers.core.Parse parse-data]
-  (let [out-file (file (str (conf/get :out-dir) File/separator
-                             (help/Parse->path parse-data)))]
+  (let [out-file (file (conf/get :out-dir) (help/Parse->path parse-data))]
     (-> out-file
         (.getParentFile)
         (.mkdirs))
