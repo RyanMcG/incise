@@ -12,4 +12,4 @@
     (copy input-file output-file)
     output-file))
 
-(pc/register [:copy] parse)
+(pc/register [:copy :cname] parse)
