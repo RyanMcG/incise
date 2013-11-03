@@ -127,6 +127,7 @@
       (setup-branch branch)
       (->> *out-dir*
            (file-seq)
+           (rest) ; Skip the out directory
            (map move-to-work-dir)
            (keep identity)
            (log-files)
