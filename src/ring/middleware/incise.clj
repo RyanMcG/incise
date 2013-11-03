@@ -7,7 +7,7 @@
             [incise.parsers.core :refer [parse]])
   (:import [java.io File]))
 
-(def ^:private file-modification-times (atom {}))
+(defonce ^:private file-modification-times (atom {}))
 
 (defn- modified?
   "If file is not in atom or it's modification date has advanced."
@@ -21,6 +21,7 @@
 (defn wrap-incise-parse
   "Call parse on each modified file in the given dir with each request."
   [handler]
+  (reset! file-modification-times {})
   (let [orig-out *out*
         orig-err *err*]
     (delete-recursively (file (conf/get :out-dir)))
