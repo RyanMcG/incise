@@ -2,6 +2,22 @@
   (:require [clojure.java.io :refer [file]])
   (:import [java.io File]))
 
+(defn slot-by
+  "Take a function which when called on each item in the given collection
+   returns a sequence of keys to value to."
+  [keys-fn coll]
+  (persistent! (reduce (fn [memo item]
+                          (let [item-keys (keys-fn item)]
+                            (doseq [a-key (if (sequential? item-keys)
+                                            item-keys
+                                            [item-keys])]
+                              (assoc! memo
+                                      a-key
+                                      (conj (get memo a-key []) item))))
+                          memo)
+                        (transient {})
+                        coll)))
+
 (defn remove-prefix-from-path
   "Remove the given prefix from the given path."
   [prefix-file afile]
