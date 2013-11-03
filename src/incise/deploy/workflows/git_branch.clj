@@ -64,7 +64,8 @@
                                    "HEAD")]
     (commit-info *repo* commit)))
 
-(def remove-out-dir (partial remove-prefix-from-path *out-dir*))
+(defn remove-out-dir [afile]
+  (remove-prefix-from-path *out-dir* afile))
 
 (defn move-to-work-dir
   "Move the given file to the working tree directory."
