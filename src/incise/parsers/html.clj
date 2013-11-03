@@ -26,7 +26,6 @@
     (-> out-file
         (.getParentFile)
         (.mkdirs))
-    (info "Writing" (.getPath out-file))
     (spit out-file (Parse->string parse-data))
     out-file))
 
