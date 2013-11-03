@@ -7,17 +7,13 @@
 
 (def spec-temp-dir (partial temp-dir "incise-copy-spec"))
 
-(defn in-directory? [directory file-in-dir]
-  ""
+(defn in-directory?
+  "Check to see if the given file has a canonical path with the given
+  directory."
+  [directory file-in-dir]
   (let [dir-path (.getCanonicalPath directory)
         file-path (.getCanonicalPath file-in-dir)]
     (= dir-path (subs file-path 0 (count dir-path)))))
-
-(describe "relative-path-from"
-  (with dir (file "/hey/there/"))
-  (with afile (file "/hey/there/pants/party"))
-  (it "returns a relative path from the given directory"
-    (should= "pants/party" (relative-path-from @dir @afile))))
 
 (describe "parse"
   (with copyme (file (resource "spec/COPYME")))
