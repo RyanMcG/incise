@@ -29,7 +29,8 @@
   (it "register mappings copies parsers to new extensions"
     (register-mappings @mappings)
     (doseq [parser-key (map name [:mkd :thing :rst])]
-      (should-contain parser-key @parsers))))
+      (should-contain parser-key @parsers)
+      (should= @parser (@parsers parser-key)))))
 
 (describe "parsers"
   (before-all (reset! parsers {}))

@@ -30,7 +30,7 @@
 (defn register-mappings
   [mappings]
   (doseq [[function-key new-function-key] mappings]
-    (register new-function-key (@parsers function-key))))
+    (register new-function-key (@parsers (name function-key)))))
 
 (defn parse
   "Do all the work, parse the file and output it to the proper location."
