@@ -1,10 +1,6 @@
 (ns incise.parsers.core
-  (:require [incise.config :as conf]
-            [incise.parsers.helpers :refer [extension]]
-            [clj-time.core :as tm]
-            [clojure.java.io :refer [file]]
-            [taoensso.timbre :refer [info]]
-            [clojure.string :as s])
+  (:require [incise.parsers.helpers :refer [extension]]
+            [taoensso.timbre :refer [info]])
   (:import [java.io File]))
 
 (defrecord Parse [^String title
