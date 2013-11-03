@@ -1,5 +1,6 @@
 (ns incise.parsers.core
   (:require [incise.parsers.helpers :refer [extension]]
+            [incise.config :as conf]
             [taoensso.timbre :refer [info]])
   (:import [java.io File]))
 
@@ -36,7 +37,10 @@
   "Do all the work, parse the file and output it to the proper location."
   [^File handle]
   {:pre [(instance? File handle)]}
-  (let [ext (extension handle)]
-    (when (contains? @parsers ext)
+  (when-let [mappings (conf/get :custom-parser-mappings)]
+    (register-mappings mappings))
+  (let [ext (extension handle)
+        current-parsers @parsers]
+    (when (contains? current-parsers ext)
       (info "Parsing" (.getPath handle))
-      ((@parsers ext) handle))))
+      (info "Wrote" (.getPath ((current-parsers ext) handle))))))
