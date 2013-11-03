@@ -27,6 +27,11 @@
                                    [extensions]))
                        (repeat parser))))
 
+(defn register-mappings
+  [mappings]
+  (doseq [[function-key new-function-key] mappings]
+    (register new-function-key (@parsers function-key))))
+
 (defn parse
   "Do all the work, parse the file and output it to the proper location."
   [^File handle]
