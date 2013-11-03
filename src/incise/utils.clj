@@ -10,6 +10,8 @@
       (.getCanonicalPath)
       (subs (inc (count (.getCanonicalPath (file prefix-file)))))))
 
+(defn directory? [^File afile] (.isDirectory afile))
+
 (defn- gitignore-file? [^File file]
   (= (.getName file) ".gitignore"))
 

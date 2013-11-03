@@ -1,7 +1,7 @@
 (ns ring.middleware.incise
   (:require [clojure.java.io :refer [file]]
             [ns-tracker.core :refer [ns-tracker]]
-            (incise [utils :refer [delete-recursively]]
+            (incise [utils :refer [delete-recursively directory?]]
                     [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
             [incise.parsers.core :refer [parse]])
@@ -32,7 +32,8 @@
              (file)
              (file-seq)
              (filter modified?)
-             (pmap parse)
+             (remove directory?)
+             (map parse)
              (dorun)))
       (handler request))))
 
