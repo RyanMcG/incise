@@ -22,7 +22,9 @@
   "Register a parser for the given file extensions."
   [extensions parser]
   (swap! parsers
-         merge (zipmap (map name extensions)
+         merge (zipmap (map name (if (sequential? extensions)
+                                   extensions
+                                   [extensions]))
                        (repeat parser))))
 
 (defn parse
