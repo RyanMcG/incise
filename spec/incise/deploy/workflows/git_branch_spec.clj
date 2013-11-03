@@ -49,20 +49,20 @@
                  (it)))
   (context "remove-out-dir"
     (it "removes the prefixed out-dir returning a relative path"
-      (should= @file-name (#'incise.deploy.workflows.git-branch/remove-out-dir
+      (should= @file-name (remove-out-dir
                             (.getCanonicalPath (file @out-dir @file-name))))))
   (context "move-to-work-dir"
     (it "moves a file from out-dir to work-dir"
       (should= (file @work-dir @file-name)
                (move-to-work-dir @ex-file)))))
 
-(describe "add-files"
+(describe "add-file"
   (with repo-dir (create-dummy-repo))
   (around [it] (with-repo @repo-dir (it)))
   (with files (map (partial file @repo-dir)
                    ["a" "b" "c"]))
   (it "adds files"
-    (should-not-throw (add-files @files))))
+    (should-not-throw (map add-file @files))))
 
 (defn- file-exists? [file-like]
   (.exists (file *work-dir* file-like)))
