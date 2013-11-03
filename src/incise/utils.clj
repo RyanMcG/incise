@@ -8,7 +8,7 @@
   (-> afile
       (file)
       (.getCanonicalPath)
-      (subs (count (.getCanonicalPath prefix-file)))))
+      (subs (inc (count (.getCanonicalPath (file prefix-file)))))))
 
 (defn- gitignore-file? [^File file]
   (= (.getName file) ".gitignore"))
