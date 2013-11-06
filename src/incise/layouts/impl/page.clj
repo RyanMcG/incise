@@ -1,11 +1,13 @@
 (ns incise.layouts.impl.page
   (:require (incise.layouts [core :refer [register]]
-                            [html :refer [deflayout defpartial]])
+                            [html :refer [eval-with-context
+                                          deflayout
+                                          defpartial]])
             [stefon.core :refer [link-to-asset]]
-            (hiccup [def :refer :all]
+            (hiccup [core :refer :all]
+                    [def :refer :all]
                     [page :refer :all]
-                    [element :refer :all]
-                    [core :refer :all]))
+                    [element :refer :all]))
   (:import [java.io FileNotFoundException]))
 
 (defpartial header
@@ -14,9 +16,16 @@
   [:header
    [:h1#site-title (link-to "/" site-title)]])
 
+(defpartial content
+  "A very basic content partial."
+  [_ {:keys [content]}]
+  (condp #(%1 %2) content
+    list? (eval-with-context content)
+    content))
+
 (defpartial footer
   "A very basic footer crediting this project."
-  [_ {:keys [contacts author]}]
+  [{:keys [contacts author]} _]
   [:footer
    [:p
     "This website was "
@@ -37,6 +46,7 @@
 
 (deflayout page
   "The default page/post layout."
+  [{:keys [site-title]} {:keys [title]}]
   [:head
    [:title (str site-title (when title (str " - " title)))]
    [:meta {:name "viewport"
@@ -45,7 +55,7 @@
   [:body#page
    [:div.container
     (header)
-    [:div#content content]
+    [:div#content (content)]
     (footer)]
    (apply include-js (remove nil? (javascripts)))])
 
