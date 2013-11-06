@@ -56,6 +56,15 @@
                (fn [f# & args#] (~replacement (apply f# args#))))
      ""))
 
+(defn eval-with-context [code]
+  (binding [*ns* (create-ns `user#)]
+    (require '[clojure.core :refer :all])
+    (require '[incise.layouts.html :refer [*site-options* *parse*]])
+    (eval `(do
+             (def ~'parses (vals @incise.parsers.core/parses))
+             (def ~'tags (incise.utils/slot-by :tags ~'parses))
+             ~@code))))
+
 (defn use-layout
   "Use the given layout function by calling it with *site-options* and *parse*."
   [layout-fn] (layout-fn *site-options* *parse*))
