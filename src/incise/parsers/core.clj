@@ -6,7 +6,7 @@
 
 (defrecord Parse [^String title
                   ^String extension
-                  ^String content
+                  content
                   ^String date
                   ^String layout
                   ^String path
