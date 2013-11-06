@@ -3,7 +3,7 @@
    standard parser from a function which takes the body of a file as a string
    and returns html."
   (:require (incise.parsers [helpers :as help]
-                            [core :refer [map->Parse]])
+                            [core :refer [map->Parse record-parse]])
             [incise.layouts.core :refer [Parse->string]]
             [incise.config :as conf]
             [taoensso.timbre :refer [info]]
@@ -13,22 +13,22 @@
   (:import [java.io File]))
 
 (defn File->Parse
-  [to-html ^File file]
+  [content-fn ^File file]
   (let [file-str (slurp file)
         parse-meta (edn/read-string file-str)
-        content (to-html (second (s/split file-str #"\}" 2)))]
-    (map->Parse (assoc parse-meta
-                       :extension "/index.html"
-                       :content content))))
+        content (content-fn (second (s/split file-str #"\}" 2)))
+        parse-data (merge {:extension "/index.html"
+                           :content content} parse-meta)
+        parse-from-file (map->Parse parse-data)]
+    (record-parse (.getCanonicalPath file) parse-from-file)
+    parse-from-file))
 
 (defn write-Parse
   [^incise.parsers.core.Parse parse-data]
-  (let [out-file (file (str (conf/get :out-dir) File/separator
-                             (help/Parse->path parse-data)))]
+  (let [out-file (file (conf/get :out-dir) (help/Parse->path parse-data))]
     (-> out-file
         (.getParentFile)
         (.mkdirs))
-    (info "Writing" (.getPath out-file))
     (spit out-file (Parse->string parse-data))
     out-file))
 

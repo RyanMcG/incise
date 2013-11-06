@@ -1,15 +1,12 @@
 (ns incise.parsers.core
-  (:require [incise.config :as conf]
-            [incise.parsers.helpers :refer [extension]]
-            [clj-time.core :as tm]
-            [clojure.java.io :refer [file]]
-            [taoensso.timbre :refer [info]]
-            [clojure.string :as s])
+  (:require [incise.parsers.helpers :refer [extension]]
+            [incise.config :as conf]
+            [taoensso.timbre :refer [info]])
   (:import [java.io File]))
 
 (defrecord Parse [^String title
                   ^String extension
-                  ^String content
+                  content
                   ^String date
                   ^String layout
                   ^String path
@@ -22,18 +19,34 @@
   parsers
   (atom {}))
 
+(defonce parses (atom {}))
+(defn dissoc-parses [deleted-paths]
+  (apply swap! parses dissoc deleted-paths))
+(defn record-parse [canonical-path ^Parse a-parse]
+  (swap! parses assoc canonical-path a-parse))
+
 (defn register
   "Register a parser for the given file extensions."
   [extensions parser]
   (swap! parsers
-         merge (zipmap (map name extensions)
+         merge (zipmap (map name (if (sequential? extensions)
+                                   extensions
+                                   [extensions]))
                        (repeat parser))))
+
+(defn register-mappings
+  [mappings]
+  (doseq [[function-key new-function-key] mappings]
+    (register new-function-key (@parsers (name function-key)))))
 
 (defn parse
   "Do all the work, parse the file and output it to the proper location."
   [^File handle]
   {:pre [(instance? File handle)]}
-  (let [ext (extension handle)]
-    (when (contains? @parsers ext)
+  (when-let [mappings (conf/get :custom-parser-mappings)]
+    (register-mappings mappings))
+  (let [ext (extension handle)
+        current-parsers @parsers]
+    (when (contains? current-parsers ext)
       (info "Parsing" (.getPath handle))
-      ((@parsers ext) handle))))
+      (info "Wrote" (.getPath ((current-parsers ext) handle))))))
