@@ -9,30 +9,28 @@
 
 (defmacro deflayout
   "This is a helper macro for defining html layout functions. An html layout
-   function at its core is just a function which takes two arguments:
+  function at its core is just a function which takes two arguments:
 
-     site-options - Global options for the site from incise.edn
-     parse        - An instance of Parse containing keys such as content and
-                    title
+    site-options - Global options for the site from incise.edn
+    parse        - An instance of Parse containing keys such as content and
+                   title
 
-   This macro makes it just a little bit easier to define such functions by
-   taking care of some boiler plate stuff like using the robert.hooke with-scope
-   macro and binind the functions arguments to *site-options* and *parse* so
-   partials can easily access them."
-  [sym-name doc-string? & body]
-  (let [[doc-string body]
+  This macro makes it just a little bit easier to define such functions by
+  taking care of some boiler plate stuff like using the robert.hooke with-scope
+  macro and binind the functions arguments to *site-options* and *parse* so
+  partials can easily access them."
+  [sym-name doc-string? destructuring & body]
+  (let [[doc-string destructuring]
         (if (string? doc-string?)
-          [doc-string? body]
-          ["" (conj body doc-string?)])]
+          [doc-string? destructuring]
+          ["" doc-string?])]
     `(defn ~sym-name
        ~doc-string
-       [{:keys [~'site-title ~'author ~'contacts]
-         :as ~'site-options}
-        ^incise.parsers.core.Parse
-        {:keys [~'date ~'tags ~'category ~'title ~'content] :as ~'parse}]
-       (binding [*site-options* ~'site-options
-                 *parse* ~'parse]
-           (with-scope (html5 ~@body))))))
+       [site-options# ^incise.parsers.core.Parse parse#]
+       (binding [*site-options* site-options#
+                 *parse* parse#]
+         (let [~destructuring [*site-options* *parse*]]
+           (with-scope (html5 ~@body)))))))
 
 (defmacro defpartial
   "Defines a 'partial' which is baically some hiccup markup. An arguments vector
