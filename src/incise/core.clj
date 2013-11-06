@@ -3,12 +3,13 @@
                     [config :as conf]
                     [once :refer [once]]
                     [utils :refer [delete-recursively]])
+            [incise.deploy.core :refer [deploy]]
             [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
             [clojure.tools.cli :refer [cli]]
             [incise.server :refer [wrap-log-exceptions serve]]))
 
-(def ^:private valid-methods #{"serve" "once"})
+(def ^:private valid-methods #{"serve" "once" "deploy"})
 (defn- parse-method [method]
   (if (contains? valid-methods method)
     (keyword method)
@@ -32,7 +33,7 @@
         (cli args
              "A tool for incising."
              ["-h" "--help" "Print this help." :default false :flag true]
-             ["-m" "--method" "serve or once"
+             ["-m" "--method" "serve, once, or deploy"
               :default :serve :parse-fn parse-method]
              ["-i" "--in-dir" "The directory to get source from"]
              ["-o" "--out-dir" "The directory to put content into"])]
@@ -72,9 +73,11 @@
       (wrap-post #(System/exit 0))))
 
 (defn -main
-  "Based on the given args either compile or start the development server."
+  "Based on the given args either deploy, compile or start the development
+  server."
   [& args]
   (with-args args
     ((case (:method options)
+       :deploy (wrap-main deploy)
        :once (wrap-main once)
        :serve (wrap-serve serve)))))
