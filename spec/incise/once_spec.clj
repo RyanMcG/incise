@@ -6,7 +6,7 @@
 
 (def spec-temp-dir (partial temp-dir "incise-once-spec"))
 
-(describe :once
+(describe "once"
   (with-all out-dir (spec-temp-dir))
   (with-all out-dir-path (.getCanonicalPath @out-dir))
   (with once-result (once :in-dir "resources/spec"

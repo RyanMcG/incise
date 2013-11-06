@@ -38,7 +38,7 @@
     (should (empty? @parsers)))
   (it "gets populted when parsers are loaded"
     (load-parsers-and-layouts)
-    (doseq [extension ["htm" "html" "markdown" "md" "hiccup"]]
+    (doseq [extension ["htm" "html" "markdown" "md" "clj"]]
       (should-contain extension @parsers))))
 
 (describe "parse"
