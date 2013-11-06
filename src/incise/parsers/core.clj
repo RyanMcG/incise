@@ -19,6 +19,12 @@
   parsers
   (atom {}))
 
+(defonce parses (atom {}))
+(defn dissoc-parses [deleted-paths]
+  (apply swap! parses dissoc deleted-paths))
+(defn record-parse [canonical-path ^Parse a-parse]
+  (swap! parses assoc canonical-path a-parse))
+
 (defn register
   "Register a parser for the given file extensions."
   [extensions parser]
