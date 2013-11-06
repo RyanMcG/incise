@@ -49,4 +49,6 @@
         current-parsers @parsers]
     (when (contains? current-parsers ext)
       (info "Parsing" (.getPath handle))
-      (info "Wrote" (.getPath ((current-parsers ext) handle))))))
+      (let [parsed-file ((current-parsers ext) handle)]
+        (info "Wrote" (.getPath parsed-file))
+        parsed-file))))
