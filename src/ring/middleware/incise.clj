@@ -1,10 +1,11 @@
 (ns ring.middleware.incise
   (:require [clojure.java.io :refer [file]]
+            [clojure.set :refer [difference]]
             [ns-tracker.core :refer [ns-tracker]]
             (incise [utils :refer [delete-recursively directory?]]
                     [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
-            [incise.parsers.core :refer [parse]])
+            [incise.parsers.core :refer [parse dissoc-parses]])
   (:import [java.io File]))
 
 (defonce ^:private file-modification-times (atom {}))
@@ -17,6 +18,17 @@
     (swap! file-modification-times assoc a-file (.lastModified a-file))
     (or (nil? previous-modification-time)
         (< previous-modification-time last-modification-time))))
+
+(def paths-set (atom #{}))
+(defn reference-files
+  "Pass files through with side effects. Call dissoc-parses on deleted paths."
+  [files]
+  (let [old-paths-set @paths-set
+        new-paths-set (set (map (memfn getCanonicalPath) files))
+        deleted-paths (difference old-paths-set new-paths-set)]
+    (dissoc-parses deleted-paths)
+    (reset! paths-set new-paths-set))
+  files)
 
 (defn wrap-incise-parse
   "Call parse on each modified file in the given dir with each request."
@@ -31,8 +43,9 @@
         (->> (conf/get :in-dir)
              (file)
              (file-seq)
-             (filter modified?)
              (remove directory?)
+             (reference-files)
+             (filter modified?)
              (map parse)
              (dorun)))
       (handler request))))
