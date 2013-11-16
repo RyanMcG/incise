@@ -33,11 +33,13 @@
     out-file))
 
 (defn html-parser
-  "Take a function that parses a string into HTML and returns an HTML parser.
+  "Take a function that parses a string into HTML and returns a HTML parser.
 
    An HTML parser is a function which takes a file, reads it and writes it out
    as html to the proper place under public. If it is a page it should appear at
    the root, if it is a post it will be placed under a directory strucutre based
    on its date."
   [to-html]
-  (comp write-Parse (partial File->Parse to-html)))
+  (fn [file]
+    (let [parse (File->Parse to-html file)]
+      (delay [(write-Parse parse)]))))
