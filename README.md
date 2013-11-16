@@ -1,6 +1,7 @@
 # ![inciꞅe](https://raw.github.com/RyanMcG/incise/master/assets/logo.png) [![Build Status](https://travis-ci.org/RyanMcG/incise.png?branch=master)](https://travis-ci.org/RyanMcG/incise)
 
-A hopefully simplified static site generator in Clojure.
+<span class="tag-line">An extensible static site generator written in
+Clojure.</span>
 
 ## Usage
 
@@ -24,7 +25,7 @@ The main method takes several switches.
 
 Unfortunately the speclj leiningen plugin does not work well with clj-v8 because
 it requires custom jvm options (this seems to be a bug with speclj). However,
-you can still run the tests using lein run:
+you can still run the tests using `lein run`:
 
 ```bash
 lein run -m specj.main
