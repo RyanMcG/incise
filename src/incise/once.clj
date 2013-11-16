@@ -1,9 +1,9 @@
 (ns incise.once
   (:require (incise [load :refer [load-parsers-and-layouts]]
                     [config :as conf]
-                    [utils :refer [delete-recursively]])
+                    [utils :refer [delete-recursively directory?]])
             [clojure.java.io :refer [file]]
-            [incise.parsers.core :refer [parse]]
+            [incise.parsers.core :refer [parse-all-input-files]]
             [taoensso.timbre :refer [info]]
             (stefon [settings :refer [with-options]]
                     [core :refer [precompile]])))
@@ -24,9 +24,4 @@
       (precompile)
       (info "Done.")
       (load-parsers-and-layouts)
-      (->> (conf/get :in-dir)
-           (file)
-           (file-seq)
-           (map parse)
-           (keep identity)
-           (doall)))))
+      (doall (parse-all-input-files)))))

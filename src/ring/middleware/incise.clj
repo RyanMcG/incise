@@ -5,10 +5,14 @@
             (incise [utils :refer [delete-recursively directory?]]
                     [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
-            [incise.parsers.core :refer [parse dissoc-parses]])
+            [incise.parsers.core :refer [input-file-seq parse-all
+                                         dissoc-parses]])
   (:import [java.io File]))
 
-(defonce ^:private file-modification-times (atom {}))
+(defonce ^{:private true
+           :doc "Keeps track of modification times of files for modified?."}
+  file-modification-times
+  (atom {}))
 
 (defn- modified?
   "If file is not in atom or it's modification date has advanced."
@@ -19,7 +23,11 @@
     (or (nil? previous-modification-time)
         (< previous-modification-time last-modification-time))))
 
-(def paths-set (atom #{}))
+(def paths-set
+  "Keeps track of all parseable files. From the last invocation of
+  reference-files."
+  (atom #{}))
+
 (defn reference-files
   "Pass files through with side effects. Call dissoc-parses on deleted paths."
   [files]
@@ -40,13 +48,10 @@
     (fn [request]
       (binding [*out* orig-out
                 *err* orig-err]
-        (->> (conf/get :in-dir)
-             (file)
-             (file-seq)
-             (remove directory?)
+        (->> (input-file-seq)
              (reference-files)
              (filter modified?)
-             (map parse)
+             (parse-all)
              (dorun)))
       (handler request))))
 
@@ -73,6 +78,9 @@
     (handler request)))
 
 (defn wrap-incise
+  "A middleware which does everything necessary for incise. It loads parsers and
+  layouts, and eagerly parses files. It even reparses files when Clojure source
+  is changed (e.g. a layout is modified)."
   [handler]
   (conf/load)
   (-> handler
