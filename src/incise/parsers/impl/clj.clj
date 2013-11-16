@@ -2,8 +2,8 @@
   (:require (incise.parsers [core :refer [register]]
                             [html :refer [html-parser]])))
 
-(defn parse [code]
+(defn clj-parse [code]
   (->> (str \( code \))
        (read-string)))
 
-(register [:clj] (html-parser parse))
+(register [:clj] (html-parser clj-parse))
