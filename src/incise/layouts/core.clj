@@ -15,7 +15,15 @@
 
 (defn Parse->string
   [^incise.parsers.core.Parse parse-data]
-  ((get (:layout parse-data)) (conf/get) parse-data))
+  (if-let [layout-key (:layout parse-data)]
+    (if-let [layout-fn (get layout-key)]
+      (layout-fn (conf/get) parse-data)
+      (throw (ex-info (str "No layout function of with registered with key "
+                           layout-key)
+                      {:layouts @layouts})))
+    (throw (ex-info (str "No layout key specified in given parse.")
+                    {:layouts @layouts
+                     :parse parse-data}))))
 
 (defn register
   "Register a layout function to a shortname"
