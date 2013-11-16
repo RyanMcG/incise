@@ -1,0 +1,10 @@
+{:site-title "incise"
+ :author "Ryan McGowan"
+ :in-dir "resources/content"
+ :out-dir "resources/public"
+ :precompiles ["javascripts/app.js.stefon"
+               "stylesheets/app.css.stefon"]
+ :root-path "/incise/"
+ :deploy {:workflow :git-branch
+          :commit true
+          :push true}}
