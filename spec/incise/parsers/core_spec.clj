@@ -46,9 +46,10 @@
     (conf/merge {:out-dir "/tmp/incise-specs"})
     (load-parsers-and-layouts))
   (with real-md-file (file (resource "spec/another-forgotten-binding-pry.md")))
-  (with output-file (parse @real-md-file))
+  (with output-files (force (parse @real-md-file)))
   (it "outputs html"
-    (should (.exists @output-file))
-    (should-contain #"<html>" (slurp @output-file))))
+    (doseq [output-file @output-files]
+      (should (.exists output-file))
+      (should-contain #"<html>" (slurp output-file)))))
 
 (run-specs)

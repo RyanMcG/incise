@@ -20,7 +20,7 @@
   (with out-dir (spec-temp-dir))
   (before (conf/merge {:out-dir @out-dir
                        :in-dir (.getParent (.getParentFile @copyme))}))
-  (with out-file (parse @copyme))
+  (with out-file (first (force (parse @copyme))))
   (it "actually copies the file"
     (should (.exists @out-file)))
   (it "preserves file name and directory structure"
