@@ -74,8 +74,12 @@ pre {
 }
 
 pre, code {
-  padding: @pre-padding;
   font-family: monospace;
+  font-size: 1rem;
+}
+
+pre, pre code {
+  padding: @pre-padding;
   border-radius: 2px;
   box-shadow: inset 0 0 @pre-padding rgba(0, 0, 0, .08);
 }
