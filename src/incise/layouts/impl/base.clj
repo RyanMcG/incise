@@ -45,8 +45,8 @@
   [{:keys [site-title]} {:keys [title]}]
   [:head
    [:title (str site-title (when title (str " - " title)))]
-   [:meta {:name "viewport"
-           :content "width=device-width, initial-scale=1.0"}]
+   [:meta {:charset "UTF-8"}]
+   [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
    (apply include-css (remove nil? (stylesheets)))]
   [:body#page
    [:div.container
