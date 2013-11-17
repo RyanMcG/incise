@@ -4,7 +4,7 @@
  :out-dir "resources/public"
  :precompiles ["javascripts/app.js.stefon"
                "stylesheets/app.css.stefon"]
- :root-path "/incise/"
+ :uri-root "incise"
  :deploy {:workflow :git-branch
           :commit true
           :push true}}
