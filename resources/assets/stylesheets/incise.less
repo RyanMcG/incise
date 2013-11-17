@@ -1,23 +1,26 @@
 @import url(//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css);
-@import url(//fonts.googleapis.com/css?family=Crimson+Text:400,600italic,700);
+@import url(//fonts.googleapis.com/css?family=Crimson+Text:400,600italic,700|Source+Sans+Pro:400);
 @import 'solarized-dark.less';
-
-@color: #202020;
+@color: #303030;
 
 html {
   color: @color;
-  background: #eeeae7;
-  background: radial-gradient(circle, #e6dfda, #f6f6f6);
+  background: #eeeae7 url(../images/texture.png);
+  background: url(../images/texture.png), radial-gradient(circle, #e6dfda, #f6f6f6);
 }
 
+@serif: 15pt e('/') 1.3em 'Crimson Text', Palintino, Times, serif;
+@sans-serif: 14pt e('/') 1.4em 'Source Sans Pro', Helvetica, Arial, sans-serif;
+
 body {
-  font: 14pt/1.3em 'Crimson Text', Palintino, Times, serif;
+  font: @serif;
   font-weight: 400;
-  text-shadow: 0 1px 1px #f6f6f6;
+  text-shadow: 1px 1px 0 white;
   padding: 0 1em;
 }
 
 .tag-line {
+  font: @serif;
   font-weight: 600;
   font-style: italic;
   position: absolute;
@@ -51,6 +54,9 @@ h2 {
 
 p {
   margin: .4em 0 1em;
+  text-shadow: 0 1px 0 #fafafa;
+  font: @sans-serif;
+  color: darken(@color, 10%);
 }
 
 footer, #content {
@@ -68,7 +74,6 @@ header { display: none; }
 pre {
   text-shadow: none;
   font-size: 12pt;
-  color: #212121;
   background: rgba(0, 0, 0, .04);
   border: 1px solid rgba(0, 0, 0, .2);
 }
