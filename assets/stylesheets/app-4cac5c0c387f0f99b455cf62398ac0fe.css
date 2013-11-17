@@ -1,0 +1,28 @@
+@import url(//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css);
+@import url(//fonts.googleapis.com/css?family=Crimson+Text:400,600italic,700|Source+Sans+Pro:400);
+pre code{display:block;background:#002b36;color:#839496;}
+pre .clojure .title{color:#839496;}
+pre .comment,pre .template_comment,pre .diff .header,pre .doctype,pre .pi,pre .lisp .string,pre .javadoc{color:#586e75;font-style:italic;}
+pre .keyword,pre .clojure .attribute,pre .winutils,pre .method,pre .addition,pre .css .tag,pre .request,pre .status,pre .nginx .title{color:#859900;}
+pre .number,pre .command,pre .string,pre .tag .value,pre .phpdoc,pre .tex .formula,pre .regexp,pre .hexcolor{color:#2aa198;}
+pre .title,pre .localvars,pre .chunk,pre .decorator,pre .built_in,pre .identifier,pre .literal,pre .id{color:#268bd2;}
+pre .attribute,pre .variable,pre .lisp .body,pre .smalltalk .number,pre .constant,pre .class .title,pre .parent,pre .haskell .type{color:#b58900;}
+pre .preprocessor,pre .preprocessor .keyword,pre .shebang,pre .symbol,pre .symbol .string,pre .diff .change,pre .special,pre .attr_selector,pre .important,pre .subst,pre .cdata{color:#cb4b16;}
+pre .collection,pre .deletion{color:#dc322f;}
+pre .tex .formula{background:#073642;}
+html{color:#303030;background:#eeeae7 url(../images/texture.png);background:url(../images/texture.png),radial-gradient(circle, #e6dfda, #f6f6f6);}
+body{font:15pt / 1.3em 'Crimson Text',Palintino,Times,serif;font-weight:400;text-shadow:1px 1px 0 white;padding:0 1em;}
+.tag-line{font:15pt / 1.3em 'Crimson Text',Palintino,Times,serif;font-weight:600;font-style:italic;position:absolute;top:109px;left:45px;}
+h1 img{position:absolute;top:80px;left:45px;}
+h1,h2,h3,h4,h5,h6{font-weight:700;line-height:1em;}
+img.fork-me{top:0;right:0;position:fixed;width:149px;height:149px;}
+h2{margin:1.4em 0 0;line-height:1.3em;}
+p{margin:.4em 0 1em;text-shadow:0 1px 0 #fafafa;font:14pt / 1.4em 'Source Sans Pro',Helvetica,Arial,sans-serif;color:#161616;}
+footer,#content{max-width:960px;margin:0 auto;}
+#content{position:relative;}
+header{display:none;}
+pre{text-shadow:none;font-size:12pt;background:rgba(0, 0, 0, 0.04);border:1px solid rgba(0, 0, 0, 0.2);}
+pre,code{font-family:monospace;font-size:1rem;}
+pre,pre code{padding:0.5em;border-radius:2px;box-shadow:inset 0 0 0.5em rgba(0, 0, 0, 0.08);}
+svg{-webkit-filter:drop-shadow(1px 2px 1px #fafafa);filter:drop-shadow(1px 2px 1px #fafafa);}
+path{fill:#303030;box-shadow:0 0 1em #000;}
