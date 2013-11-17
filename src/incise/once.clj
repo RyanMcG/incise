@@ -13,10 +13,11 @@
   [& {:as config}]
   (conf/merge config)
   (conf/avow!)
-  (let [out-dir (conf/get :out-dir)
+  (let [{:keys [out-dir uri-root precompiles]} (conf/get)
         stefon-pre-opts {:mode :production
                          :serving-root out-dir
-                         :precompiles (conf/get :precompiles)}]
+                         :uri-root uri-root
+                         :precompiles precompiles}]
     (info "Clearing out" (str \" out-dir \"))
     (delete-recursively (file out-dir))
     (with-options stefon-pre-opts
