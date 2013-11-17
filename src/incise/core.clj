@@ -37,7 +37,8 @@
               :default :serve :parse-fn parse-method]
              ["-i" "--in-dir" "The directory to get source from"]
              ["-o" "--out-dir" "The directory to put content into"]
-             ["-u" "--uri-root" "The path relative to the out-dir to actually root the site at"])]
+             ["-u" "--uri-root" (str "The path relative to the out-dir to root"
+                                     " stefon assets at")])]
     (conf/merge options)
     (if (:help options)
       (do (println banner)

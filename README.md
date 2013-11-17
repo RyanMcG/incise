@@ -20,6 +20,7 @@ The main method takes several switches.
     -m, --method           :serve   serve, once, or deploy
     -i, --in-dir                    The directory to get source from
     -o, --out-dir                   The directory to put content into
+    -u, --uri-root                  The path relative to the out-dir to root stefon assets at
 
 ## Running specs
 
