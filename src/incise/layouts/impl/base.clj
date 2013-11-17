@@ -25,7 +25,7 @@
   [:footer
    [:p
     "This website was "
-    (link-to "https://github.com/RyanMcG/incise" "incise") "d."]])
+    (link-to "https://github.com/RyanMcG/incise" "incised") \.]])
 
 (defn- attempt-link-to-asset
   "Return nil if the asset is not found othewise return a url for the asset."
