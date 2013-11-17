@@ -16,4 +16,4 @@
       (copy input-file output-file)
       [output-file])))
 
-(pc/register [:copy :cname] parse)
+(pc/register [:copy :cname :jpeg :jpg :png] parse)
