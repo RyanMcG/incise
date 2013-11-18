@@ -29,7 +29,9 @@
   4.  Handle help or continue"
   [args body-fn]
   (conf/load)
-  (let [[options cli-args banner]
+  (let [uri-root-desc (str "The path relative to the domain root where the "
+                           "generated site will be hosted.")
+        [options cli-args banner]
         (cli args
              "A tool for incising."
              ["-h" "--help" "Print this help." :default false :flag true]
@@ -37,8 +39,7 @@
               :default :serve :parse-fn parse-method]
              ["-i" "--in-dir" "The directory to get source from"]
              ["-o" "--out-dir" "The directory to put content into"]
-             ["-u" "--uri-root" (str "The path relative to the out-dir to root"
-                                     " stefon assets at")])]
+             ["-u" "--uri-root" uri-root-desc])]
     (conf/merge options)
     (if (:help options)
       (do (println banner)
