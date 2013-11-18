@@ -13,16 +13,16 @@
   [& {:as config}]
   (conf/merge config)
   (conf/avow!)
-  (let [{:keys [out-dir uri-root precompiles]} (conf/get)
-        stefon-pre-opts {:mode :production
-                         :serving-root out-dir
-                         :uri-root uri-root
-                         :precompiles precompiles}]
+  (let [{:keys [out-dir uri-root precompiles]} (conf/get)]
     (info "Clearing out" (str \" out-dir \"))
     (delete-recursively (file out-dir))
-    (with-options stefon-pre-opts
+    (with-options {:mode :production
+                   :serving-root out-dir
+                   :precompiles precompiles}
       (info "Precompiling assets...")
       (precompile)
       (info "Done.")
-      (load-parsers-and-layouts)
-      (doall (parse-all-input-files)))))
+      (with-options (when uri-root
+                      {:generated-assets-root (str \/ uri-root "/assets/")})
+        (load-parsers-and-layouts)
+        (doall (parse-all-input-files))))))
