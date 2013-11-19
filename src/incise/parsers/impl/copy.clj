@@ -8,10 +8,10 @@
   "An incise parser which simply copies a file based on its relative path to the
   input directory."
   [input-file]
-  (let [{:keys [in-dir out-dir]} (conf/get)
-        input-filename (remove-prefix-from-path in-dir input-file)
-        output-file (file out-dir input-filename)]
-    (delay
+  (delay
+    (let [{:keys [in-dir out-dir]} (conf/get)
+          input-filename (remove-prefix-from-path in-dir input-file)
+          output-file (file out-dir input-filename)]
       (.mkdirs (.getParentFile output-file))
       (copy input-file output-file)
       [output-file])))
