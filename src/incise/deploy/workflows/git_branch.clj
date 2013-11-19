@@ -40,7 +40,7 @@
 
 (defn checkout-orphaned-branch [branch]
   (let [{:keys [exit err]} (sh "git" "checkout" "--orphan" branch)]
-    (if (= 0 exit)
+    (if (zero? exit)
       (sh "git" "rm" "-rf" "*")
       (throw (RuntimeException. err)))))
 
@@ -83,7 +83,7 @@
   "Shell out to git and push the current branch to the given remote and branch."
   [remote branch]
   (let [{:keys [exit err]} (sh "git" "push" "-f" remote branch)]
-    (when-not (= exit 0)
+    (when-not (zero? exit)
       (throw (RuntimeException. err)))))
 
 (defn log-files [files]

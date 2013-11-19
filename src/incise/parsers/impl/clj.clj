@@ -3,7 +3,6 @@
                             [html :refer [html-parser]])))
 
 (defn clj-parse [code]
-  (->> (str \( code \))
-       (read-string)))
+  (read-string (str \( code \))))
 
 (register [:clj] (html-parser clj-parse))

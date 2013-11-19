@@ -14,7 +14,7 @@
   (if (contains? valid-methods method)
     (keyword method)
     (do
-      (when-not (empty? method)
+      (when (seq method)
         (warn (str \" method
                    "\" is not a valid method (must be in "
                    (s/join ", " valid-methods) "). Defaulting to serve.")))

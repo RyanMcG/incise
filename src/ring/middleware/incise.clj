@@ -66,8 +66,7 @@
   (let [source-dirs (:dirs options ["src"])
         modified-namespaces (ns-tracker source-dirs)]
     (fn [request]
-      (when-not (empty? (modified-namespaces))
-        (reset! file-modification-times {}))
+      (when (seq (modified-namespaces)) (reset! file-modification-times {}))
       (handler request))))
 
 (defn wrap-parsers-reload
