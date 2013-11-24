@@ -66,6 +66,10 @@ The actual definition of `no-op-parse` returns a delay which when invoked
 returns a sequence of files. In this case it is an empty sequence since this is
 the no-op parser. Why not just return a sequence of files?
 
+Finally, the parser is registered to files with the `gitignore` extension.
+Effectively, this means incise would parse all gitignore files with the no-op
+parser. This is, of course, the same as not parsing them at all.
+
 #### Two step parsing
 
 Parsers must satisfy the following criteria:
@@ -214,7 +218,7 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [blog]: http://www.ryanmcg.com/
 [incise]: http://www.ryanmcg.com/incise/
 [thunk]: http://en.wikipedia.org/wiki/Thunk_(functional_programming)
-[incise.edn.example]: https://github.com/RyanMcG/incise/blob/master/resources/incise.edn.example
+[incise.edn.example]: https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn
 [md-parser-source]: https://github.com/RyanMcG/incise/blob/master/src/incise/parsers/impl/markdown.clj
 [cegdown]: https://github.com/Raynes/cegdown
 [pegdown]: http://pegdown.org/
