@@ -16,4 +16,4 @@
       (copy input-file output-file)
       [output-file])))
 
-(pc/register [:copy :cname :jpeg :jpg :png] parse)
+(pc/register [:svg :copy :cname :jpeg :jpg :png] parse)
