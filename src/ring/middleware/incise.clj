@@ -81,7 +81,6 @@
   layouts, and eagerly parses files. It even reparses files when Clojure source
   is changed (e.g. a layout is modified)."
   [handler]
-  (conf/load)
   (-> handler
       (wrap-incise-parse)
       (wrap-reset-modified-files-with-source-change)
