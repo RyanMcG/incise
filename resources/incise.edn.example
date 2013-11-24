@@ -1,9 +1,46 @@
-{:site-title "My Website"
+{;; Incise allows the specification of arbitrary key values in this file. It is
+ ;; up to individual extensions to use them or not though some are used by
+ ;; incise's core components.
+
+ ;; Used by layouts provided by incise to fill in the title tag of generated
+ ;; pages.
+ :site-title "My Website"
+
+ ;; Used by some layouts to place the authors name in footer and possibly
+ ;; elsewhere.
  :author "Your Name Here"
+
+ ;; This option is used by core incise functions to determine where to find
+ ;; source files to dispatch to incise parsers.
  :in-dir "resources/content"
+
+ ;; This option is used by most parsers to determine where to write a file.
+ ;; Incise assumes parsers only write files in this directory.
  :out-dir "resources/public"
+
+ ;; Tell stefon the locations of assets it should precompile
  :precompiles ["javascripts/app.js.stefon"
                "stylesheets/app.css.stefon"]
- :deploy {:workflow :git-branch
+
+ ;; Specify the root where the deployed or onced website will be served from.
+ ;; This is particularly useful for github pages deploys. Default is "". Which
+ ;; indicates that the root of your website is deployed at the root of a domain.
+ ;; The incise website is deployed at http://www.ryanmcg.com/incise/. For it the
+ ;; uri-root is "incise"
+ :uri-root ""
+
+ ;; Deploy specific configuration
+ :deploy {;; Specify the name of the deploy workflow to be used in this project
+          :workflow :git-branch
+          ;; The following to config options are specific to the git-branch
+          ;; deploy workflow>
+
+          ;; The name of the orphaned branch to create and use for generated
+          ;; content.
+          :branch "gh-pages" ;; This is also the default value.
+
+          ;; Commit after compiling into the specified branch? If not you will
+          ;; have to commit yourself.
           :commit true
+          ;; Push after commiting?
           :push true}}
