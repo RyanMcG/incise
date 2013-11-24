@@ -4,7 +4,9 @@
                                           deflayout
                                           defpartial]])
             [stefon.core :refer [link-to-asset]]
+            [incise.config :as conf]
             (hiccup [core :refer :all]
+                    [util :refer [with-base-url]]
                     [def :refer :all]
                     [page :refer :all]
                     [element :refer :all]))
@@ -45,17 +47,18 @@
 (deflayout base
   "The default page/post layout."
   [{:keys [site-title]} {:keys [title]}]
-  (html5
-    [:head
-     [:title (str site-title (when title (str " - " title)))]
-     [:meta {:charset "UTF-8"}]
-     [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
-     (apply include-css (remove nil? (stylesheets)))]
-    [:body#page
-     [:div.container
-      (header)
-      [:div#content (content)]
-      (footer)]
-     (apply include-js (remove nil? (javascripts)))]))
+  (with-base-url (when-not (conf/serving?) (str \/ (conf/get :uri-root)))
+    (html5
+      [:head
+       [:title (str site-title (when title (str " - " title)))]
+       [:meta {:charset "UTF-8"}]
+       [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
+       (apply include-css (remove nil? (stylesheets)))]
+      [:body#page
+       [:div.container
+        (header)
+        [:div#content (content)]
+        (footer)]
+       (apply include-js (remove nil? (javascripts)))])))
 
 (register [:base] base)
