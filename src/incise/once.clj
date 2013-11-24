@@ -13,7 +13,7 @@
   [& {:as config}]
   (conf/merge config)
   (conf/avow!)
-  (let [{:keys [out-dir uri-root precompiles]} (conf/get)]
+  (let [{:keys [out-dir precompiles]} (conf/get)]
     (info "Clearing out" (str \" out-dir \"))
     (delete-recursively (file out-dir))
     (with-options {:mode :production
@@ -22,7 +22,5 @@
       (info "Precompiling assets...")
       (precompile)
       (info "Done.")
-      (with-options (when uri-root
-                      {:generated-assets-root (str \/ uri-root "/assets/")})
-        (load-parsers-and-layouts)
-        (doall (parse-all-input-files))))))
+      (load-parsers-and-layouts)
+      (doall (parse-all-input-files)))))
