@@ -3,35 +3,26 @@
 <span class="tag-line">An extensible static site generator written in
 Clojure.</span>
 
-Yes, incise is yet another static site generator. I did not particularly enjoy
-using [octopress][] or [jekyll bootstrap][]. They are both ambitious, powerful
-and useful pieces of software. I have used them both in the past and they have
-worked. I just never liked it. They did not feel robust. I had difficulty
-navigating around them. Perhaps my most legitimate gripe is that being
-implemented in Ruby they lack the simplicity of an API which boils down to *its
-a function*.
+## Get excited (or don't)
 
-## Get excited
+There are more exciting things out there than another static website
+generator. That said if the following items sound like good ideas to you then
+you may like incise:
 
-Or don't. There are more exciting things out there than another static website
-generator. The world around us is amazing!
+* Use Clojure ✓
+* Allow many different setups and configurations ✓
+* Extensible by nature ✓
+* Batteries included ✓
 
-> *Did you know that the universe is 13.8 billion years old?*
+#### Examples
 
-That's crazy!
-
-Still here? OK, well you probably want to see what incise can do then. I will
-try my best to trick you into thinking this is a valuable framework by showing
-off some cool examples.
-
-* [THIS WEBSITE][incise]
+* [This website][incise]
 * [My stupid personal website][blog]
 
-These examples have been specifically designed to look better than they are.
-
-&#8942;
-
-Still here? Ugh, FINE. Read on and learn how incise works. &#9786;
+Of course these examples are sort of meaningless. Incise does not help you
+create content or designs. It is simply a mechanism for finding files
+dispatching them to functions based on file extensions. This pattern happens to
+be pretty powerful and batteries are included to actually make it useful too.
 
 ## Extensibility
 
@@ -43,11 +34,10 @@ This functionality could be one of three things:
 2. A layout - `incise.layouts.impl.*`
 3. A deployment workflow - `incise.deploy.workflows.*`
 
-I'll call this the require-register pattern. Effectively, incise does a
-straightforward require of any namespace that matches the one of the patterns
-above. The namespace may invoke a `register` function to make incise aware of
-the implementation. Parsers, layouts and deployment workflows all have their own
-register functions (`incise.parsers.core/register`,
+Effectively, incise does a straightforward require of any namespace that matches
+the one of the patterns above. The namespace may invoke a `register` function to
+make incise aware of the implementation. Parsers, layouts and deployment
+workflows all have their own register functions (`incise.parsers.core/register`,
 `incise.layouts.core/register` and `incise.deploy.core/register`). In all three
 register functions a key or collection of keys is provided to identified the
 registered function.
@@ -106,13 +96,68 @@ definite need for these two steps.
 
 #### `html-parser`
 
+95% of the time a parser is probably meant to convert some sort of source into
+HTML. For this specific use case a lot of the hard work has been done for you if
+you use `incise.parsers.html/html-parser`.
 
+`html-parser` is a higher-order function which takes a function and returns a
+valid incise parsers. The function passed to `html-parser` should take a string
+and either return HTML as a string or a list of Clojure code to evaluate in
+context later (with the result being an HTML string). The first
+case is simpler so I will start there.
+
+Here is the html to html parser implementation.
+
+```clojure
+(ns incise.parsers.impl.html
+  (:require (incise.parsers [core :as pc]
+                            [html :refer [html-parser]])))
+
+(pc/register [:html :htm] (html-parser identity))
+```
+
+The identity function simply returns the value of whatever it is passed. So, if
+it is passed a string of HTML it fits are requirements to be our argument to
+`html-parser`.
+
+The following example html file could then be parsed using the parser defined
+above.
+
+```html
+{:layout :base
+ :path "hmmm/index.html"}
+
+<h1>Hmmm</h1>
+```
+
+It would generate an html page using the base layout with the contents of the
+body tag being "`<h1>Hmmm</h1>`". Since we used the `identity` function no
+special processing of the source content was done.
+
+Alternatively we could define a more complicated parser. Imagine we have a
+function that takes a string of markdown and returns a string of HTML. We could
+use `html-parser` to create a valid incise parser for markdown files almost as
+easily as we did for HTML files.
+
+```clojure
+(ns incise.parsers.impl.markdown
+  (:require [markdown.core :refer [md-to-html]]
+            (incise.parsers [core :as pc]
+                            [html :refer [html-parser]])))
+
+(pc/register [:md :markdown :mkd] (html-parser md-to-html))
+```
+
+Note that `markdown.core/md-to-html` is a fictional function.
+
+[The included implementation of a markdown incise parser][md-parser-source] uses
+[cegdown][], a useful Clojure wrapper of the markdown parsing Java library
+[Pegdown][], and is only slightly more complicated so that various its options
+may be overridden via dynamic binding.
 
 ### Layouts
 
 ### Deployment workflows
-
-## Configuration
 
 ## Usage
 
@@ -129,12 +174,24 @@ The main method takes several switches.
     --------               -------  ----
     -h, --no-help, --help  false    Print this help.
     -m, --method           :serve   serve, once, or deploy
+    -c, --config                    The path to an edn file acting as
+                                    configuration for incise
     -i, --in-dir                    The directory to get source from
     -o, --out-dir                   The directory to put content into
     -u, --uri-root                  The path relative to the domain root where
                                     the generated site will be hosted.
 
 These options can be used to override their config counterparts.
+
+## Configuration
+
+Incise is primarily configured via a config file it tries to find as a resource.
+This file must be named `incise.edn` and be found in the root of your resources
+directory. You can override that file and pass in the `-c` or `--config` option
+to incise's main function to specify an alternative location of the config file.
+
+An [example `incise.edn`][incise.edn.example] file is included with this project
+as well as the `incise.edn` file used to generate [this website][incise].
 
 ## Running specs
 
@@ -157,5 +214,3 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [blog]: http://www.ryanmcg.com/
 [incise]: http://www.ryanmcg.com/incise/
 [thunk]: http://en.wikipedia.org/wiki/Thunk_(functional_programming)
-[octopress]: http://octopress.org/
-[jekyll bootstrap]: http://jekyllbootstrap.com/usage/jekyll-quick-start.html
