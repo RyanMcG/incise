@@ -4,7 +4,11 @@
             [incise.config :as conf]
             [incise.core :refer :all]))
 
-(def start-server (wrap-pre start conf/load))
+(defn start-server []
+  (conf/load)
+  (conf/assoc :method :serve)
+  (start))
+
 (defn restart-server
   "Stop a server if it is already started and start a new one."
   [& args]
