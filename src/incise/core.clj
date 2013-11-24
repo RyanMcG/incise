@@ -23,12 +23,11 @@
 (defn- with-args*
   "A helper function to with-args macro which does all the work.
 
-  1.  Load in the config
-  2.  Parse arguments
-  3.  Merge into config
-  4.  Handle help or continue"
+  1.  Parse arguments
+  2.  Load in the config
+  3.  Merge some options into config
+  4.  Handle help or call body-fn with options and cli arguments"
   [args body-fn]
-  (conf/load)
   (let [uri-root-desc (str "The path relative to the domain root where the "
                            "generated site will be hosted.")
         [options cli-args banner]
@@ -37,10 +36,13 @@
              ["-h" "--help" "Print this help." :default false :flag true]
              ["-m" "--method" "serve, once, or deploy"
               :default :serve :parse-fn parse-method]
+             ["-c" "--config" (str "The path to an edn file acting as "
+                                   "configuration for incise")]
              ["-i" "--in-dir" "The directory to get source from"]
              ["-o" "--out-dir" "The directory to put content into"]
              ["-u" "--uri-root" uri-root-desc])]
-    (conf/merge options)
+    (conf/load (options :config))
+    (conf/merge (dissoc options :config :help))
     (if (:help options)
       (do (println banner)
           (System/exit 0))
