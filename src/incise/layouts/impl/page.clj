@@ -5,13 +5,15 @@
                                           deflayout
                                           defpartial]])
             incise.layouts.impl.base
-            [hiccup.element :refer [link-to]]))
+            (hiccup [element :refer [link-to]]
+                    [core :refer [html]])))
 
 (defpartial header
   "A very basic header partial."
   [{:keys [site-title]} _]
-  [:header
-   [:h1#site-title (link-to "/" site-title)]])
+  (html
+    [:header
+     [:h1#site-title (link-to "/" site-title)]]))
 
 (deflayout page
   "The default page/post layout."
