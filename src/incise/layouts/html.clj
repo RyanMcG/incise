@@ -1,8 +1,6 @@
 (ns incise.layouts.html
   (:require [incise.parsers.core]
-            [robert.hooke :refer [with-scope add-hook]]
-            (hiccup [core :refer [html]]
-                    [page :refer [html5]])))
+            [robert.hooke :refer [with-scope add-hook]]))
 
 (declare ^:dynamic *site-options*)
 (declare ^:dynamic *parse*)
@@ -30,11 +28,11 @@
        (binding [*site-options* site-options#
                  *parse* parse#]
          (let [~destructuring [*site-options* *parse*]]
-           (with-scope (html5 ~@body)))))))
+           (with-scope ~@body))))))
 
 (defmacro defpartial
   "Defines a 'partial' which is baically some hiccup markup. An arguments vector
-   is required and can be used to destructure the dynamic vars set by a layout."
+  is required and can be used to destructure the dynamic vars set by a layout."
   [sym-name doc-string? destructuring & body]
   (let [[doc-string destructuring body]
         (if (string? doc-string?)
@@ -44,7 +42,7 @@
        ~doc-string
        [& args#]
        (let [~destructuring [*site-options* *parse* args#]]
-         (html ~@body)))))
+         ~@body))))
 
 (defmacro repartial
   "Replace the given var in a layout with a new function which will be called in
