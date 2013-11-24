@@ -38,9 +38,9 @@ Effectively, incise does a straightforward require of any namespace that matches
 the one of the patterns above. The namespace may invoke a `register` function to
 make incise aware of the implementation. Parsers, layouts and deployment
 workflows all have their own register functions (`incise.parsers.core/register`,
-`incise.layouts.core/register` and `incise.deploy.core/register`). In all three
-register functions a key or collection of keys is provided to identified the
-registered function.
+`incise.layouts.core/register` and `incise.deploy.core/register`). All three
+register functions take a key or collection of keys to map the function to be
+registered to.
 
 ### Parsers
 
@@ -68,7 +68,7 @@ the no-op parser. Why not just return a sequence of files?
 
 #### Two step parsing
 
-Incise parsers must satisfy the following criteria:
+Parsers must satisfy the following criteria:
 
 * Take a single file (i.e a `java.io.File` instance)
 * Return a delay or [thunk][] (a parameterless function) which when invoked
@@ -101,7 +101,7 @@ HTML. For this specific use case a lot of the hard work has been done for you if
 you use `incise.parsers.html/html-parser`.
 
 `html-parser` is a higher-order function which takes a function and returns a
-valid incise parsers. The function passed to `html-parser` should take a string
+valid parsers. The function passed to `html-parser` should take a string
 and either return HTML as a string or a list of Clojure code to evaluate in
 context later (with the result being an HTML string). The first
 case is simpler so I will start there.
@@ -136,8 +136,8 @@ special processing of the source content was done.
 
 Alternatively we could define a more complicated parser. Imagine we have a
 function that takes a string of markdown and returns a string of HTML. We could
-use `html-parser` to create a valid incise parser for markdown files almost as
-easily as we did for HTML files.
+use `html-parser` to create a valid parser for markdown files almost as easily
+as we did for HTML files.
 
 ```clojure
 (ns incise.parsers.impl.markdown
@@ -150,9 +150,9 @@ easily as we did for HTML files.
 
 Note that `markdown.core/md-to-html` is a fictional function.
 
-[The included implementation of a markdown incise parser][md-parser-source] uses
+[The included implementation of a markdown parser][md-parser-source] uses
 [cegdown][], a useful Clojure wrapper of the markdown parsing Java library
-[Pegdown][], and is only slightly more complicated so that various its options
+[pegdown][], and is only slightly more complicated so that various its options
 may be overridden via dynamic binding.
 
 ### Layouts
@@ -214,3 +214,7 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [blog]: http://www.ryanmcg.com/
 [incise]: http://www.ryanmcg.com/incise/
 [thunk]: http://en.wikipedia.org/wiki/Thunk_(functional_programming)
+[incise.edn.example]: https://github.com/RyanMcG/incise/blob/master/resources/incise.edn.example
+[md-parser-source]: https://github.com/RyanMcG/incise/blob/master/src/incise/parsers/impl/markdown.clj
+[cegdown]: https://github.com/Raynes/cegdown
+[pegdown]: http://pegdown.org/
