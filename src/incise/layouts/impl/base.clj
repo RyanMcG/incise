@@ -4,6 +4,7 @@
                                           deflayout
                                           defpartial]])
             [stefon.core :refer [link-to-asset]]
+            [clojure.string :as s]
             [incise.config :as conf]
             (hiccup [core :refer :all]
                     [util :refer [with-base-url]]
@@ -50,7 +51,8 @@
   (with-base-url (when-not (conf/serving?) (str \/ (conf/get :uri-root)))
     (html5
       [:head
-       [:title (str site-title (when title (str " - " title)))]
+       (when (or site-title title)
+         [:title (s/join " - " (keep identity [site-title title]))])
        [:meta {:charset "UTF-8"}]
        [:meta {:name "viewport" :content "width=device-width, initial-scale=1.0"}]
        (apply include-css (remove nil? (stylesheets)))]
