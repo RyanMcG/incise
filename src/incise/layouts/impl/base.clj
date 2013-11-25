@@ -35,7 +35,7 @@
   "Return nil if the asset is not found othewise return a url for the asset."
   [asset-name]
   (try
-    (link-to-asset asset-name)
+    (link-to-asset asset-name nil)
     (catch FileNotFoundException _ nil)))
 
 (defn stylesheets []

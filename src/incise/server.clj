@@ -37,7 +37,7 @@
       (wrap-incise)
       (wrap-log-exceptions)
       (wrap-stacktrace-web)
-      (asset-pipeline)))
+      (asset-pipeline nil)))
 
 (defn- getenv
   "A nice wrapper around System/getenv that allows a second argument to be

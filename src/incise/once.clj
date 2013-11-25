@@ -20,7 +20,7 @@
                    :serving-root out-dir
                    :precompiles precompiles}
       (info "Precompiling assets...")
-      (precompile)
+      (precompile nil)
       (info "Done.")
       (load-parsers-and-layouts)
       (doall (parse-all-input-files)))))
