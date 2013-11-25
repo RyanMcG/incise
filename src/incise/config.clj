@@ -31,10 +31,19 @@
   (when-let [config-file (file (or @config-path (resource "incise.edn")))]
     (reset! config (edn/read (PushbackReader. (reader config-file))))))
 
+(defn- str-starts-or-ends-with-slash?
+  [a-str]
+  {:pre [(string? a-str)]}
+  (some #(= \/ %) [(last a-str) (first a-str)]))
+
 (defmannerisms config
-  [:in-dir "must have an in-dir"]
+  [(comp (some-fn nil? string?) :uri-root) "uri-root must be a string"]
+  [(comp (complement (every-pred string? str-starts-or-ends-with-slash?))
+         :uri-root)
+   "uri-root must not start or end with a \"/\""]
+  [:in-dir "must have an input directory (in-dir)"]
   [(comp string? :in-dir) "in-dir must be a string (like a path)"]
-  [:out-dir "must have an output dir"]
+  [:out-dir "must have an output directory (out-dir)"]
   [(comp string? :out-dir) "out-dir must be a string (like a path)"])
 
 (defn avow! [] (avow-config! @config))
