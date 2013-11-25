@@ -18,6 +18,7 @@ you may like incise:
 
 * [This website][incise]
 * [My stupid personal website][blog]
+* [The official example project][ex-project]
 
 Of course these examples are sort of meaningless. Incise does not help you
 create content or designs. It is simply a mechanism for finding files
@@ -200,7 +201,7 @@ as well as the `incise.edn` file used to generate [this website][incise].
 ## Running specs
 
 Unfortunately the speclj leiningen plugin does not work well with clj-v8 because
-it requires custom jvm options (this seems to be a bug with speclj). However,
+it requires custom JVM options (this seems to be a bug with speclj). However,
 you can still run the tests using `lein run`:
 
 ```bash
@@ -208,6 +209,24 @@ lein run -m specj.main
 # The vigilant runner works too
 lein run -m specj.main -a
 ```
+
+## What's next?
+
+Here are some ideas for features I intend to work on. Open an issue with more
+ideas or contribute. I would love some feedback and/or collaboration!
+
+* Live editing
+* Always re-parse a given page on refresh
+* More parsers
+* Handle parser extension conflicts intelligently (instead of blindly
+  overwriting based on load order)
+
+## Donate
+
+If you found incise valuable and are feeling particularly generous you may send
+some BTC to the address below:
+
+    16QAD8aVDkQYqT8WehSQtfQp1xRjbwxK3Q
 
 ## License
 
@@ -221,4 +240,5 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [incise.edn.example]: https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn
 [md-parser-source]: https://github.com/RyanMcG/incise/blob/master/src/incise/parsers/impl/markdown.clj
 [cegdown]: https://github.com/Raynes/cegdown
+[ex-project]: https://github.com/RyanMcG/incise-example-project
 [pegdown]: http://pegdown.org/
