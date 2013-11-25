@@ -5,7 +5,8 @@
   (:import [java.io PushbackReader])
   (:refer-clojure :exclude [merge load assoc get]))
 
-(defonce config (atom {}))
+(defonce config (atom {:in-dir "content"
+                       :out-dir "public"}))
 
 (defn get [& more]
   (if (empty? more)
