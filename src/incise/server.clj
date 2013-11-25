@@ -33,7 +33,7 @@
   (-> (routes (files "/" {:root (conf/get :out-dir)})
               (not-found (html5 [:h1 "404"])))
       (wrap-static-index)
-      (wrap-reload :dirs ["src" "spec"])
+      (wrap-reload :dirs ["src"])
       (wrap-incise)
       (wrap-log-exceptions)
       (wrap-stacktrace-web)
