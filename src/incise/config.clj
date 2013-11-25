@@ -29,7 +29,7 @@
   [& [path-to-config]]
   (when path-to-config (reset! config-path path-to-config))
   (when-let [config-file (file (or @config-path (resource "incise.edn")))]
-    (reset! config (edn/read (PushbackReader. (reader config-file))))))
+    (merge (edn/read (PushbackReader. (reader config-file))))))
 
 (defn- str-starts-or-ends-with-slash?
   [a-str]
