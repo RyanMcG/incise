@@ -18,7 +18,7 @@
     (delete-recursively (file out-dir))
     (with-options {:mode :production
                    :serving-root out-dir
-                   :precompiles precompiles}
+                   :precompiles (or precompiles [])}
       (info "Precompiling assets...")
       (precompile nil)
       (info "Done.")
