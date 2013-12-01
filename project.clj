@@ -11,6 +11,7 @@
                  [robert/hooke "1.3.0"]
                  [me.raynes/cegdown "0.1.0"]
                  [org.clojure/java.classpath "0.2.0"]
+                 [org.clojure/tools.nrepl "0.2.3"]
                  [org.clojure/tools.namespace "0.2.4"]
                  [org.clojure/tools.cli "0.2.4"]
                  [clj-time "0.5.1"]

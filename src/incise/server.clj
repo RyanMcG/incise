@@ -7,6 +7,7 @@
             (ring.middleware [reload :refer [wrap-reload]]
                              [incise :refer [wrap-incise]]
                              [stacktrace :refer [wrap-stacktrace-web]])
+            [clojure.tools.nrepl.server :as nrepl]
             [stefon.core :refer [asset-pipeline]]
             [taoensso.timbre :refer [info error fatal]]
             [clojure.stacktrace :refer [print-cause-trace]]
@@ -60,13 +61,30 @@
 
 ;; ## Functions for manipulating the server atom.
 (defonce server (atom nil))
+(defonce nrepl-server (atom nil))
+
+(defn serve-nrepl []
+  (let [nrepl-config (merge {:port (inc (conf/get :port 5000))
+                             :bind "127.0.0.1"}
+                            (conf/get :nrepl))
+        {:keys [port ss] :as server} (apply nrepl/start-server
+                                            (flatten (seq nrepl-config)))]
+    (info "Started nrepl server at" (str (-> ss
+                                             (.getInetAddress)
+                                             (.getCanonicalHostName)) \: port))
+    (spit ".nrepl-port" port)
+    server))
 
 (defn start
-  "Start a server and bind the result to a var, 'server'."
+  "Start a ring server and an nrepl server and bind the results to the server
+  and nrepl-server-atoms atom."
   [& args]
+  (reset! nrepl-server (apply serve-nrepl args))
   (reset! server (apply serve args)))
 
 (defn stop []
   (when @server
     (@server)
-    (reset! server nil)))
+    (reset! server nil)
+    (nrepl/stop-server @nrepl-server)
+    (reset! nrepl-server nil)))
