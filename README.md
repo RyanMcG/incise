@@ -162,7 +162,50 @@ may be overridden via dynamic binding.
 
 ### Layouts
 
+While they are a core feature of incise, layouts may be used or not be any given
+parser. The `html-parser` uses them for instance though other parsers may as
+well. Layouts are functions which take a sting and return a string. The layouts
+`html-parser` uses simply wrap html tags around some generated content. The
+benefit of separating layouts from the parser is that different layouts can be
+used for different files of the same extension. This seemed like it would be a
+common feature desired by parsers so it is part of incise's core.
+
 ### Deployment workflows
+
+Static websites are pretty much useless of they do not go anywhere.
+`incise.once/once` is meant for parsing all content and writing it out to a
+specified (or default) output directory.  While very useful on its own, certain
+deployment procedures are so common (not project specific) that it seemed
+sensible to make them plugable.
+
+Like layouts and parsers, deployment workflows are registered in an atom by
+calling the `incise.deploy.core/register` function and the namespaces are
+automatically required by the previously mentioned scheme.
+
+#### The `git-branch` deployment workflow
+
+The only deployment workflow defined by default is the `git-branch` workflow. It
+attempts the following:
+
+1.  `incise.once/once` to create content for deploying to a static web server
+2.  Move that content into the git directory so checking out other branches does
+    not remove it.
+3.  Create an orphaned branch of a configurable name (`gh-pages` by default) or
+    checkout the branch of that name if it already exists.
+4.  Move the content from inside the git directory to the working tree
+    directory.
+5.  Commit it with a generated message including the commit hash of the source
+    branch.
+6.  Push it to a configurable remote.
+
+#### Configuring a deployment workflow
+
+To configure a deployment workflow you need to modify your `incise.edn`. A
+deployment workflow is passed the configuration under the deploy key and the
+workflow to be used is determined by the value associated with the `:workflow`
+key in the `:deploy` hash.
+
+It is probably helpful to [look at an example][incise.edn.example].
 
 ## Usage
 
@@ -170,7 +213,7 @@ Shockingly, the easiest way to use incise is through its main method. This can
 easily be executed with [Leiningen](https://github.com/technomancy/leiningen).
 
 ```bash
-lein run
+lein run -- --help
 ```
 
 The main method takes several switches.
@@ -187,6 +230,30 @@ The main method takes several switches.
                                     the generated site will be hosted.
 
 These options can be used to override their config counterparts.
+
+As seen above, the default method is to serve. This launches a ring application
+which automatically parsers files and re-parses them when they are modified. It
+also launches an nREPL server so clients who want one do not need to startup a
+separate process to have it.
+
+```bash
+lein run
+# Or to be explicit
+lein run -- -m serve
+```
+
+You can also generate all content by parsing all parsable files in the input
+directory using the once command.
+
+```bash
+lein run -- -m once
+```
+
+Finally, as mentioned above, you can use your configured deployment method.
+
+```bash
+lein run -- -m deploy
+```
 
 ## Configuration
 
