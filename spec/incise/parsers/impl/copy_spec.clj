@@ -18,8 +18,8 @@
 (describe "parse"
   (with copyme (file (resource "spec/COPYME")))
   (with out-dir (spec-temp-dir))
-  (before (conf/merge {:out-dir @out-dir
-                       :in-dir (.getParent (.getParentFile @copyme))}))
+  (before (conf/assoc! :out-dir @out-dir
+                       :in-dir (.getParent (.getParentFile @copyme))))
   (with out-file (first (force (parse @copyme))))
   (it "actually copies the file"
     (should (.exists @out-file)))

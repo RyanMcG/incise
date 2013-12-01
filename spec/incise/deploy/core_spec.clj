@@ -21,8 +21,8 @@
   (with workflow-name :my-cool-workflow)
   (with dummy-deploy-text "DEPLOY!!1")
   (with dummy-deploy (fn [_] @dummy-deploy-text))
-  (before-all (conf/merge {:deploy {:workflow @workflow-name}}))
-  (after-all (reset! conf/config {}))
+  (before-all (conf/assoc! :deploy {:workflow @workflow-name}))
+  (after-all (conf/reset!))
   (before (register @workflow-name @dummy-deploy))
   (it "deploys when the workflow exists"
     (should= @dummy-deploy-text (deploy)))

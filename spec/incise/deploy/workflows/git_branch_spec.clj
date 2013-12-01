@@ -112,9 +112,9 @@
 (describe "deploy"
   (with repo-dir (create-dummy-repo))
   (with repo-dir-path (.getCanonicalPath @repo-dir))
-  (before (conf/merge {:precompiles []
-                       :in-dir @repo-dir-path}))
-  (after (reset! conf/config {}))
+  (before (conf/assoc! :precompiles []
+                       :in-dir @repo-dir-path))
+  (after (conf/reset!))
   (around [it] (with-repo @repo-dir (it)))
   (it "deploys without commit or push"
     (should-not-throw (deploy {:path @repo-dir

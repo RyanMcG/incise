@@ -11,7 +11,7 @@
 (defn once
   "Incise just once. This requires that config is already loaded."
   [& {:as config}]
-  (conf/merge config)
+  (conf/merge! config)
   (conf/avow!)
   (let [{:keys [out-dir precompiles]} (conf/get)]
     (info "Clearing out" (str \" out-dir \"))

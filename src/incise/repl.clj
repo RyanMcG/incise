@@ -6,7 +6,7 @@
 
 (defn start-server []
   (conf/load)
-  (conf/assoc :method :serve)
+  (conf/assoc! :method :serve)
   (start))
 
 (defn restart-server

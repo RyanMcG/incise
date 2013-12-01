@@ -9,8 +9,8 @@
   (:import [java.io File]))
 
 (describe "parsing"
-  (before-all (conf/merge {:in-dir "resources/spec"
-                           :out-dir "/tmp/"}))
+  (before-all (conf/assoc! :in-dir "resources/spec"
+                           :out-dir "/tmp/"))
   (with markdown-file (file (resource "spec/another-forgotten-binding-pry.md")))
   (with parse (comp slurp first force (html-parser markdown-to-html)))
   (it "parses a markdown file into html"

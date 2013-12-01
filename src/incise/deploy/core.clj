@@ -11,7 +11,7 @@
 (defn deploy
   "Deploy using the user's specified workflow."
   [& {:as config}]
-  (conf/merge config)
+  (conf/merge! config)
   (load-deployment-workflows)
   (let [{workflow-name :workflow :as settings} (conf/get :deploy)
         workflow (get workflow-name)]

@@ -40,7 +40,7 @@
              ["-o" "--out-dir" "The directory to put content into"]
              ["-u" "--uri-root" uri-root-desc])]
     (conf/load (options :config))
-    (conf/merge (dissoc options :config :help))
+    (conf/merge! (dissoc options :config :help))
     (if (:help options)
       (do (println banner)
           (System/exit 0))
