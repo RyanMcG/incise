@@ -3,22 +3,27 @@
             [clojure.edn :as edn]
             [manners.victorian :refer [defmannerisms]])
   (:import [java.io PushbackReader])
-  (:refer-clojure :exclude [merge load assoc get]))
+  (:refer-clojure :exclude [reset! load assoc! get]))
 
-(defonce config (atom {:in-dir "content"
-                       :uri-root ""
-                       :out-dir "public"}))
+(def ^:private default-config
+  {:in-dir "content"
+   :uri-root ""
+   :out-dir "public"})
+
+(defonce config (atom default-config))
+
+(defn reset! [] (clojure.core/reset! config default-config))
 
 (defn get [& more]
   (if (empty? more)
     @config
     (apply @config more)))
 
-(defn merge [& more]
+(defn merge! [& more]
   (apply swap! config
          clojure.core/merge more))
 
-(defn assoc [& more]
+(defn assoc! [& more]
   (apply swap! config clojure.core/assoc more))
 
 (defonce config-path (atom nil))
@@ -28,9 +33,9 @@
 (defn load
   "Load the config from "
   [& [path-to-config]]
-  (when path-to-config (reset! config-path path-to-config))
+  (when path-to-config (clojure.core/reset! config-path path-to-config))
   (when-let [config-file (file (or @config-path (resource "incise.edn")))]
-    (merge (edn/read (PushbackReader. (reader config-file))))))
+    (merge! (edn/read (PushbackReader. (reader config-file))))))
 
 (defn- str-starts-or-ends-with-slash?
   [a-str]
