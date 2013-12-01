@@ -1,8 +1,6 @@
 (ns incise.core
-  (:require (incise [load :refer [load-parsers-and-layouts]]
-                    [config :as conf]
-                    [once :refer [once]]
-                    [utils :refer [delete-recursively]])
+  (:require (incise [config :as conf]
+                    [once :refer [once]])
             [incise.deploy.core :refer [deploy]]
             [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
@@ -20,7 +18,7 @@
                    (s/join ", " valid-methods) "). Defaulting to serve.")))
       :serve)))
 
-(defn- with-args*
+(defn with-args*
   "A helper function to with-args macro which does all the work.
 
   1.  Parse arguments
