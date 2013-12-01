@@ -5,7 +5,7 @@
             [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
             [clojure.tools.cli :refer [cli]]
-            [incise.server :refer [wrap-log-exceptions serve]]))
+            [incise.server :refer [wrap-log-exceptions start]]))
 
 (def ^:private valid-methods #{"serve" "once" "deploy"})
 (defn- parse-method [method]
@@ -82,4 +82,4 @@
     ((case (:method options)
        :deploy (wrap-main deploy)
        :once (wrap-main once)
-       :serve (wrap-serve serve)))))
+       :serve (wrap-serve start)))))
