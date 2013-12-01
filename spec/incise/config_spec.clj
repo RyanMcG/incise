@@ -19,7 +19,8 @@
     (it "is a good when it is a string without a leading or trailing slash"
       (conf/avow-config! (assoc @base-config :uri-root "jsj")))
     (it "is a good when it is nil"
-      (conf/avow-config! (assoc @base-config :uri-root nil)))
+      (should-contain-bad-manner "uri-root must be a string"
+                                 (assoc @base-config :uri-root nil)))
     (it "is bad when it is not a string"
       (should-contain-bad-manner "uri-root must be a string"
                                  (assoc @base-config :uri-root 1)))

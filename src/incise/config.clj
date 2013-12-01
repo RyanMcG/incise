@@ -6,6 +6,7 @@
   (:refer-clojure :exclude [merge load assoc get]))
 
 (defonce config (atom {:in-dir "content"
+                       :uri-root ""
                        :out-dir "public"}))
 
 (defn get [& more]
@@ -37,13 +38,12 @@
   (some #(= \/ %) [(last a-str) (first a-str)]))
 
 (defmannerisms config
-  [(comp (some-fn nil? string?) :uri-root) "uri-root must be a string"]
-  [(comp (complement (every-pred string? str-starts-or-ends-with-slash?))
-         :uri-root)
+  [(comp string? :uri-root) "uri-root must be a string"
+   (comp (complement str-starts-or-ends-with-slash?) :uri-root)
    "uri-root must not start or end with a \"/\""]
-  [:in-dir "must have an input directory (in-dir)"]
-  [(comp string? :in-dir) "in-dir must be a string (like a path)"]
-  [:out-dir "must have an output directory (out-dir)"]
-  [(comp string? :out-dir) "out-dir must be a string (like a path)"])
+  [:in-dir "must have an input directory (in-dir)"
+   (comp string? :in-dir) "in-dir must be a string (like a path)"]
+  [:out-dir "must have an output directory (out-dir)"
+   (comp string? :out-dir) "out-dir must be a string (like a path)"])
 
 (defn avow! [] (avow-config! @config))

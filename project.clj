@@ -18,7 +18,7 @@
                  [clj-jgit "0.4.0"]
                  [com.taoensso/timbre "2.6.1"]
                  [com.ryanmcg/stefon "0.5.0-SNAPSHOT"]
-                 [manners "0.1.0"]]
+                 [manners "0.2.0"]]
   :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
   :repl-options {:init-ns incise.repl}
   :plugins [[speclj "2.5.0"]]
