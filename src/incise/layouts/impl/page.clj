@@ -4,7 +4,7 @@
                                           use-layout
                                           deflayout
                                           defpartial]])
-            incise.layouts.impl.base
+            [incise.layouts.impl.base :as base]
             (hiccup [element :refer [link-to]]
                     [core :refer [html]])))
 
@@ -18,7 +18,7 @@
 (deflayout page
   "The default page/post layout."
   []
-  (repartial incise.layouts.impl.base/header header)
-  (use-layout incise.layouts.impl.base/base))
+  (repartial base/header header)
+  (use-layout base/base))
 
 (register [:page :post] page)
