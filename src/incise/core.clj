@@ -1,11 +1,12 @@
 (ns incise.core
   (:require (incise [config :as conf]
-                    [once :refer [once]])
+                    [once :refer [once]]
+                    [utils :refer [getenv]]
+                    [server :refer [wrap-log-exceptions start]])
             [incise.deploy.core :refer [deploy]]
             [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
-            [clojure.tools.cli :refer [cli]]
-            [incise.server :refer [wrap-log-exceptions start]]))
+            [clojure.tools.cli :refer [cli]]))
 
 (def ^:private valid-methods #{"serve" "once" "deploy"})
 (defn- parse-method [method]
@@ -36,6 +37,11 @@
               :default :serve :parse-fn parse-method]
              ["-c" "--config" (str "The path to an edn file acting as "
                                    "configuration for incise")]
+             ["-p" "--port" "The port number to run the development server on."
+              :default (getenv "INCISE_PORT" 5000) :parse-fn #(Integer. %)]
+             ["--thread-count" (str "The number of threads for the development"
+                                    " server to use.")
+              :default (getenv "INCISE_THREAD_COUNT" 4) :parse-fn #(Integer. %)]
              ["-i" "--in-dir" "The directory to get source from"]
              ["-o" "--out-dir" "The directory to put content into"]
              ["-u" "--uri-root" uri-root-desc])]
