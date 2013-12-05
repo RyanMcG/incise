@@ -203,7 +203,7 @@ attempts the following:
 To configure a deployment workflow you need to modify your `incise.edn`. A
 deployment workflow is passed the configuration under the deploy key and the
 workflow to be used is determined by the value associated with the `:workflow`
-key in the `:deploy` hash.
+key in the `:deploy` map.
 
 It is probably helpful to [look at an example][incise.edn.example].
 
@@ -290,10 +290,15 @@ ideas or contribute. I would love some feedback and/or collaboration!
 
 ## Donate
 
-If you found incise valuable and are feeling particularly generous you may send
-some BTC to the address below:
+If you find incise valuable and are feeling particularly generous you may send
+some BTC to the address below.
 
     16QAD8aVDkQYqT8WehSQtfQp1xRjbwxK3Q
+
+## Insular s (ꞅ)
+
+The *s* in incise logo is the [insular][] *s* (ꞅ). It is sometimes found in
+[Gaelic type][gaelic-type].
 
 ## License
 
@@ -309,3 +314,5 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [cegdown]: https://github.com/Raynes/cegdown
 [ex-project]: https://github.com/RyanMcG/incise-example-project
 [pegdown]: http://pegdown.org/
+[insular]: http://en.wikipedia.org/wiki/Insular_script
+[gealic-type]: http://en.wikipedia.org/wiki/Gaelic_type
