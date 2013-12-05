@@ -315,4 +315,4 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [ex-project]: https://github.com/RyanMcG/incise-example-project
 [pegdown]: http://pegdown.org/
 [insular]: http://en.wikipedia.org/wiki/Insular_script
-[gealic-type]: http://en.wikipedia.org/wiki/Gaelic_type
+[gaelic-type]: http://en.wikipedia.org/wiki/Gaelic_type
