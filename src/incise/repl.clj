@@ -4,9 +4,11 @@
             [incise.config :as conf]
             [incise.core :refer :all]))
 
-(defn start-server []
+(defn start-server [& {:as more}]
   (conf/load)
-  (conf/assoc! :method :serve)
+  (conf/merge! {:method :serve
+                :port 5000
+                :thread-count 4} more)
   (start))
 
 (defn restart-server
