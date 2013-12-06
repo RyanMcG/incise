@@ -12,20 +12,25 @@
             [clojure.java.io :refer [file reader]])
   (:import [java.io File]))
 
+(defn meta-and-content->Parse [parse-meta content]
+  (let [meta-with-defaults (merge {:extension "/index.html"
+                                   :content content} parse-meta)]
+    (map->Parse
+      (assoc meta-with-defaults
+             :path (help/meta->path meta-with-defaults)))))
+
 (defn File->Parse
   [content-fn ^File file]
   (let [file-str (slurp file)
         parse-meta (edn/read-string file-str)
         content (content-fn (second (s/split file-str #"\}" 2)))
-        parse-data (merge {:extension "/index.html"
-                           :content content} parse-meta)
-        parse-from-file (map->Parse parse-data)]
+        parse-from-file (meta-and-content->Parse parse-meta content)]
     (record-parse (.getCanonicalPath file) parse-from-file)
     parse-from-file))
 
 (defn write-Parse
   [^incise.parsers.core.Parse parse-data]
-  (let [out-file (file (conf/get :out-dir) (help/Parse->path parse-data))]
+  (let [out-file (file (conf/get :out-dir) (:path parse-data))]
     (-> out-file
         (.getParentFile)
         (.mkdirs))
