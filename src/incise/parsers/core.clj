@@ -1,5 +1,5 @@
 (ns incise.parsers.core
-  (:require [incise.parsers.helpers :refer [extension]]
+  (:require [incise.parsers.utils :refer [extension]]
             (incise [config :as conf]
                     [utils :refer [directory?]])
             [clojure.java.io :refer [file]]

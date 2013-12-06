@@ -1,4 +1,4 @@
-(ns incise.parsers.helpers
+(ns incise.parsers.utils
   (:require (clj-time [core :as tm]
                       [coerce :as tc])
             [clojure.string :as s])
@@ -27,15 +27,6 @@
       (str (date-str->path date)
            (dashify title)
            extension)))
-
-(defn remove-trailing-index-html [path]
-  (s/replace path #"/index\.html$" "/"))
-
-(defn Parse->path [parse]
-  (->> parse
-       (:path)
-       (remove-trailing-index-html)
-       (str \/)))
 
 (defn extension [^File file]
   "Get the extension, enforcing lower case, on the given file."
