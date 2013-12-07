@@ -10,6 +10,7 @@
     (should= (map->Parse {:title "My Short Page"
                           :layout :page
                           :date "2013-08-12"
+                          :path "2013/8/12/my-short-page/index.html"
                           :tags [:cool]
                           :category :blarg
                           :content "\n\nHey there!\n"
