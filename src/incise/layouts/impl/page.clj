@@ -11,9 +11,8 @@
 (defpartial header
   "A very basic header partial."
   [{:keys [site-title]} _]
-  (html
-    [:header
-     [:h1#site-title (link-to "/" site-title)]]))
+  [:header
+   [:h1#site-title (link-to "/" site-title)]])
 
 (deflayout page
   "The default page/post layout."
