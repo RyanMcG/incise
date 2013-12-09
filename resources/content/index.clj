@@ -1,5 +1,4 @@
-{:layout :page
- :path "index.html"}
+{:path "index.html"}
 
 (require '[incise.parsers.impl.markdown :refer [markdown-to-html]])
 (require '[hiccup.core :refer [html]])
