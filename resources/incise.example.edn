@@ -18,6 +18,9 @@
  ;; Incise assumes parsers only write files in this directory.
  :out-dir "resources/public"
 
+ ;; This map will have meta maps from a parsed files merged into it.
+ :parse-defaults {:layout :base}
+
  ;; Tell stefon the locations of assets it should precompile
  :precompiles ["javascripts/app.js.stefon"
                "stylesheets/app.css.stefon"]
