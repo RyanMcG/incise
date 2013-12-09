@@ -1,12 +1,14 @@
 (ns incise.config
   (:require [clojure.java.io :refer [reader file resource]]
             [clojure.edn :as edn]
+            [pallet.map-merge :refer [merge-keys]]
             [manners.victorian :refer [defmannerisms]])
   (:import [java.io PushbackReader])
   (:refer-clojure :exclude [reset! load assoc! get]))
 
 (def ^:private default-config
-  {:in-dir "content"
+  {:parse-defaults {:layout :base}
+   :in-dir "content"
    :uri-root ""
    :out-dir "public"})
 
@@ -21,7 +23,7 @@
 
 (defn merge! [& more]
   (apply swap! config
-         clojure.core/merge more))
+         (partial merge-keys {}) more))
 
 (defn assoc! [& more]
   (apply swap! config clojure.core/assoc more))

@@ -35,7 +35,8 @@
   "Read in a file and turn it into a Parse instance."
   [content-fn ^File file]
   (let [file-str (slurp file)
-        parse-meta (edn/read-string file-str)
+        parse-meta (merge (conf/get :parse-defaults)
+                          (edn/read-string file-str))
         content (content-fn (second (s/split file-str #"\}" 2)))]
     (meta-and-content->Parse parse-meta content)))
 
