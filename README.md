@@ -209,11 +209,23 @@ It is probably helpful to [look at an example][incise.edn.example].
 
 ## Usage
 
-Shockingly, the easiest way to use incise is through its main method. This can
-easily be executed with [Leiningen](https://github.com/technomancy/leiningen).
+Shockingly, the easiest way to use incise is with the [Leiningen][] [plugin][].
+Simply add the following to the plugins vector in your `:user` profile.
+
+```clojure
+[lein-incise "0.1.0-SNAPSHOT"]
+```
+
+See help for options:
 
 ```bash
-lein run -- --help
+lein incise --help
+```
+
+Alternatively you can call the main method directly.
+
+```bash
+lein run -m incise.core -- --help
 ```
 
 The main method takes several switches.
@@ -224,10 +236,14 @@ The main method takes several switches.
     -m, --method           :serve   serve, once, or deploy
     -c, --config                    The path to an edn file acting as
                                     configuration for incise
+    -p, --port             5000     The port number to run the development
+                                    server on.
+    --thread-count         4        The number of threads for the development
+                                    server to use.
     -i, --in-dir                    The directory to get source from
     -o, --out-dir                   The directory to put content into
     -u, --uri-root                  The path relative to the domain root where
-                                    the generated site will be hosted.
+                                    the generated site will be hosted
 
 These options can be used to override their config counterparts.
 
@@ -237,22 +253,22 @@ also launches an nREPL server so clients who want one do not need to startup a
 separate process to have it.
 
 ```bash
-lein run
+lein incise
 # Or to be explicit
-lein run -- -m serve
+lein incise -m serve
 ```
 
 You can also generate all content by parsing all parsable files in the input
 directory using the once command.
 
 ```bash
-lein run -- -m once
+lein incise -m once
 ```
 
 Finally, as mentioned above, you can use your configured deployment method.
 
 ```bash
-lein run -- -m deploy
+lein incise -m deploy
 ```
 
 ## Configuration
@@ -316,3 +332,5 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [pegdown]: http://pegdown.org/
 [insular]: http://en.wikipedia.org/wiki/Insular_script
 [gaelic-type]: http://en.wikipedia.org/wiki/Gaelic_type
+[Leiningen]: https://github.com/technomancy/leiningen
+[plugin]: https://clojars.org/lein-incise
