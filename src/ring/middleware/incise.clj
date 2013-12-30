@@ -2,10 +2,12 @@
   (:require [clojure.java.io :refer [file]]
             [clojure.set :refer [difference]]
             [ns-tracker.core :refer [ns-tracker]]
-            (incise [utils :refer [delete-recursively directory?]]
+            (incise [utils :refer [normalize-uri delete-recursively directory?]]
                     [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
-            [incise.parsers.core :refer [input-file-seq parse-all
+            [incise.parsers.core :refer [parses
+                                         input-file-seq
+                                         parse-all
                                          dissoc-parses]])
   (:import [java.io File]))
 
@@ -38,6 +40,18 @@
     (reset! paths-set new-paths-set))
   files)
 
+(defn output-path [a-file]
+  "Look up the output path for the given input file in recorded parses."
+  (:path (@parses (.getCanonicalPath a-file))))
+
+(defn requested-file?
+  "A predicate which returns whether the given request is attempting to access
+  the given file."
+  [request a-file]
+  (and (re-find #"html" ((request :headers) "accept"))
+       (= (str \/ (output-path a-file))
+          (normalize-uri (:uri request)))))
+
 (defn wrap-incise-parse
   "Call parse on each modified file in the given dir with each request."
   [handler]
@@ -50,7 +64,7 @@
                 *err* orig-err]
         (->> (input-file-seq)
              (reference-files)
-             (filter modified?)
+             (filter (some-fn modified? (partial requested-file? request)))
              (parse-all)
              (dorun)))
       (handler request))))
