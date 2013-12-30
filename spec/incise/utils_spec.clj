@@ -27,4 +27,14 @@
               3 [@hash-3]}
              (slot-by :value @coll))))
 
+(describe "normalize-uri"
+  (context "the given uri terminates with a '/'"
+    (with uri "/hey/")
+    (it "prepends index.html"
+      (should= (str @uri "index.html") (normalize-uri @uri))))
+  (context "the given uri does not terminate with a '/'"
+    (with uri "/hey.html")
+    (it "does nothing"
+      (should= @uri (normalize-uri @uri)))))
+
 (run-specs)
