@@ -283,7 +283,6 @@ Here are some ideas for features I intend to work on. Open an issue with more
 ideas or contribute. I would love some feedback and/or collaboration!
 
 * Live editing
-* Always re-parse a given page on refresh
 * More parsers
 * Handle parser extension conflicts intelligently (instead of blindly
   overwriting based on load order)
