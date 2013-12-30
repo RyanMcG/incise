@@ -1,6 +1,7 @@
 (ns incise.parsers.html-spec
   (:require [incise.parsers.html :refer :all]
             [incise.parsers.core :refer [map->Parse]]
+            [clj-time.coerce :refer [to-date]]
             [clojure.java.io :refer [file resource]]
             [speclj.core :refer :all]))
 
@@ -9,7 +10,7 @@
   (it "reads some stuff out of a file, yo"
     (should= (map->Parse {:title "My Short Page"
                           :layout :page
-                          :date "2013-08-12"
+                          :date (to-date "2013-08-12")
                           :path "2013/8/12/my-short-page/index.html"
                           :tags [:cool]
                           :category :blarg
