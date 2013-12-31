@@ -8,6 +8,7 @@
             [incise.config :as conf]
             [taoensso.timbre :refer [info]]
             [clojure.edn :as edn]
+            [clj-time.coerce :refer [to-date]]
             [clojure.string :as s]
             [clojure.java.io :refer [file reader]])
   (:import [java.io File]))
@@ -29,7 +30,8 @@
                                    :content content} parse-meta)]
     (map->Parse
       (assoc meta-with-defaults
-             :path (meta->write-path meta-with-defaults)))))
+             :path (meta->write-path meta-with-defaults)
+             :date (-> meta-with-defaults :date to-date)))))
 
 (defn File->Parse
   "Read in a file and turn it into a Parse instance."
