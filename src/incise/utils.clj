@@ -26,6 +26,13 @@
       (.getCanonicalPath)
       (subs (inc (count (.getCanonicalPath (file prefix-file)))))))
 
+(defn normalize-uri
+  "Prepend index.html to a uri with a trailing slash."
+  [uri]
+  (if (= (last uri) \/)
+    (str uri "index.html")
+    uri))
+
 (defn directory? [^File afile] (.isDirectory afile))
 
 (defn- gitignore-file? [^File file]

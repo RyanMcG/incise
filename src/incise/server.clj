@@ -3,7 +3,7 @@
                        [core :refer [routes]])
             (hiccup [page :refer [html5]])
             (incise [config :as conf]
-                    [utils :refer [getenv]]
+                    [utils :refer [getenv normalize-uri]]
                     [load :refer [load-parsers-and-layouts]])
             (ring.middleware [reload :refer [wrap-reload]]
                              [incise :refer [wrap-incise]]
@@ -16,9 +16,7 @@
 
 (defn wrap-static-index [handler]
   (fn [{:keys [uri] :as request}]
-    (handler (if (= (last uri) \/)
-               (assoc request :uri (str uri "index.html"))
-               request))))
+    (handler (assoc request :uri (normalize-uri uri)))))
 
 (defn wrap-log-exceptions [func & {:keys [bubble] :or {bubble true}}]
   "Log (i.e. print) exceptions received from the given function."
