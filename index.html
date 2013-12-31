@@ -55,8 +55,12 @@
   <li>Move the content from inside the git directory to the working tree directory.</li>
   <li>Commit it with a generated message including the commit hash of the source branch.</li>
   <li>Push it to a configurable remote.</li>
-</ol><h4>Configuring a deployment workflow</h4><p>To configure a deployment workflow you need to modify your <code>incise.edn</code>. A deployment workflow is passed the configuration under the deploy key and the workflow to be used is determined by the value associated with the <code>:workflow</code> key in the <code>:deploy</code> hash.</p><p>It is probably helpful to <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">look at an example</a>.</p><h2>Usage</h2><p>Shockingly, the easiest way to use incise is through its main method. This can easily be executed with <a href="https://github.com/technomancy/leiningen">Leiningen</a>.</p>
-<pre><code class="bash">lein run -- --help
+</ol><h4>Configuring a deployment workflow</h4><p>To configure a deployment workflow you need to modify your <code>incise.edn</code>. A deployment workflow is passed the configuration under the deploy key and the workflow to be used is determined by the value associated with the <code>:workflow</code> key in the <code>:deploy</code> map.</p><p>It is probably helpful to <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">look at an example</a>.</p><h2>Usage</h2><p>Shockingly, the easiest way to use incise is with the <a href="https://github.com/technomancy/leiningen">Leiningen</a> <a href="https://clojars.org/lein-incise">plugin</a>. Simply add the following to the plugins vector in your <code>:user</code> profile.</p>
+<pre><code class="clojure">[lein-incise &quot;0.1.0-SNAPSHOT&quot;]
+</code></pre><p>See help for options:</p>
+<pre><code class="bash">lein incise --help
+</code></pre><p>Alternatively you can call the main method directly.</p>
+<pre><code class="bash">lein run -m incise.core -- --help
 </code></pre><p>The main method takes several switches.</p>
 <pre><code>Switches               Default  Desc
 --------               -------  ----
@@ -64,18 +68,22 @@
 -m, --method           :serve   serve, once, or deploy
 -c, --config                    The path to an edn file acting as
                                 configuration for incise
+-p, --port             5000     The port number to run the development
+                                server on.
+--thread-count         4        The number of threads for the development
+                                server to use.
 -i, --in-dir                    The directory to get source from
 -o, --out-dir                   The directory to put content into
 -u, --uri-root                  The path relative to the domain root where
-                                the generated site will be hosted.
+                                the generated site will be hosted
 </code></pre><p>These options can be used to override their config counterparts.</p><p>As seen above, the default method is to serve. This launches a ring application which automatically parsers files and re-parses them when they are modified. It also launches an nREPL server so clients who want one do not need to startup a separate process to have it.</p>
-<pre><code class="bash">lein run
+<pre><code class="bash">lein incise
 # Or to be explicit
-lein run -- -m serve
+lein incise -m serve
 </code></pre><p>You can also generate all content by parsing all parsable files in the input directory using the once command.</p>
-<pre><code class="bash">lein run -- -m once
+<pre><code class="bash">lein incise -m once
 </code></pre><p>Finally, as mentioned above, you can use your configured deployment method.</p>
-<pre><code class="bash">lein run -- -m deploy
+<pre><code class="bash">lein incise -m deploy
 </code></pre><h2>Configuration</h2><p>Incise is primarily configured via a config file it tries to find as a resource. This file must be named <code>incise.edn</code> and be found in the root of your resources directory. You can override that file and pass in the <code>-c</code> or <code>--config</code> option to incise&rsquo;s main function to specify an alternative location of the config file.</p><p>An <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">example <code>incise.edn</code></a> file is included with this project as well as the <code>incise.edn</code> file used to generate <a href="http://www.ryanmcg.com/incise/">this website</a>.</p><h2>Running specs</h2><p>Unfortunately the speclj leiningen plugin does not work well with clj-v8 because it requires custom JVM options (this seems to be a bug with speclj). However, you can still run the tests using <code>lein run</code>:</p>
 <pre><code class="bash">lein run -m specj.main
 # The vigilant runner works too
@@ -83,9 +91,8 @@ lein run -m specj.main -a
 </code></pre><h2>What&rsquo;s next?</h2><p>Here are some ideas for features I intend to work on. Open an issue with more ideas or contribute. I would love some feedback and/or collaboration!</p>
 <ul>
   <li>Live editing</li>
-  <li>Always re-parse a given page on refresh</li>
   <li>More parsers</li>
   <li>Handle parser extension conflicts intelligently (instead of blindly  overwriting based on load order)</li>
-</ul><h2>Donate</h2><p>If you found incise valuable and are feeling particularly generous you may send some BTC to the address below:</p>
+</ul><h2>Donate</h2><p>If you find incise valuable and are feeling particularly generous you may send some BTC to the address below.</p>
 <pre><code>16QAD8aVDkQYqT8WehSQtfQp1xRjbwxK3Q
-</code></pre><h2>License</h2><p>Copyright © 2013 Ryan McGowan</p><p>Distributed under the Eclipse Public License, the same as Clojure.</p></div><footer><p>This website was <a href="https://github.com/RyanMcG/incise">incised</a>.</p></footer></div><script src="/incise/assets/javascripts/app-808dc6069c981b393aa5deed758a6d28.js" type="text/javascript"></script></body></html>
+</code></pre><h2>Insular s (ꞅ)</h2><p>The <em>s</em> in incise logo is the <a href="http://en.wikipedia.org/wiki/Insular_script">insular</a> <em>s</em> (ꞅ). It is sometimes found in <a href="http://en.wikipedia.org/wiki/Gaelic_type">Gaelic type</a>.</p><h2>License</h2><p>Copyright © 2013 Ryan McGowan</p><p>Distributed under the Eclipse Public License, the same as Clojure.</p></div><footer><p>This website was <a href="https://github.com/RyanMcG/incise">incised</a>.</p></footer></div><script src="/incise/assets/javascripts/app-808dc6069c981b393aa5deed758a6d28.js" type="text/javascript"></script></body></html>
