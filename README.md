@@ -295,13 +295,9 @@ lein run -m specj.main -a
 
 ## What's next?
 
-Here are some ideas for features I intend to work on. Open an issue with more
-ideas or contribute. I would love some feedback and/or collaboration!
-
-* Live editing
-* More parsers
-* Handle parser extension conflicts intelligently (instead of blindly
-  overwriting based on load order)
+I have been adding [issues][] with ideas.
+Open an issues with your own ideas or contribute.
+I would love some feedback and/or collaboration!
 
 ## Donate
 
@@ -333,3 +329,4 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [gaelic-type]: http://en.wikipedia.org/wiki/Gaelic_type
 [Leiningen]: https://github.com/technomancy/leiningen
 [plugin]: https://clojars.org/lein-incise
+[issues]: https://github.com/RyanMcG/incise/issues?state=open
