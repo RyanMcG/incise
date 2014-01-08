@@ -5,8 +5,7 @@ Clojure.</span>
 
 ## Get excited (or don't)
 
-There are more exciting things out there than another static website
-generator. That said if the following items sound like good ideas to you then
+One more static website generator might not be the world's most exciting development. That being said, if the following items sound like good ideas to you then
 you may like incise:
 
 * Use Clojure ✓
@@ -20,8 +19,8 @@ you may like incise:
 * [My stupid personal website][blog]
 * [The official example project][ex-project]
 
-Of course these examples are sort of meaningless. Incise does not help you
-create content or designs. It is simply a mechanism for finding files
+Of course these examples are sort of meaningless, in that Incise does not help you
+create content or designs- it is simply a mechanism for finding files
 dispatching them to functions based on file extensions. This pattern happens to
 be pretty powerful and batteries are included to actually make it useful too.
 
@@ -60,7 +59,7 @@ parser:
 ```
 
 Quite a few things are going on here despite being only a few SLOC. Firstly, you
-will notice the namespace the parser is defined in. It matches the pattern
+will notice the namespace in which the parser is defined. It matches the pattern
 mentioned above so it will get required automatically.
 
 The actual definition of `no-op-parse` returns a delay which when invoked
@@ -89,10 +88,10 @@ incise uses is to split parsing into two steps. Generally these steps are:
 2.  Invoke the thunk/delay. Write files and return corresponding `java.io.File`
     instances.
 
-Despite parsers needing to have two steps the work does not have to really be
+Despite parsers needing two steps, the work does not have to really be
 split between them. In fact, the general guidance is to do as much work as
 possible in the thunk/delay. The copy parser (`incise.parsers.impl.copy/parse`)
-is a good example of this. Since it has no need to be aware of parser
+is a good example of this. Because it has no need to be aware of parser
 invocations or side effects during step 1 it has no side effects (e.g. I/O
 operations). All side effects occur in step 2.
 
@@ -101,8 +100,8 @@ definite need for these two steps.
 
 #### `html-parser`
 
-95% of the time a parser is probably meant to convert some sort of source into
-HTML. For this specific use case a lot of the hard work has been done for you if
+Most of the time a parser is probably meant to convert some sort of source into
+HTML. For this specific use case a lot of the hard work has already been done for you if
 you use `incise.parsers.html/html-parser`.
 
 `html-parser` is a higher-order function which takes a function and returns a
@@ -162,17 +161,16 @@ may be overridden via dynamic binding.
 
 ### Layouts
 
-While they are a core feature of incise, layouts may be used or not be any given
-parser. The `html-parser` uses them for instance though other parsers may as
-well. Layouts are functions which take a sting and return a string. The layouts
+While they are a core feature of incise, layouts may or not be used by any given
+parser. For instance, parsers generated with `html-parser` use them but the copy parser does not.
+Layouts are functions which take a sting and return a string. The layouts
 `html-parser` uses simply wrap html tags around some generated content. The
 benefit of separating layouts from the parser is that different layouts can be
-used for different files of the same extension. This seemed like it would be a
-common feature desired by parsers so it is part of incise's core.
+used for different files of the same extension and the same layout may be used for various filetypes.
 
 ### Deployment workflows
 
-Static websites are pretty much useless of they do not go anywhere.
+Static websites are pretty much useless if they do not go anywhere.
 `incise.once/once` is meant for parsing all content and writing it out to a
 specified (or default) output directory.  While very useful on its own, certain
 deployment procedures are so common (not project specific) that it seemed
