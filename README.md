@@ -20,7 +20,7 @@ you may like incise:
 * [The official example project][ex-project]
 
 Of course these examples are sort of meaningless, in that Incise does not help you
-create content or designs- it is simply a mechanism for finding files
+create content or designs---it is simply a mechanism for finding files
 dispatching them to functions based on file extensions. This pattern happens to
 be pretty powerful and batteries are included to actually make it useful too.
 
@@ -30,9 +30,9 @@ Incise has been designed to be extensible. It scans the classpath for namespaces
 that match various patterns and requires them to register new functionality.
 This functionality could be one of three things:
 
-1. A parser - `incise.parsers.impl.*`
-2. A layout - `incise.layouts.impl.*`
-3. A deployment workflow - `incise.deploy.workflows.*`
+1. A parser: `incise.parsers.impl.*`
+2. A layout: `incise.layouts.impl.*`
+3. A deployment workflow: `incise.deploy.workflows.*`
 
 Effectively, incise does a straightforward require of any namespace that matches
 the one of the patterns above. The namespace may invoke a `register` function to
