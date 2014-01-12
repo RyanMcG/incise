@@ -1,5 +1,5 @@
 (ns incise.layouts.html
-  (:require [incise.parsers.core]
+  (:require [incise.parsers.parse]
             [robert.hooke :refer [with-scope add-hook]]))
 
 (declare ^:dynamic *site-options*)
@@ -24,7 +24,7 @@
           ["" doc-string?])]
     `(defn ~sym-name
        ~doc-string
-       [site-options# ^incise.parsers.core.Parse parse#]
+       [site-options# ^incise.parsers.parse.Parse parse#]
        (binding [*site-options* site-options#
                  *parse* parse#]
          (let [~destructuring [*site-options* *parse*]]
@@ -59,7 +59,7 @@
     (require '[clojure.core :refer :all])
     (require '[incise.layouts.html :refer [*site-options* *parse*]])
     (eval `(do
-             (def ~'parses (vals @incise.parsers.core/parses))
+             (def ~'parses (vals @incise.parsers.parse/parses))
              (def ~'tags (incise.utils/slot-by :tags ~'parses))
              ~@code))))
 

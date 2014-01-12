@@ -2,7 +2,7 @@
   (:require [speclj.core :refer :all]
             [clj-time.core :refer [date-time]]
             [clojure.java.io :refer [file]]
-            (incise.parsers [core :refer [map->Parse]]
+            (incise.parsers [parse :refer [map->Parse]]
                             [utils :refer :all])))
 
 (describe "date-str->path"

@@ -1,6 +1,6 @@
 (ns incise.parsers.html-spec
   (:require [incise.parsers.html :refer :all]
-            [incise.parsers.core :refer [map->Parse]]
+            [incise.parsers.parse :refer [map->Parse]]
             [clj-time.coerce :refer [to-date]]
             [clojure.java.io :refer [file resource]]
             [speclj.core :refer :all]))
@@ -14,6 +14,7 @@
                           :path "2013/8/12/my-short-page/index.html"
                           :tags [:cool]
                           :category :blarg
+                          :publish true
                           :content "\n\nHey there!\n"
                           :extension "/index.html"})
              (File->Parse identity @short-md-file))))

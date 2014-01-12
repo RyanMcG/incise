@@ -5,10 +5,8 @@
             (incise [utils :refer [normalize-uri delete-recursively directory?]]
                     [load :refer [load-parsers-and-layouts]]
                     [config :as conf])
-            [incise.parsers.core :refer [parses
-                                         input-file-seq
-                                         parse-all
-                                         dissoc-parses]])
+            (incise.parsers [core :refer [input-file-seq parse-all]]
+                            [parse :refer [parses dissoc-parses]]))
   (:import [java.io File]))
 
 (defonce ^{:private true

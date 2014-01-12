@@ -42,6 +42,9 @@
              ["--thread-count" (str "The number of threads for the development"
                                     " server to use.")
               :default (getenv "INCISE_THREAD_COUNT" 4) :parse-fn #(Integer. %)]
+             ["-g" "--ignore-publish" (str "Ignore the publish config for "
+                                             "content (i.e. parse regardless).")
+              :default false :flag true]
              ["-i" "--in-dir" "The directory to get source from"]
              ["-o" "--out-dir" "The directory to put content into"]
              ["-u" "--uri-root" uri-root-desc])]
