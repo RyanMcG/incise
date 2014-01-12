@@ -108,6 +108,12 @@
     (when (not= exit 0)
       (warn "Failed to apply stash:" err))))
 
+(defn ls-files []
+  (s/split-lines (:out (sh "git" "ls-files"))))
+
+(defn rm-path [path]
+  (sh "git" "rm" path))
+
 (defn deploy
   "Deploy to the given branch. Follow options for commit and push behaviour."
   [{:keys [path remote branch commit push]
@@ -125,6 +131,7 @@
       (when stash-ref
         (debug "Stashed with reference:" stash-ref))
       (setup-branch branch)
+      (dorun (map rm-path (ls-files)))
       (->> *out-dir*
            (file-seq)
            (rest) ; Skip the out directory
