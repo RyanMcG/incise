@@ -1,6 +1,7 @@
 (ns incise.deploy.core-spec
   (:require [speclj.core :refer :all]
             [incise.config :as conf]
+            [incise.spec-helpers :refer :all]
             [incise.deploy.core :refer :all])
   (:refer-clojure :exclude [get]))
 
@@ -21,8 +22,7 @@
   (with workflow-name :my-cool-workflow)
   (with dummy-deploy-text "DEPLOY!!1")
   (with dummy-deploy (fn [_] @dummy-deploy-text))
-  (before-all (conf/assoc! :deploy {:workflow @workflow-name}))
-  (after-all (conf/reset!))
+  (around-with-custom-config :deploy {:workflow @workflow-name})
   (before (register @workflow-name @dummy-deploy))
   (it "deploys when the workflow exists"
     (should= @dummy-deploy-text (deploy)))
