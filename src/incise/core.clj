@@ -6,18 +6,38 @@
             [incise.deploy.core :refer [deploy]]
             [taoensso.timbre :refer [warn]]
             [clojure.string :as s]
-            [clojure.tools.cli :refer [cli]]))
+            [clojure.tools.cli :refer [parse-opts]]))
 
-(def ^:private valid-methods #{"serve" "once" "deploy"})
-(defn- parse-method [method]
-  (if (contains? valid-methods method)
-    (keyword method)
-    (do
-      (when (seq method)
-        (warn (str \" method
-                   "\" is not a valid method (must be in "
-                   (s/join ", " valid-methods) "). Defaulting to serve.")))
-      :serve)))
+(def ^:private valid-methods #{:serve :once :deploy})
+
+(def cli-options
+  [["-h" "--help" "Print this help."]
+   ["-m" "--method METHOD" "serve, once, or deploy"
+    :default :serve
+    :parse-fn #(keyword %)
+    :validate [#(contains? valid-methods %)
+               "method must be either serve, once or deploy"]]
+   ["-c" "--config CONFIG_FILE"
+    "The path to an edn file acting as configuration for incise"]
+   ["-p" "--port PORT" "The port number to run the development server on."
+    :default (getenv "INCISE_PORT" 5000)
+    :parse-fn #(Integer. %)
+    :validate [#(< 0 % 0x10000)
+               "Must be a number between 0 and 65536"]]
+   ["-t" "--thread-count THREAD_COUNT"
+    "The number of threads for the development server to use."
+    :default (getenv "INCISE_THREAD_COUNT" 4)
+    :parse-fn #(Integer. %)]
+   ["-g" "--ignore-publish"
+    "Ignore the publish config for content (i.e. parse regardless)."]
+   ["-i" "--in-dir INPUT_DIRECTORY" "The directory to get source from"]
+   ["-o" "--out-dir OUTPUT_DIRECTORY" "The directory to put content into"]
+   ["-u" "--uri-root URI_ROOT"
+    "The path relative to the domain root where the generated site will be hosted."]])
+
+(defn exit [code & messages]
+  (dorun (map println messages))
+  (System/exit code))
 
 (defn with-args*
   "A helper function to with-args macro which does all the work.
@@ -27,33 +47,20 @@
   3.  Merge some options into config
   4.  Handle help or call body-fn with options and cli arguments"
   [args body-fn]
-  (let [uri-root-desc (str "The path relative to the domain root where the "
-                           "generated site will be hosted.")
-        [options cli-args banner]
-        (cli args
-             "A tool for incising."
-             ["-h" "--help" "Print this help." :default false :flag true]
-             ["-m" "--method" "serve, once, or deploy"
-              :default :serve :parse-fn parse-method]
-             ["-c" "--config" (str "The path to an edn file acting as "
-                                   "configuration for incise")]
-             ["-p" "--port" "The port number to run the development server on."
-              :default (getenv "INCISE_PORT" 5000) :parse-fn #(Integer. %)]
-             ["--thread-count" (str "The number of threads for the development"
-                                    " server to use.")
-              :default (getenv "INCISE_THREAD_COUNT" 4) :parse-fn #(Integer. %)]
-             ["-g" "--ignore-publish" (str "Ignore the publish config for "
-                                             "content (i.e. parse regardless).")
-              :default false :flag true]
-             ["-i" "--in-dir" "The directory to get source from"]
-             ["-o" "--out-dir" "The directory to put content into"]
-             ["-u" "--uri-root" uri-root-desc])]
+  (let [{:keys [options arguments
+                summary errors]} (parse-opts args cli-options)]
+    (when (seq errors)
+      (apply exit
+             (count errors)
+             (conj errors "" summary)))
+    (when (:help options)
+      (exit 0
+            "A tool for incising."
+           ""
+            summary))
     (conf/load (options :config))
     (conf/merge! (dissoc options :config :help))
-    (if (:help options)
-      (do (println banner)
-          (System/exit 0))
-      (body-fn options cli-args))))
+    (body-fn options arguments)))
 
 (defmacro with-args
   "Take arguments parsing them using cli and handle help accordingly."
