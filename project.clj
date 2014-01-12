@@ -20,8 +20,8 @@
                  [com.taoensso/timbre "2.6.1"]
                  [com.ryanmcg/stefon "0.5.0-83b9595399ad6a324895269bfa2cdc0c2c243a48"]
                  [manners "0.2.0"]]
-  :profiles {:dev {:dependencies [[speclj "2.5.0"]]}}
+  :profiles {:dev {:dependencies [[speclj "2.9.1"]]}}
   :repl-options {:init-ns incise.repl}
-  :plugins [[speclj "2.5.0"]]
+  :plugins [[speclj "2.9.1"]]
   :test-paths ["spec/"]
   :main incise.core)
