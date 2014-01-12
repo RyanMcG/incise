@@ -1,6 +1,7 @@
 (ns incise.parsers.impl.copy-spec
   (:require [incise.parsers.impl.copy :refer :all]
             [incise.config :as conf]
+            [incise.spec-helpers :refer :all]
             [stefon.util :refer [temp-dir]]
             [clojure.java.io :refer [file resource]]
             [speclj.core :refer :all]))
@@ -18,8 +19,8 @@
 (describe "parse"
   (with copyme (file (resource "spec/COPYME")))
   (with out-dir (spec-temp-dir))
-  (before (conf/assoc! :out-dir @out-dir
-                       :in-dir (.getParent (.getParentFile @copyme))))
+  (around-with-custom-config :out-dir @out-dir
+                             :in-dir (.getParent (.getParentFile @copyme)))
   (with out-file (first (force (parse @copyme))))
   (it "actually copies the file"
     (should (.exists @out-file)))

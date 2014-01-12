@@ -5,6 +5,7 @@
                           [shell :refer [with-sh-dir sh]])
             [clj-jgit [porcelain :refer :all :exclude [with-repo git-push]]]
             [incise.config :as conf]
+            [incise.spec-helpers :refer :all]
             [incise.deploy.workflows.git-branch :refer :all])
   (:import [org.eclipse.jgit.api Git]))
 
@@ -112,9 +113,8 @@
 (describe "deploy"
   (with repo-dir (create-dummy-repo))
   (with repo-dir-path (.getCanonicalPath @repo-dir))
-  (before (conf/assoc! :precompiles []
-                       :in-dir @repo-dir-path))
-  (after (conf/reset!))
+  (around-with-custom-config :precompiles []
+                             :in-dir @repo-dir-path)
   (around [it] (with-repo @repo-dir (it)))
   (it "deploys without commit or push"
     (should-not-throw (deploy {:path @repo-dir

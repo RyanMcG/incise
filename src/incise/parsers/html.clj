@@ -3,7 +3,9 @@
    standard parser from a function which takes the body of a file as a string
    and returns html."
   (:require (incise.parsers [utils :refer [meta->write-path]]
-                            [core :refer [map->Parse record-parse]])
+                            [parse :refer [map->Parse
+                                           record-parse
+                                           publish-parse?]])
             [incise.layouts.core :refer [Parse->string]]
             [incise.config :as conf]
             [taoensso.timbre :refer [info]]
@@ -45,7 +47,7 @@
 (defn write-Parse
   "Write the result of Parse->string to a file in the out-dir at the path
   specified in the given parse. Return the written File."
-  [^incise.parsers.core.Parse parse-data]
+  [^incise.parsers.parse.Parse parse-data]
   (let [out-file (file (conf/get :out-dir) (:path parse-data))]
     (-> out-file
         (.getParentFile)
@@ -63,5 +65,6 @@
   [to-html]
   (fn [file]
     (let [parse (File->Parse to-html file)]
-      (record-parse (.getCanonicalPath file) parse)
-      (delay [(write-Parse parse)]))))
+      (when (publish-parse? parse)
+        (record-parse (.getCanonicalPath file) parse)
+        (delay [(write-Parse parse)])))))

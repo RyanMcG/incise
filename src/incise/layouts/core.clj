@@ -1,5 +1,5 @@
 (ns incise.layouts.core
-  (:require [incise.parsers.core]
+  (:require [incise.parsers.parse]
             [incise.config :as conf])
   (:refer-clojure :exclude [get]))
 
@@ -14,7 +14,7 @@
   (apply @layouts (name layout-name) more))
 
 (defn Parse->string
-  [^incise.parsers.core.Parse parse-data]
+  [^incise.parsers.parse.Parse parse-data]
   (if-let [layout-key (:layout parse-data)]
     (if-let [layout-fn (get layout-key)]
       (layout-fn (conf/get) parse-data)

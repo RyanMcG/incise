@@ -42,9 +42,7 @@
       (should-contain extension @parsers))))
 
 (describe "parse"
-  (before-all
-    (conf/assoc! :out-dir "/tmp/incise-specs")
-    (load-parsers-and-layouts))
+  (before-all (load-parsers-and-layouts))
   (with real-md-file (file (resource "spec/another-forgotten-binding-pry.md")))
   (with output-files (force (parse @real-md-file)))
   (it "outputs html"
