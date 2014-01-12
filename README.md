@@ -16,7 +16,7 @@ you may like incise:
 #### Examples
 
 * [This website][incise]
-* [My stupid personal website][blog]
+* [My personal website][blog]
 * [The official example project][ex-project]
 
 Of course these examples are sort of meaningless, in that Incise does not help you
