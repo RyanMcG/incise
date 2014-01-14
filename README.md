@@ -211,7 +211,7 @@ Shockingly, the easiest way to use incise is with the [Leiningen][] [plugin][].
 Simply add the following to the plugins vector in your `:user` profile.
 
 ```clojure
-[lein-incise "0.1.0-SNAPSHOT"]
+[lein-incise "0.1.0"]
 ```
 
 See help for options:
