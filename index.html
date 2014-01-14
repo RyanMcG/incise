@@ -56,7 +56,7 @@
   <li>Commit it with a generated message including the commit hash of the source branch.</li>
   <li>Push it to a configurable remote.</li>
 </ol><h4>Configuring a deployment workflow</h4><p>To configure a deployment workflow you need to modify your <code>incise.edn</code>. A deployment workflow is passed the configuration under the deploy key and the workflow to be used is determined by the value associated with the <code>:workflow</code> key in the <code>:deploy</code> map.</p><p>It is probably helpful to <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">look at an example</a>.</p><h2>Usage</h2><p>Shockingly, the easiest way to use incise is with the <a href="https://github.com/technomancy/leiningen">Leiningen</a> <a href="https://clojars.org/lein-incise">plugin</a>. Simply add the following to the plugins vector in your <code>:user</code> profile.</p>
-<pre><code class="clojure">[lein-incise &quot;0.1.0-SNAPSHOT&quot;]
+<pre><code class="clojure">[lein-incise &quot;0.1.0&quot;]
 </code></pre><p>See help for options:</p>
 <pre><code class="bash">lein incise --help
 </code></pre><p>Alternatively you can call the main method directly.</p>
