@@ -18,8 +18,7 @@
   (if-let [layout-key (:layout parse-data)]
     (if-let [layout-fn (get layout-key)]
       (layout-fn (conf/get) parse-data)
-      (throw (ex-info (str "No layout function of with registered with key "
-                           layout-key)
+      (throw (ex-info (str "No layout function registered with key " layout-key)
                       {:layouts @layouts})))
     (throw (ex-info (str "No layout key specified in given parse.")
                     {:layouts @layouts
