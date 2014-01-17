@@ -4,7 +4,7 @@
             [pallet.map-merge :refer [merge-keys]]
             [manners.victorian :refer [defmannerisms]])
   (:import [java.io PushbackReader])
-  (:refer-clojure :exclude [reset! load assoc! get]))
+  (:refer-clojure :exclude [reset! load assoc! get get-in]))
 
 (def ^:private default-config
   {:parse-defaults {:layout :base
@@ -22,6 +22,9 @@
   (if (empty? more)
     @config
     (apply @config more)))
+
+(defn get-in [& more]
+  (apply clojure.core/get-in @config more))
 
 (defn merge! [& more]
   (apply swap! config
