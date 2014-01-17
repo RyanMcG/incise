@@ -18,7 +18,7 @@
                  [clj-time "0.5.1"]
                  [clj-jgit "0.4.0"]
                  [com.taoensso/timbre "2.6.1"]
-                 [com.ryanmcg/stefon "0.5.0-3d75084313da6a7f0315ab7f90bcb3f296951120"]
+                 [com.ryanmcg/stefon "0.5.0-806e589484857ab9688fb026fe453650e9151c4d"]
                  [manners "0.2.0"]]
   :profiles {:dev {:dependencies [[speclj "2.9.1"]]}}
   :repl-options {:init-ns incise.repl}
