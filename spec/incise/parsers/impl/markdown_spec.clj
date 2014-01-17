@@ -9,12 +9,26 @@
             [me.raynes.cegdown :as md])
   (:import [java.io File]))
 
-(describe "parsing"
-  (around-with-custom-config :in-dir "resources/spec"
-                             :out-dir "/tmp/")
-  (with markdown-file (file (resource "spec/another-forgotten-binding-pry.md")))
-  (with parse (comp slurp first force (html-parser markdown-to-html)))
-  (it "parses a markdown file into html"
-    (should-contain #"<html>" (@parse @markdown-file))))
+(defn parse-markdown []
+  (let [markdown-file (file (resource "spec/markdown-options.md"))
+        parse (comp slurp first force (html-parser markdown-to-html))]
+    (parse markdown-file)))
+
+(describe "parsing markdown"
+  (context "parsing with default options"
+    (around-with-custom-config :in-dir "resources/spec"
+                               :out-dir "/tmp/")
+    (with result (parse-markdown))
+    (it "parses a markdown file into html"
+        (should-contain #"<html>" @result))
+    (it "parses without hardwraps"
+        (should-contain "First line Second line" @result)))
+  (context "parsing with custom options"
+    (around-with-custom-config :in-dir "resources/spec"
+                               :out-dir "/tmp/"
+                               :parsers {:markdown {:extensions [:hardwraps]}})
+    (with result (parse-markdown))
+    (it "parses with hardwraps"
+      (should-contain "First line<br/>Second line" @result))))
 
 (run-specs)
