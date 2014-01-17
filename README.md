@@ -156,8 +156,15 @@ Note that `markdown.core/md-to-html` is a fictional function.
 
 [The included implementation of a markdown parser][md-parser-source] uses
 [cegdown][], a useful Clojure wrapper of the markdown parsing Java library
-[pegdown][], and is only slightly more complicated so that various its options
-may be overridden via dynamic binding.
+[pegdown][], and uses some default options which can be overridden in
+`incise.edn`, for example:
+
+```clojure
+{:parsers {:markdown {:extensions [:fenced-code-blocks
+                                   :hardwraps]}}}
+```
+
+The full list of available extensions can be find [here][cegdown-extensions].
 
 ### Layouts
 
@@ -329,3 +336,4 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [Leiningen]: https://github.com/technomancy/leiningen
 [plugin]: https://clojars.org/lein-incise
 [issues]: https://github.com/RyanMcG/incise/issues?state=open
+[cegdown-extensions]: https://github.com/Raynes/cegdown/blob/master/src/me/raynes/cegdown.clj#L4
