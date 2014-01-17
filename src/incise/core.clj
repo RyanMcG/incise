@@ -10,7 +10,7 @@
 
 (def ^:private valid-methods #{:serve :once :deploy})
 
-(def cli-options
+(defn get-cli-options []
   [["-h" "--help" "Print this help."]
    ["-m" "--method METHOD" "serve, once, or deploy"
     :default :serve
@@ -48,7 +48,7 @@
   4.  Handle help or call body-fn with options and cli arguments"
   [args body-fn]
   (let [{:keys [options arguments
-                summary errors]} (parse-opts args cli-options)]
+                summary errors]} (parse-opts args (get-cli-options))]
     (when (seq errors)
       (apply exit
              (count errors)
