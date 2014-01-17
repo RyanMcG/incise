@@ -228,20 +228,21 @@ lein run -m incise.core -- --help
 
 The main method takes several switches.
 
-    Switches               Default  Desc
-    --------               -------  ----
-    -h, --no-help, --help  false    Print this help.
-    -m, --method           :serve   serve, once, or deploy
-    -c, --config                    The path to an edn file acting as
-                                    configuration for incise
-    -p, --port             5000     The port number to run the development
-                                    server on.
-    --thread-count         4        The number of threads for the development
-                                    server to use.
-    -i, --in-dir                    The directory to get source from
-    -o, --out-dir                   The directory to put content into
-    -u, --uri-root                  The path relative to the domain root where
-                                    the generated site will be hosted
+    -h, --help                               Print this help.
+    -m, --method METHOD              :serve  serve, once, or deploy
+    -c, --config CONFIG_FILE                 The path to an edn file acting as
+                                             configuration for incise
+    -p, --port PORT                  5000    The port number to run the
+                                             development server on.
+    -t, --thread-count THREAD_COUNT  4       The number of threads for the
+                                             development server to use.
+    -g, --ignore-publish                     Ignore the publish config for
+                                             content (i.e. parse regardless).
+    -i, --in-dir INPUT_DIRECTORY             The directory to get source from
+    -o, --out-dir OUTPUT_DIRECTORY           The directory to put content into
+    -u, --uri-root URI_ROOT                  The path relative to the domain
+                                             root where the generated site will
+                                             be hosted.
 
 These options can be used to override their config counterparts.
 
