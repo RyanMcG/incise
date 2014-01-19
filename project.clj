@@ -17,6 +17,7 @@
                  [pallet-map-merge "0.1.0"]
                  [clj-time "0.5.1"]
                  [clj-jgit "0.4.0"]
+                 [org.clojure/core.async "0.1.267.0-0d7780-alpha"]
                  [com.taoensso/timbre "2.6.1"]
                  [com.ryanmcg/stefon "0.5.0-806e589484857ab9688fb026fe453650e9151c4d"]
                  [manners "0.2.0"]]

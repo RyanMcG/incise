@@ -3,6 +3,7 @@
             (incise [config :as conf]
                     [utils :refer [directory?]])
             [clojure.java.io :refer [file]]
+            [clojure.core.async :refer :all]
             [taoensso.timbre :refer [info]])
   (:import [java.io File]))
 
@@ -64,16 +65,22 @@
   (info prefix (.getPath a-file))
   a-file)
 
+(defn- join [files-future]
+  (doall (map (partial log-file) @files-future)))
+
 (defn parse-all
   "Parse all of the given files completely by calling parse on each one and
   invoking the parse result."
   [files]
-  (->> files
-       (map parse)
-       (keep identity)
-       (doall) ; Ensure that all files have been parsed.
-       (mapcat invoke-delay-or-function)
-       (map (partial log-file "Generated"))))
+  (let [ch (chan)
+        parse-ch (->> ch
+                      (map> parse)
+                      (remove> nil?))]
+    (onto-chan parse-ch files)
+    (->> ch
+         (mapcat< invoke-delay-or-function)
+         (map< log-file)
+         (close!))))
 
 (defn parse-all-input-files
   "Completely parse all of the files from the input directory."

@@ -23,4 +23,4 @@
       (precompile nil)
       (info "Done.")
       (load-parsers-and-layouts)
-      (doall (parse-all-input-files)))))
+      (parse-all-input-files))))

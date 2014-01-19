@@ -63,8 +63,7 @@
         (->> (input-file-seq)
              (reference-files)
              (filter (some-fn modified? (partial requested-file? request)))
-             (parse-all)
-             (dorun)))
+             (parse-all)))
       (handler request))))
 
 (defn wrap-reset-modified-files-with-source-change
