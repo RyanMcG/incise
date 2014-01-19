@@ -13,12 +13,12 @@
   [& {:as config}]
   (conf/merge! config)
   (conf/avow!)
-  (let [{:keys [out-dir precompiles]} (conf/get)]
+  (let [{:keys [out-dir precompiles stefon]} (conf/get)]
     (info "Clearing out" (str \" out-dir \"))
     (delete-recursively (file out-dir))
-    (with-options {:mode :production
-                   :serving-root out-dir
-                   :precompiles (or precompiles [])}
+    (with-options (merge {:mode :production
+                          :serving-root out-dir
+                          :precompiles (or precompiles [])} stefon)
       (info "Precompiling assets...")
       (precompile nil)
       (info "Done.")

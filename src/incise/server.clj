@@ -37,7 +37,7 @@
       (wrap-incise)
       (wrap-log-exceptions)
       (wrap-stacktrace-web)
-      (asset-pipeline nil)))
+      (asset-pipeline (conf/get :stefon))))
 
 (defn serve
   "Start a development server."
