@@ -43,9 +43,7 @@
   "Start a development server."
   []
   (let [port (conf/get :port)]
-    (info "Serving at"
-          (str "http://" (.getCanonicalHostName
-                           (java.net.InetAddress/getLocalHost)) \: port \/))
+    (info "Serving at" (str "http://localhost:" port \/))
     (run-server (create-app) {:port port
                               :thread (conf/get :thread-count)})))
 
