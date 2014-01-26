@@ -1,11 +1,11 @@
 {:site-title "incise"
  :author "Ryan McGowan"
- :in-dir "resources/content"
- :out-dir "resources/public"
+ :in-dir "website/content"
+ :out-dir "website/public"
+ :stefon {:asset-roots ["website/assets"]
+          :manifest-file "website/manifest.json"}
  :parse-defaults {:layout :page}
  :precompiles ["javascripts/app.js.stefon"
                "stylesheets/app.css.stefon"]
  :uri-root "incise"
- :deploy {:workflow :git-branch
-          :commit true
-          :push true}}
+ :deploy {:workflow :git-branch}}
