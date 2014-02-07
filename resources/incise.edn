@@ -4,7 +4,7 @@
  :out-dir "website/public"
  :stefon {:asset-roots ["website/assets"]
           :manifest-file "website/manifest.json"}
- :parse-defaults {:layout :page}
+ :parse-defaults {:layout :incise}
  :precompiles ["javascripts/app.js.stefon"
                "stylesheets/app.css.stefon"]
  :uri-root "incise"

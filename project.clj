@@ -7,5 +7,6 @@
                  [incise-git-deployer "0.1.0-SNAPSHOT"]
                  [incise-base-hiccup-layouts "0.1.0-SNAPSHOT"]
                  [incise-core "0.2.0-SNAPSHOT"]]
+  :profiles {:dev {:source-paths ["dev"]}}
   :repl-options {:init-ns incise.repl}
   :main incise.core)
