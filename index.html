@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><title>incise</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="/incise/assets/stylesheets/app-b7ee747af869123688a51dbc3e5912ce.css" rel="stylesheet" type="text/css"></head><body id="page"><div class="container"><header><h1 id="site-title"><a href="/incise/">incise</a></h1></header><div id="content"><h1><a href="https://github.com/RyanMcG/incise"><img alt="incise logo" id="logo" src="/incise/assets/images/logo.svg"></a><a href="https://travis-ci.org/RyanMcG/incise"><img src="https://travis-ci.org/RyanMcG/incise.png?branch=master"  alt="Build Status"/></a></h1><p><span class="tag-line">An extensible static site generator written in Clojure.</span></p><h2>Get excited (or don&rsquo;t)</h2><p>One more static website generator might not be the world&rsquo;s most exciting development. That being said, if the following items sound like good ideas to you then you may like incise:</p>
+<html><head><title>incise</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="/incise/assets/stylesheets/app-b7ee747af869123688a51dbc3e5912ce.css" rel="stylesheet" type="text/css"><link href="/incise/assets/images/favicon.png" rel="icon" type="image/png"></head><body id="page"><div class="container"><header><h1 id="site-title"><a href="/incise/">incise</a></h1></header><div id="content"><h1><a href="https://github.com/RyanMcG/incise"><img alt="incise logo" id="logo" src="/incise/assets/images/logo.svg"></a><a href="https://travis-ci.org/RyanMcG/incise"><img src="https://travis-ci.org/RyanMcG/incise.png?branch=master"  alt="Build Status"/></a></h1><p><span class="tag-line">An extensible static site generator written in Clojure.</span></p><h2>Get excited (or don&rsquo;t)</h2><p>One more static website generator might not be the world&rsquo;s most exciting development. That being said, if the following items sound like good ideas to you then you may like incise:</p>
 <ul>
   <li>Use Clojure ✓</li>
   <li>Allow many different setups and configurations ✓</li>
@@ -47,7 +47,10 @@
                             [html :refer [html-parser]])))
 
 (pc/register [:md :markdown :mkd] (html-parser md-to-html))
-</code></pre><p>Note that <code>markdown.core/md-to-html</code> is a fictional function.</p><p><a href="https://github.com/RyanMcG/incise/blob/master/src/incise/parsers/impl/markdown.clj">The included implementation of a markdown parser</a> uses <a href="https://github.com/Raynes/cegdown">cegdown</a>, a useful Clojure wrapper of the markdown parsing Java library <a href="http://pegdown.org/">pegdown</a>, and is only slightly more complicated so that various its options may be overridden via dynamic binding.</p><h3>Layouts</h3><p>While they are a core feature of incise, layouts may or not be used by any given parser. For instance, parsers generated with <code>html-parser</code> use them but the copy parser does not. Layouts are functions which take a sting and return a string. The layouts <code>html-parser</code> uses simply wrap html tags around some generated content. The benefit of separating layouts from the parser is that different layouts can be used for different files of the same extension and the same layout may be used for various filetypes.</p><h3>Deployment workflows</h3><p>Static websites are pretty much useless if they do not go anywhere. <code>incise.once/once</code> is meant for parsing all content and writing it out to a specified (or default) output directory. While very useful on its own, certain deployment procedures are so common (not project specific) that it seemed sensible to make them plugable.</p><p>Like layouts and parsers, deployment workflows are registered in an atom by calling the <code>incise.deploy.core/register</code> function and the namespaces are automatically required by the previously mentioned scheme.</p><h4>The <code>git-branch</code> deployment workflow</h4><p>The only deployment workflow defined by default is the <code>git-branch</code> workflow. It attempts the following:</p>
+</code></pre><p>Note that <code>markdown.core/md-to-html</code> is a fictional function.</p><p><a href="https://github.com/RyanMcG/incise/blob/master/src/incise/parsers/impl/markdown.clj">The included implementation of a markdown parser</a> uses <a href="https://github.com/Raynes/cegdown">cegdown</a>, a useful Clojure wrapper of the markdown parsing Java library <a href="http://pegdown.org/">pegdown</a>, and uses some default options which can be overridden in <code>incise.edn</code>, for example:</p>
+<pre><code class="clojure">{:parsers {:markdown {:extensions [:fenced-code-blocks
+                                   :hardwraps]}}}
+</code></pre><p>The full list of available extensions can be find <a href="https://github.com/Raynes/cegdown/blob/master/src/me/raynes/cegdown.clj#L4">here</a>.</p><h3>Layouts</h3><p>While they are a core feature of incise, layouts may or not be used by any given parser. For instance, parsers generated with <code>html-parser</code> use them but the copy parser does not. Layouts are functions which take a sting and return a string. The layouts <code>html-parser</code> uses simply wrap html tags around some generated content. The benefit of separating layouts from the parser is that different layouts can be used for different files of the same extension and the same layout may be used for various filetypes.</p><h3>Deployment workflows</h3><p>Static websites are pretty much useless if they do not go anywhere. <code>incise.once/once</code> is meant for parsing all content and writing it out to a specified (or default) output directory. While very useful on its own, certain deployment procedures are so common (not project specific) that it seemed sensible to make them plugable.</p><p>Like layouts and parsers, deployment workflows are registered in an atom by calling the <code>incise.deploy.core/register</code> function and the namespaces are automatically required by the previously mentioned scheme.</p><h4>The <code>git-branch</code> deployment workflow</h4><p>The only deployment workflow defined by default is the <code>git-branch</code> workflow. It attempts the following:</p>
 <ol>
   <li><code>incise.once/once</code> to create content for deploying to a static web server</li>
   <li>Move that content into the git directory so checking out other branches does not remove it.</li>
@@ -62,20 +65,21 @@
 </code></pre><p>Alternatively you can call the main method directly.</p>
 <pre><code class="bash">lein run -m incise.core -- --help
 </code></pre><p>The main method takes several switches.</p>
-<pre><code>Switches               Default  Desc
---------               -------  ----
--h, --no-help, --help  false    Print this help.
--m, --method           :serve   serve, once, or deploy
--c, --config                    The path to an edn file acting as
-                                configuration for incise
--p, --port             5000     The port number to run the development
-                                server on.
---thread-count         4        The number of threads for the development
-                                server to use.
--i, --in-dir                    The directory to get source from
--o, --out-dir                   The directory to put content into
--u, --uri-root                  The path relative to the domain root where
-                                the generated site will be hosted
+<pre><code>-h, --help                               Print this help.
+-m, --method METHOD              :serve  serve, once, or deploy
+-c, --config CONFIG_FILE                 The path to an edn file acting as
+                                         configuration for incise
+-p, --port PORT                  5000    The port number to run the
+                                         development server on.
+-t, --thread-count THREAD_COUNT  4       The number of threads for the
+                                         development server to use.
+-g, --ignore-publish                     Ignore the publish config for
+                                         content (i.e. parse regardless).
+-i, --in-dir INPUT_DIRECTORY             The directory to get source from
+-o, --out-dir OUTPUT_DIRECTORY           The directory to put content into
+-u, --uri-root URI_ROOT                  The path relative to the domain
+                                         root where the generated site will
+                                         be hosted.
 </code></pre><p>These options can be used to override their config counterparts.</p><p>As seen above, the default method is to serve. This launches a ring application which automatically parsers files and re-parses them when they are modified. It also launches an nREPL server so clients who want one do not need to startup a separate process to have it.</p>
 <pre><code class="bash">lein incise
 # Or to be explicit
