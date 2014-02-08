@@ -3,9 +3,9 @@
  :in-dir "website/content"
  :out-dir "website/public"
  :stefon {:asset-roots ["website/assets"]
-          :manifest-file "website/manifest.json"}
+          :manifest-file "website/manifest.json"
+          :precompiles ["javascripts/app.js.stefon"
+                        "stylesheets/app.css.stefon"]}
  :parse-defaults {:layout :incise}
- :precompiles ["javascripts/app.js.stefon"
-               "stylesheets/app.css.stefon"]
  :uri-root "incise"
  :deploy {:workflow :git-branch}}
