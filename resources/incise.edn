@@ -6,6 +6,7 @@
           :manifest-file "website/manifest.json"
           :precompiles ["javascripts/app.js.stefon"
                         "stylesheets/app.css.stefon"]}
+ :log-level :info
  :parse-defaults {:layout :incise}
  :uri-root "incise"
  :deploy {:workflow :git-branch}}
