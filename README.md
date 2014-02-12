@@ -305,7 +305,7 @@ I have been adding [issues][] with ideas.
 Open an issues with your own ideas or contribute.
 I would love some feedback and/or collaboration!
 
-## Donate
+## Tips
 
 If you find incise valuable and are feeling particularly generous you may send
 some BTC to the address below.
