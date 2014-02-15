@@ -287,17 +287,10 @@ to incise's main function to specify an alternative location of the config file.
 An [example `incise.edn`][incise.edn.example] file is included with this project
 as well as the `incise.edn` file used to generate [this website][incise].
 
-## Running specs
+## Where are the tests?
 
-Unfortunately the speclj leiningen plugin does not work well with clj-v8 because
-it requires custom JVM options (this seems to be a bug with speclj). However,
-you can still run the tests using `lein run`:
-
-```bash
-lein run -m specj.main
-# The vigilant runner works too
-lein run -m specj.main -a
-```
+The `incise` package has no tests on its own since it is just a collection of extensions and `incise-core`.
+So, there are no tests in this package but `incise-core` is somewhat well speced out.
 
 ## What's next?
 
