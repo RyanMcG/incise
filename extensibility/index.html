@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html><head><title>incise - extensibility</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="/incise/assets/stylesheets/app-b7ee747af869123688a51dbc3e5912ce.css" rel="stylesheet" type="text/css"><link href="/incise/assets/images/favicon.png" rel="icon" type="image/png"></head><body id="page"><div class="container"><header><h1 id="site-title"><a href="/incise/">incise</a></h1></header><div id="content"><h1>Extensibility</h1><p>Incise has been designed to be extensible. It scans the classpath for namespaces that match various patterns and requires them to register new functionality. This functionality could be one of three things:</p>
+<ol>
+  <li>A parser: <code>incise.parsers.impl.*</code></li>
+  <li>A layout: <code>incise.layouts.impl.*</code></li>
+  <li>A deployment workflow: <code>incise.deploy.workflows.*</code></li>
+</ol><p>Effectively, incise does a straightforward require of any namespace that matches the one of the patterns above. The namespace may invoke a <code>register</code> function to make incise aware of the implementation. Parsers, layouts and deployment workflows all have their own register functions (<code>incise.parsers.core/register</code>, <code>incise.layouts.core/register</code> and <code>incise.deploy.core/register</code>). All three register functions take a key or collection of keys to map the function to be registered to.</p><h3>Parsers</h3><p>Parsers are the muscles that give incise its ability to do. A parser is a function which parses a file and writes zero or more files as a result. The simplest parser would be the no-op parser. A no-op parser would take in a file and do nothing with it. Here is the incise friendly implementation of the no-op parser:</p>
+<pre><code class="clojure">(ns incise.parsers.impl.no-op)
+
+(defn no-op-parse [^File _] (delay []))
+
+(incise.parsers.core/register [:gitignore] no-op-parser)
+</code></pre><p>Quite a few things are going on here despite being only a few SLOC. Firstly, you will notice the namespace in which the parser is defined. It matches the pattern mentioned above so it will get required automatically.</p><p>The actual definition of <code>no-op-parse</code> returns a delay which when invoked returns a sequence of files. In this case it is an empty sequence since this is the no-op parser. Why not just return a sequence of files?</p><p>Finally, the parser is registered to files with the <code>gitignore</code> extension. Effectively, this means incise would parse all gitignore files with the no-op parser. This is, of course, the same as not parsing them at all.</p><h4>Two step parsing</h4><p>Parsers must satisfy the following criteria:</p>
+<ul>
+  <li>Take a single file (i.e a <code>java.io.File</code> instance)</li>
+  <li>Return a delay or <a href="http://en.wikipedia.org/wiki/Thunk_(functional_programming)">thunk</a> (a parameterless function) which when invoked  returns a sequence of files.</li>
+</ul><p>This is pretty easy to do and very loose. It is also a bit more complex than may seem necessary (why return a thunk that does something instead of just doing it?). In order to implement features like tags each invocation of a parser must have at least some access to data from other files being parsed. The solution incise uses is to split parsing into two steps. Generally these steps are:</p>
+<ol>
+  <li>Allow side-effects like modifying public atoms. Read in the file.</li>
+  <li>Invoke the thunk/delay. Write files and return corresponding <code>java.io.File</code> instances.</li>
+</ol><p>Despite parsers needing two steps, the work does not have to really be split between them. In fact, the general guidance is to do as much work as possible in the thunk/delay. The copy parser (<code>incise.parsers.impl.copy/parse</code>) is a good example of this. Because it has no need to be aware of parser invocations or side effects during step 1 it has no side effects (e.g. I/O operations). All side effects occur in step 2.</p><p>Other parsers (like those designed for rendering HTML pages and posts) have definite need for these two steps.</p><h4><code>html-parser</code></h4><p>Most of the time a parser is probably meant to convert some sort of source into HTML. For this specific use case a lot of the hard work has already been done for you if you use <code>incise.parsers.html/html-parser</code>.</p><p><code>html-parser</code> is a higher-order function which takes a function and returns a valid parsers. The function passed to <code>html-parser</code> should take a string and either return HTML as a string or a list of Clojure code to evaluate in context later (with the result being an HTML string). The first case is simpler so I will start there.</p><p>Here is the html to html parser implementation.</p>
+<pre><code class="clojure">(ns incise.parsers.impl.html
+  (:require (incise.parsers [core :as pc]
+                            [html :refer [html-parser]])))
+
+(pc/register [:html :htm] (html-parser identity))
+</code></pre><p>The identity function simply returns the value of whatever it is passed. So, if it is passed a string of HTML it fits are requirements to be our argument to <code>html-parser</code>.</p><p>The following example html file could then be parsed using the parser defined above.</p>
+<pre><code class="html">{:layout :base
+ :path &quot;hmmm/index.html&quot;}
+
+&lt;h1&gt;Hmmm&lt;/h1&gt;
+</code></pre><p>It would generate an html page using the base layout with the contents of the body tag being &ldquo;<code>&lt;h1&gt;Hmmm&lt;/h1&gt;</code>&rdquo;. Since we used the <code>identity</code> function no special processing of the source content was done.</p><p>Alternatively we could define a more complicated parser. Imagine we have a function that takes a string of markdown and returns a string of HTML. We could use <code>html-parser</code> to create a valid parser for markdown files almost as easily as we did for HTML files.</p>
+<pre><code class="clojure">(ns incise.parsers.impl.markdown
+  (:require [markdown.core :refer [md-to-html]]
+            (incise.parsers [core :as pc]
+                            [html :refer [html-parser]])))
+
+(pc/register [:md :markdown :mkd] (html-parser md-to-html))
+</code></pre><p>Note that <code>markdown.core/md-to-html</code> is a fictional function.</p><p><a href="https://github.com/RyanMcG/incise-markdown-parser/blob/master/src/incise/parsers/impl/markdown.clj">The included implementation of a markdown parser</a> uses <a href="https://github.com/Raynes/cegdown">cegdown</a>, a useful Clojure wrapper of the markdown parsing Java library <a href="http://pegdown.org/">pegdown</a>, and uses some default options which can be overridden in <code>incise.edn</code>, for example:</p>
+<pre><code class="clojure">{:parsers {:markdown {:extensions [:fenced-code-blocks
+                                   :hardwraps]}}}
+</code></pre><p>The full list of available extensions can be find <a href="https://github.com/Raynes/cegdown/blob/master/src/me/raynes/cegdown.clj#L4">here</a>.</p><h3>Layouts</h3><p>While they are a core feature of incise, layouts may or not be used by any given parser. For instance, parsers generated with <code>html-parser</code> use them but the copy parser does not. Layouts are functions which take a sting and return a string. The layouts <code>html-parser</code> uses simply wrap html tags around some generated content. The benefit of separating layouts from the parser is that different layouts can be used for different files of the same extension and the same layout may be used for various filetypes.</p><h3>Deployers</h3><p>Static websites are pretty much useless if they do not go anywhere. <code>incise.once/once</code> is meant for parsing all content and writing it out to a specified (or default) output directory. While very useful on its own, certain deployment procedures are so common (not project specific) that it seemed sensible to make them plugable.</p><p>Like layouts and parsers, deployment workflows are registered in an atom by calling the <code>incise.deploy.core/register</code> function and the namespaces are automatically required by the previously mentioned scheme.</p><h4>The <code>git-branch</code> deployer</h4><p>The only deployment workflow defined by default is the <code>git-branch</code> workflow. It attempts the following:</p>
+<ol>
+  <li><code>incise.once/once</code> to create content for deploying to a static web server</li>
+  <li>Move that content into the git directory so checking out other branches does not remove it.</li>
+  <li>Create an orphaned branch of a configurable name (<code>gh-pages</code> by default) or checkout the branch of that name if it already exists.</li>
+  <li>Move the content from inside the git directory to the working tree directory.</li>
+  <li>Commit it with a generated message including the commit hash of the source branch.</li>
+  <li>Push it to a configurable remote.</li>
+</ol><h4>Configuring a deployment workflow</h4><p>To configure a deployment workflow you need to modify your <code>incise.edn</code>. A deployment workflow is passed the configuration under the deploy key and the workflow to be used is determined by the value associated with the <code>:workflow</code> key in the <code>:deploy</code> map.</p><p>It is probably helpful to <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">look at an example</a>.</p></div><footer><p>This website was <a href="https://github.com/RyanMcG/incise">incised</a>.</p></footer></div><script src="/incise/assets/javascripts/app-808dc6069c981b393aa5deed758a6d28.js" type="text/javascript"></script></body></html>

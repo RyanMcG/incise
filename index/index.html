@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html><head><title>incise - index</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="/incise/assets/stylesheets/app-b7ee747af869123688a51dbc3e5912ce.css" rel="stylesheet" type="text/css"><link href="/incise/assets/images/favicon.png" rel="icon" type="image/png"></head><body id="page"><div class="container"><header><h1 id="site-title"><a href="/incise/">incise</a></h1></header><div id="content"><h1><a href="https://github.com/RyanMcG/incise"><img alt="incise logo" id="logo" src="/incise/assets/images/logo.svg"></a><a href="https://travis-ci.org/RyanMcG/incise"><img src="https://travis-ci.org/RyanMcG/incise.png?branch=master" alt="Build Status""/></a></h1><p><span class="tag-line">An extensible static site generator written in Clojure.</span></p><h2>Get excited (or don&rsquo;t)</h2><p>One more static website generator might not be the world&rsquo;s most exciting development. That being said, if the following items sound like good ideas to you then you may like incise:</p>
+<ul>
+  <li>Use Clojure ✓</li>
+  <li>Allow many different setups and configurations ✓</li>
+  <li>Extensible by nature ✓</li>
+  <li>Batteries included, but only if you want them. ✓</li>
+  <li><code>incise</code> is just a collection of extensions on top of <code>incise-core</code>.</li>
+</ul><h4>Examples</h4>
+<ul>
+  <li><a href="http://www.ryanmcg.com/incise/">This website</a></li>
+  <li><a href="http://www.ryanmcg.com/">My personal website</a></li>
+  <li><a href="https://github.com/RyanMcG/incise-example-project">The official example project</a></li>
+</ul><p>Of course these examples are sort of meaningless, in that Incise does not help you create content or designs&mdash;it is simply a mechanism for finding files dispatching them to functions based on file extensions. This pattern happens to be pretty powerful and batteries are included to actually make it useful too.</p><h2>Configuration</h2><p>Incise is primarily configured via a config file it tries to find as a resource. This file must be named <code>incise.edn</code> and be found in the root of your resources directory. You can override that file and pass in the <code>-c</code> or <code>--config</code> option to incise&rsquo;s main function to specify an alternative location of the config file.</p><p>An <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">example <code>incise.edn</code></a> file is included with this project as well as the <code>incise.edn</code> file used to generate <a href="http://www.ryanmcg.com/incise/">this website</a>.</p><h2>Usage</h2><p>The easiest way to use incise is with the <a href="https://github.com/technomancy/leiningen">Leiningen</a>. Make <code>incise.core</code> your main by adding the following to your <code>project.clj</code>.</p>
+<pre><code class="clojure">:main incise.core
+</code></pre><p>Now you can see what you can do.</p>
+<pre><code class="sh">lein run -- --help
+</code></pre><p>All command line options can also be specified in your <code>incise.edn</code>. For instance, if you want the default log level to be <code>:info</code> instead of <code>:warn</code>.</p>
+<pre><code class="clojure">;; In your incise.edn
+:log-level :info
+</code></pre><p>Which would be like running commands with the <code>--log-level info</code> option.</p>
+<pre><code class="sh">lein run -- --log-level info
+</code></pre><h2>Methods</h2><p>The default method is to serve. This launches ring powered webserver which automatically parsers files and re-parses them when they are modified. It also launches an nREPL server so clients who want one do not need to startup a separate process to have it.</p>
+<pre><code class="bash">lein run
+# Or to be explicit
+lein run -- -m serve
+</code></pre><p>You can also generate all content by parsing all parsable files in the input directory using the once command.</p>
+<pre><code class="bash">lein run -- -m once
+</code></pre><p>Finally, as mentioned above, you can use your configured deployment method.</p>
+<pre><code class="bash">lein run -- -m deploy
+</code></pre><h2>Extensibility</h2><p>Incise has been designed to be extensible. In order to make this extensibility as broad as possible there are five different types of extensions.</p>
+<ol>
+  <li><p>A parser: <code>incise.parsers.impl.*</code></p><p>Parsers are good for generating ouput files from input files. That sounds really vague, but that&rsquo;s because it could be used for many things. The most common usecase is generating HTML from an input file. For instance, there is a markdown parser which takes a markdown input file and generates and html file as a result.</p></li>
+  <li><p>A layout: <code>incise.layouts.impl.*</code></p><p>Layouts are just functions that take a map of metadata and content and return a string. They are an entirely optional feature that some parsers use when generating content. For instance the default markdown parser uses layouts so individual markdown files don&rsquo;t need to generate complete HTML.</p></li>
+  <li><p>A once fixture: <code>incise.once.fixtures.impl.*</code></p><p>A once fixture is used for wrapping <code>once</code> in with additional behaviour. For instance, if you want an asset pipleine like stefon, the <a href="https://github.com/RyanMcG/incise-stefon"><code>incise-stefon</code></a> extension adds a once fixture for precompiling assets.</p></li>
+  <li><p>A middleware: <code>incise.middlewares.impl.*</code></p><p>Middlewares for the development serving mode may also be extended. <a href="https://github.com/RyanMcG/incise-stefon"><code>incise-stefon</code></a> uses this feature to add <a href="https://github.com/circleci/stefon">stefon&rsquo;s <code>asset-pipeline</code> middleware</a>.</p></li>
+  <li><p>A deployer: <code>incise.deployer.impl.*</code></p><p>Deployers are used for deploying a website. They often call <code>incise.once.core/once</code> to first generate the site into a directory. Those generated files are then <em>deployed</em> by whatever means your configurated deployer uses. A git branch based deployer is included in <code>incise</code>.</p></li>
+</ol><p>You can read more about how extensions are found and used here on the <a href="extensibility/">extensibility</a> page. This might be helpful if you are hoping to extend incise.</p><h3>Default extensions</h3><h4>Parsers</h4><p>The following default parsers are available:</p><p>Included in <code>incise-core</code>:</p>
+<ul>
+  <li>copy &ndash; <a href="https://github.com/RyanMcG/incise-core/blob/master/src/incise/parsers/impl/copy.clj">incise.parsers.impl.copy</a></li>
+  <li>clj &ndash; <a href="https://github.com/RyanMcG/incise-core/blob/master/src/incise/parsers/impl/clj.clj">incise.parsers.impl.clj</a></li>
+  <li>html &ndash; <a href="https://github.com/RyanMcG/incise-core/blob/master/src/incise/parsers/impl/html.clj">incise.parsers.impl.html</a></li>
+</ul><p>As a separate package:</p>
+<ul>
+  <li>incise-markdown-parser &ndash; <a href="https://github.com/RyanMcG/incise-markdown-parser/blob/master/src/incise/parsers/impl/markdown.clj">incise.parsers.impl.markdown</a></li>
+</ul><h4>Layouts</h4><p>TODO</p><h4>The <code>git-branch</code> deployer</h4><p>The only deployer defined included in <code>incise</code> is the <a href="https://github.com/RyanMcG/incise-git-deployer"><code>git-branch</code> deployer</a>. It makes deploying to <a href="http://pages.github.com/">github pages</a> very easy.</p><h2>Where are the tests?</h2><p>The <code>incise</code> package has no tests on its own since it is just a collection of extensions and <code>incise-core</code>. So, there are no tests in this package but <code>incise-core</code> is somewhat well speced out.</p><h2>What&rsquo;s next?</h2><p>I have been adding <a href="https://github.com/RyanMcG/incise/issues?state=open">issues</a> with ideas. Open an issues with your own ideas or contribute. I would love some feedback and/or collaboration!</p><h2>Tips</h2><p>If you find incise valuable and are feeling particularly generous you may send some BTC to the address below.</p>
+<pre><code>16QAD8aVDkQYqT8WehSQtfQp1xRjbwxK3Q
+</code></pre><h2>Insular s (ꞅ)</h2><p>The <em>s</em> in incise logo is the <a href="http://en.wikipedia.org/wiki/Insular_script">insular</a> <em>s</em> (ꞅ). It is sometimes found in <a href="http://en.wikipedia.org/wiki/Gaelic_type">Gaelic type</a>.</p><h2>License</h2><p>Copyright © 2013 Ryan McGowan</p><p>Distributed under the Eclipse Public License, the same as Clojure.</p></div><footer><p>This website was <a href="https://github.com/RyanMcG/incise">incised</a>.</p></footer></div><script src="/incise/assets/javascripts/app-808dc6069c981b393aa5deed758a6d28.js" type="text/javascript"></script></body></html>
