@@ -10,4 +10,5 @@
   :profiles {:dev {:source-paths ["dev"]
                    :dependencies [[incise-stefon "0.1.0"]]}}
   :repl-options {:init-ns incise.repl}
+  :aliases {"incise" ^:pass-through-help ["run" "-m" "incise.core"]}
   :main incise.core)
