@@ -39,13 +39,14 @@ The easiest way to use incise is with the [Leiningen][].
 Make `incise.core` your main by adding the following to your `project.clj`.
 
 ```clojure
-:main incise.core
+:depdencies [[incise "0.3.0"]]
+:aliases {"incise" ^:pass-through-help ["run" "-m" "incise.core"]}
 ```
 
-Now you can see what you can do.
+Let's see what that gets us.
 
 ```sh
-lein run -- --help
+lein incise --help
 ```
 
 All command line options can also be specified in your `incise.edn`.
@@ -59,7 +60,7 @@ For instance, if you want the default log level to be `:info` instead of `:warn`
 Which would be like running commands with the `--log-level info` option.
 
 ```sh
-lein run -- --log-level info
+lein incise --log-level info
 ```
 
 ## Methods
@@ -69,21 +70,21 @@ This launches ring powered webserver which automatically parsers files and re-pa
 It also launches an nREPL server so clients who want one do not need to startup a separate process to have it.
 
 ```bash
-lein run
+lein incise
 # Or to be explicit
-lein run -- -m serve
+lein incise -m serve
 ```
 
 You can also generate all content by parsing all parsable files in the input directory using the once command.
 
 ```bash
-lein run -- -m once
+lein incise -m once
 ```
 
 Finally, as mentioned above, you can use your configured deployment method.
 
 ```bash
-lein run -- -m deploy
+lein incise -m deploy
 ```
 
 ## Extensibility
