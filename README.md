@@ -1,4 +1,4 @@
-# ![inciꞅe](https://raw.github.com/RyanMcG/incise/master/website/content/assets/images/logo.png) [![Build Status](https://travis-ci.org/RyanMcG/incise.png?branch=master)](https://travis-ci.org/RyanMcG/incise)
+# ![inciꞅe](https://raw.github.com/RyanMcG/incise/master/website/content/assets/images/logo.png) [![Build Status](https://travis-ci.org/RyanMcG/incise-core.png?branch=master)](https://travis-ci.org/RyanMcG/incise-core)
 
 <span class="tag-line">An extensible static site generator written in
 Clojure.</span>
