@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><title>incise</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="/incise/assets/stylesheets/app-b7ee747af869123688a51dbc3e5912ce.css" rel="stylesheet" type="text/css"><link href="/incise/assets/images/favicon.png" rel="icon" type="image/png"></head><body id="page"><div class="container"><header><h1 id="site-title"><a href="/incise/">incise</a></h1></header><div id="content"><h1><a href="https://github.com/RyanMcG/incise"><img alt="incise logo" id="logo" src="/incise/assets/images/logo.svg"></a><a href="https://travis-ci.org/RyanMcG/incise"><img src="https://travis-ci.org/RyanMcG/incise.png?branch=master" alt="Build Status""/></a></h1><p><span class="tag-line">An extensible static site generator written in Clojure.</span></p><h2>Get excited (or don&rsquo;t)</h2><p>One more static website generator might not be the world&rsquo;s most exciting development. That being said, if the following items sound like good ideas to you then you may like incise:</p>
+<html><head><title>incise</title><meta charset="UTF-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="/incise/assets/stylesheets/app-b7ee747af869123688a51dbc3e5912ce.css" rel="stylesheet" type="text/css"><link href="/incise/assets/images/favicon.png" rel="icon" type="image/png"></head><body id="page"><div class="container"><header><h1 id="site-title"><a href="/incise/">incise</a></h1></header><div id="content"><h1><a href="https://github.com/RyanMcG/incise"><img alt="incise logo" id="logo" src="/incise/assets/images/logo.svg"></a><a href="https://travis-ci.org/RyanMcG/incise-core"><img src="https://travis-ci.org/RyanMcG/incise-core.png?branch=master" alt="Build Status""/></a></h1><p><span class="tag-line">An extensible static site generator written in Clojure.</span></p><h2>Get excited (or don&rsquo;t)</h2><p>One more static website generator might not be the world&rsquo;s most exciting development. That being said, if the following items sound like good ideas to you then you may like incise:</p>
 <ul>
   <li>Use Clojure ✓</li>
   <li>Allow many different setups and configurations ✓</li>
@@ -12,22 +12,23 @@
   <li><a href="http://www.ryanmcg.com/">My personal website</a></li>
   <li><a href="https://github.com/RyanMcG/incise-example-project">The official example project</a></li>
 </ul><p>Of course these examples are sort of meaningless, in that Incise does not help you create content or designs&mdash;it is simply a mechanism for finding files dispatching them to functions based on file extensions. This pattern happens to be pretty powerful and batteries are included to actually make it useful too.</p><h2>Configuration</h2><p>Incise is primarily configured via a config file it tries to find as a resource. This file must be named <code>incise.edn</code> and be found in the root of your resources directory. You can override that file and pass in the <code>-c</code> or <code>--config</code> option to incise&rsquo;s main function to specify an alternative location of the config file.</p><p>An <a href="https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn">example <code>incise.edn</code></a> file is included with this project as well as the <code>incise.edn</code> file used to generate <a href="http://www.ryanmcg.com/incise/">this website</a>.</p><h2>Usage</h2><p>The easiest way to use incise is with the <a href="https://github.com/technomancy/leiningen">Leiningen</a>. Make <code>incise.core</code> your main by adding the following to your <code>project.clj</code>.</p>
-<pre><code class="clojure">:main incise.core
-</code></pre><p>Now you can see what you can do.</p>
-<pre><code class="sh">lein run -- --help
+<pre><code class="clojure">:depdencies [[incise &quot;0.3.1&quot;]]
+:aliases {&quot;incise&quot; ^:pass-through-help [&quot;run&quot; &quot;-m&quot; &quot;incise.core&quot;]}
+</code></pre><p>Let&rsquo;s see what that gets us.</p>
+<pre><code class="sh">lein incise --help
 </code></pre><p>All command line options can also be specified in your <code>incise.edn</code>. For instance, if you want the default log level to be <code>:info</code> instead of <code>:warn</code>.</p>
 <pre><code class="clojure">;; In your incise.edn
 :log-level :info
 </code></pre><p>Which would be like running commands with the <code>--log-level info</code> option.</p>
-<pre><code class="sh">lein run -- --log-level info
+<pre><code class="sh">lein incise --log-level info
 </code></pre><h2>Methods</h2><p>The default method is to serve. This launches ring powered webserver which automatically parsers files and re-parses them when they are modified. It also launches an nREPL server so clients who want one do not need to startup a separate process to have it.</p>
-<pre><code class="bash">lein run
+<pre><code class="bash">lein incise
 # Or to be explicit
-lein run -- -m serve
+lein incise -m serve
 </code></pre><p>You can also generate all content by parsing all parsable files in the input directory using the once command.</p>
-<pre><code class="bash">lein run -- -m once
+<pre><code class="bash">lein incise -m once
 </code></pre><p>Finally, as mentioned above, you can use your configured deployment method.</p>
-<pre><code class="bash">lein run -- -m deploy
+<pre><code class="bash">lein incise -m deploy
 </code></pre><h2>Extensibility</h2><p>Incise has been designed to be extensible. In order to make this extensibility as broad as possible there are five different types of extensions.</p>
 <ol>
   <li><p>A parser: <code>incise.parsers.impl.*</code></p><p>Parsers are good for generating ouput files from input files. That sounds really vague, but that&rsquo;s because it could be used for many things. The most common usecase is generating HTML from an input file. For instance, there is a markdown parser which takes a markdown input file and generates and html file as a result.</p></li>
