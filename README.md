@@ -181,7 +181,7 @@ Distributed under the Eclipse Public License, the same as Clojure.
 
 [blog]: http://www.ryanmcg.com/
 [incise]: http://www.ryanmcg.com/incise/
-[incise.edn.example]: https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn
+[incise.edn.example]: https://github.com/RyanMcG/incise-core/blob/master/resources/incise.example.edn
 [ex-project]: https://github.com/RyanMcG/incise-example-project
 [insular]: http://en.wikipedia.org/wiki/Insular_script
 [gaelic-type]: http://en.wikipedia.org/wiki/Gaelic_type
