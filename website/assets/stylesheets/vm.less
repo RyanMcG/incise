@@ -4,7 +4,8 @@
 
 @color: #222222;
 @bg-color: #f2f2f2;
-@content-padding: 15px;
+@content-padding: 30px;
+@page-width: 560px;
 
 .clearfix() {
   zoom: 1;
@@ -23,6 +24,7 @@ html {
 @sans-serif: 'TeX Gyre Heros', Helvetica, Arial, sans-serif;
 
 body {
+  text-align: justify;
   font-family: @sans-serif;
   line-height: 1.3em;
   font-size: 13pt;
@@ -59,7 +61,7 @@ p {
 }
 
 header, footer, #content {
-  max-width: 600px;
+  max-width: @page-width;
   margin: 0 auto;
 }
 
