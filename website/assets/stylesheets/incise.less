@@ -1,52 +1,16 @@
-@import url(//cdnjs.cloudflare.com/ajax/libs/pure/0.3.0/pure-min.css);
-@import url(//fonts.googleapis.com/css?family=Asul:400,700);
-
-@import 'solarized-dark.less';
-@color: #202020;
-
-html {
-  background: #eeeae7 url(../images/texture.png);
-  background: url(../images/texture.png), radial-gradient(circle, #e6dfda, #fafafa) fixed;
-  height: 100%;
-  width: 100%;
-}
-
-@serif: 'Asul', Palintino, Times, serif;
-@sans-serif: 'Asul', Helvetica, Arial, sans-serif;
-
-body {
-  font-family: @sans-serif;
-  line-height: 1.3em;
-  font-size: 11pt;
-  color: @color;
-  text-shadow: 1px 1px 0 #fafafa;
-  margin: 0 1em;
-}
-
-h1, h2, h3, h4 ,h5, h6, .tag-line {
-  font-family: @serif;
-  line-height: 1.4em;
-  font-weight: 400;
-  text-shadow: 1px 1px 0 white;
-  color: lighten(@color, 10%);
-}
-
-.tag-line {
-  font-weight: 600;
-  font-style: italic;
-  position: absolute;
-  top: 109px;
-  left: 45px;
-}
-
-img {
-  padding: 0;
-  margin: 0;
-}
+@import "vm.less";
 
 img#logo {
   width: 211px;
   height: 104px;
+}
+
+.tag-line {
+  line-height: 1.4em;
+  font-style: italic;
+  position: absolute;
+  top: 109px;
+  left: 45px;
 }
 
 h1:first-child {
@@ -55,62 +19,10 @@ h1:first-child {
     top: 80px;
     left: 45px;
   }
-  margin: 1em 0;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1em;
-  margin: 1.2em 0 0.2em;
-}
-
-h2 { font-size: 1.5em }
-h3 { font-size: 1.4em }
-h4 { font-size: 1.3em }
-h5 { font-size: 1.2em }
-h6 { font-size: 1.1em }
-
-img.fork-me {
-  top: 0;
-  right: 0;
-  position: fixed;
-  width: 149px;
-  height: 149px;
-}
-
-p {
-  margin: .4em 0 1em;
-}
-
-footer, #content {
-  max-width: 960px;
-  margin: 0 auto;
-}
-
-#content {
-  position: relative;
+  margin: 3em 0;
 }
 
 header { display: none; }
-
-@pre-padding: .5em;
-pre {
-  text-shadow: none;
-  font-size: 12pt;
-  background: rgba(0, 0, 0, .04);
-  border: 1px solid rgba(0, 0, 0, .2);
-}
-
-pre, code {
-  font-family: monospace;
-  font-size: 1em;
-}
-
-pre, pre code {
-  padding: @pre-padding;
-  border-radius: 2px;
-  box-shadow: inset 0 0 @pre-padding rgba(0, 0, 0, .08);
-}
 
 svg {
   @drop-shadow: drop-shadow(1px 2px 1px #fafafa);
