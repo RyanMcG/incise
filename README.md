@@ -12,7 +12,7 @@ you may like incise:
 * Allow many different setups and configurations ✓
 * Extensible by nature ✓
 * Batteries included, but only if you want them. ✓
-  * `incise` is just a collection of extensions on top of `incise-core`.
+    * `incise` is just a collection of extensions on top of `incise-core`.
 
 #### Examples
 
