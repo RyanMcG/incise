@@ -25,6 +25,8 @@ create content or designs---it is simply a mechanism for finding files
 dispatching them to functions based on file extensions. This pattern happens to
 be pretty powerful and batteries are included to actually make it useful too.
 
+---
+
 ## Configuration
 
 Incise is primarily configured via a config file it tries to find as a resource.
@@ -45,7 +47,7 @@ Make `incise.core` your main by adding the following to your `project.clj`.
 
 Let's see what that gets us.
 
-```sh
+```bash
 lein incise --help
 ```
 
@@ -59,7 +61,7 @@ For instance, if you want the default log level to be `:info` instead of `:warn`
 
 Which would be like running commands with the `--log-level info` option.
 
-```sh
+```bash
 lein incise --log-level info
 ```
 
@@ -86,6 +88,8 @@ Finally, as mentioned above, you can use your configured deployment method.
 ```bash
 lein incise -m deploy
 ```
+
+---
 
 ## Extensibility
 
@@ -149,6 +153,8 @@ TODO
 
 The only deployer defined included in `incise` is the [`git-branch` deployer][git-deployer].
 It makes deploying to [github pages][] very easy.
+
+---
 
 ## Where are the tests?
 
