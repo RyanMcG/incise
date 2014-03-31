@@ -3,11 +3,18 @@
 @import 'solarized-dark.less';
 
 @color: #222222;
-@bg-color: #f0f0f0;
+@bg-color: #f2f2f2;
+@content-padding: 15px;
+
+.clearfix() {
+  zoom: 1;
+  &:before { content: ''; display: block; }
+  &:after { content: ''; display: table; clear: both; }
+}
 
 html {
   background: @bg-color;
-  background: radial-gradient(circle, @bg-color, darken(#e4e5e7, 7%)) fixed;
+  background: radial-gradient(circle, lighten(@bg-color, 2%), darken(@bg-color, 4%)) fixed;
   height: 100%;
   width: 100%;
 }
@@ -18,11 +25,11 @@ html {
 body {
   font-family: @sans-serif;
   line-height: 1.3em;
-  font-size: 14pt;
+  font-size: 13pt;
   font-weight: 400;
   color: @color;
   text-shadow: 1px 0 0 #f6f6f6;
-  margin: 0 1em;
+  margin: 0 (10px + @content-padding);
 }
 
 h1, h2, h3, h4 ,h5, h6, .tag-line, footer {
@@ -48,11 +55,11 @@ h5 { font-size: 1.2em }
 h6 { font-size: 1.1em }
 
 p {
-  margin: .4em 0 1em;
+  margin: 0 0 .5em;
 }
 
 header, footer, #content {
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
 }
 
@@ -60,36 +67,33 @@ footer {
   text-align: center;
   font-size: .8em;
   color: @color;
-  opacity: 0.6;
+  opacity: 0.95;
   text-shadow: none;
-  margin: 4em auto 8em;
+  margin: 6em auto 7em;
 }
 
 #content {
   position: relative;
 }
 
-@pre-padding: .4em;
-pre {
-  text-shadow: none;
-  background: rgba(0, 0, 0, .04);
-  border: 1px solid rgba(0, 0, 0, .2);
-}
-
 pre, code {
   font-family: monospace;
-  font-size: 11pt;
 }
 
-pre, pre code {
-  border-radius: 2px;
-  box-shadow: inset 0 0 @pre-padding rgba(0, 0, 0, .08);
-}
-
+@pre-padding: .4em;
 pre {
+  border-radius: 2px;
+  box-shadow: inset 0 0 (2 * @pre-padding) rgba(15, 15, 15, .87), 0 0 @pre-padding rgba(24, 24, 24, .34);
+  border: 2px solid @sol_2;
+  font-size: 11pt;
   padding: @pre-padding;
+  text-shadow: none;
+  overflow-x: auto;
+  white-space: pre;
+  word-wrap: normal;
   code {
     padding: (@pre-padding - .2em) @pre-padding;
+    .clearfix();
   }
 }
 
@@ -100,5 +104,20 @@ ul, ol {
   ul, ol {
     margin: 0;
     padding: 0 0 0 (@ul-padding / 2);
+  }
+}
+
+hr {
+  @hr-inset: 3em;
+  border: 0;
+  height: 1px;
+  background-color: lighten(@color, 76%);
+  margin: 3em 0;
+}
+
+#content {
+  hr, & > pre, & > img {
+    margin-left: -@content-padding;
+    margin-right: -@content-padding;
   }
 }
