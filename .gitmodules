@@ -1,0 +1,3 @@
+[submodule "website/assets/vm"]
+	path = website/assets/vm
+	url = git@github.com:RyanMcG/vm-assets.git
