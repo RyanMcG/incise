@@ -190,7 +190,7 @@ It is probably helpful to [look at an example][incise.edn.example].
 
 [md-parser-source]: https://github.com/RyanMcG/incise-markdown-parser/blob/master/src/incise/parsers/impl/markdown.clj
 [thunk]: http://en.wikipedia.org/wiki/Thunk_(functional_programming)
-[incise.edn.example]: https://github.com/RyanMcG/incise/blob/master/resources/incise.example.edn
+[incise.edn.example]: https://github.com/RyanMcG/incise-core/blob/master/resources/incise.example.edn
 [cegdown]: https://github.com/Raynes/cegdown
 [pegdown]: http://pegdown.org/
 [cegdown-extensions]: https://github.com/Raynes/cegdown/blob/master/src/me/raynes/cegdown.clj#L4
