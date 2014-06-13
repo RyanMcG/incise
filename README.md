@@ -41,7 +41,7 @@ The easiest way to use incise is with the [Leiningen][].
 Make `incise.core` your main by adding the following to your `project.clj`.
 
 ```clojure
-:dependencies [[incise "0.3.2"]]
+:dependencies [[incise "0.4.0"]]
 :aliases {"incise" ^:pass-through-help ["run" "-m" "incise.core"]}
 ```
 
@@ -103,11 +103,11 @@ In order to make this extensibility as broad as possible there are five differen
     The most common usecase is generating HTML from an input file.
     For instance, there is a markdown parser which takes a markdown input file and generates and html file as a result.
 
-2.  A layout: `incise.layouts.impl.*`
+2.  A transformer: `incise.transformers.impl.*`
 
-    Layouts are just functions that take a map of metadata and content and return a string.
-    They are an entirely optional feature that some parsers use when generating content.
-    For instance the default markdown parser uses layouts so individual markdown files don't need to generate complete HTML.
+    Transformers are just functions that take a parse and return a parse (typically after making some change to it).
+    They are an entirely optional feature that some parsers use when generating content (like adding layouts to HTML content).
+    Transformers may be specified project wide via `parse-defaults` or per parse.
 
 3.  A once fixture: `incise.once.fixtures.impl.*`
 
@@ -145,7 +145,7 @@ As a separate package:
 
 * incise-markdown-parser -- [incise.parsers.impl.markdown](https://github.com/RyanMcG/incise-markdown-parser/blob/master/src/incise/parsers/impl/markdown.clj)
 
-#### Layouts
+#### Transformers
 
 TODO
 
