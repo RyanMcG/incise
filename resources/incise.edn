@@ -7,6 +7,6 @@
           :precompiles ["vm/javascripts/vm.js.stefon"
                         "vm/stylesheets/vm.css.stefon"]}
  :log-level :info
- :parse-defaults {:layout :vm}
+ :parse-defaults {:transformers [:vm-layout :html-header-anchors]}
  :uri-root "incise"
  :deploy {:workflow :git-branch}}

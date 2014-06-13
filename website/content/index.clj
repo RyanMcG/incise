@@ -1,7 +1,7 @@
 {:path "index.html"
  :title nil}
 
-(require '[incise.parsers.impl.markdown :refer [markdown-to-html]])
+(require '[incise.parsers.impl.markdown])
 (require '[hiccup.core :refer [html]])
 (require '[hiccup.element :refer [link-to image]])
 (require '[clojure.string :refer [replace-first]])
@@ -12,5 +12,5 @@
   (html (link-to "https://github.com/RyanMcG/incise"
                  (image {:id "logo"} svg-logo "incise logo"))))
 (-> md-source
-    (markdown-to-html)
+    (#'incise.parsers.impl.markdown/markdown-to-html)
     (replace-first #"\<img.*/\> " svg-logo-link))
