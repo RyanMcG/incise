@@ -1,0 +1,8 @@
+{:name "incise"
+ :defaults {:doc/format :markdown}
+ :sources ["../core/src"
+           "../markdown-parser/src"
+           "../base-hiccup-layouts/src"
+           "../git-deployer/src"]
+ :output-dir "api"
+ :src-uri "https://github.com/RyanMcG/incise"}
