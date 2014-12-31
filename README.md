@@ -41,7 +41,7 @@ The easiest way to use incise is with the [Leiningen][].
 Make `incise.core` your main by adding the following to your `project.clj`.
 
 ```clojure
-:dependencies [[incise "0.4.0"]]
+:dependencies [[incise "0.5.0"]]
 :aliases {"incise" ^:pass-through-help ["run" "-m" "incise.core"]}
 ```
 
