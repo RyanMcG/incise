@@ -11,6 +11,7 @@
 (def svg-logo-link
   (html (link-to "https://github.com/RyanMcG/incise"
                  (image {:id "logo"} svg-logo "incise logo"))))
+
 (-> md-source
     (#'incise.parsers.impl.markdown/markdown-to-html)
-    (replace-first #"\<img.*/\> " svg-logo-link))
+    (replace-first #"^<h1>.*</h1><p>.*<h2>(.*)</h2>" "<h1>$1</h1>"))
