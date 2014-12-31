@@ -48,7 +48,7 @@ Make `incise.core` your main by adding the following to your `project.clj`.
 Let's see what that gets us.
 
 ```bash
-lein incise --help
+lein incise help
 ```
 
 All command line options can also be specified in your `incise.edn`.
@@ -74,19 +74,19 @@ It also launches an nREPL server so clients who want one do not need to startup 
 ```bash
 lein incise
 # Or to be explicit
-lein incise -m serve
+lein incise serve
 ```
 
 You can also generate all content by parsing all parsable files in the input directory using the once command.
 
 ```bash
-lein incise -m once
+lein incise once
 ```
 
 Finally, as mentioned above, you can use your configured deployment method.
 
 ```bash
-lein incise -m deploy
+lein incise deploy
 ```
 
 ---
