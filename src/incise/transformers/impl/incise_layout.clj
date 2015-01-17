@@ -3,7 +3,8 @@
                                                  deflayout defpartial]]
                                  [core :refer [register]])
             [stefon.core :refer [link-to-asset]]
-            [incise.transformers.impl.vm-layout :as vm-layout]))
+            [incise.transformers.impl.vm-layout :as vm-layout]
+            [incise.transformers.impl.base-layout :as base-layout]))
 
 (defpartial header []
   [:header
@@ -20,7 +21,7 @@
              (link-to-asset "incise.css.stefon"))))
 
 (deflayout incise []
-  (repartial vm-layout/header header)
+  (repartial base-layout/header header)
   (repartial vm-layout/stylesheets stylesheets)
   (use-layout vm-layout/vm))
 
