@@ -13,5 +13,5 @@
                  (image {:id "logo"} svg-logo "incise logo"))))
 
 (-> md-source
-    (#'incise.parsers.impl.markdown/markdown-to-html)
-    (replace-first #"^<h1>.*</h1><p>.*<h2>(.*)</h2>" "<h1>$1</h1>"))
+    (replace-first #"(?s)^.*## Get ex" "# Get ex")
+    (#'incise.parsers.impl.markdown/markdown-to-html))

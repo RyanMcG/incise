@@ -11,7 +11,7 @@ Clojure.</span>
 ## Get excited (or don't)
 
 One more static website generator might not be the world's most exciting development. That being said, if the following items sound like good ideas to you then
-you may like incise:
+you may like *incise*:
 
 * Use Clojure ✓
 * Allow many different setups and configurations ✓
@@ -25,7 +25,7 @@ you may like incise:
 * [My personal website][blog]
 * [The official example project][ex-project]
 
-Of course these examples are sort of meaningless, in that Incise does not help you
+Of course these examples are sort of meaningless, in that *incise* does not help you
 create content or designs---it is simply a mechanism for finding files
 dispatching them to functions based on file extensions. This pattern happens to
 be pretty powerful and batteries are included to actually make it useful too.
@@ -34,16 +34,16 @@ be pretty powerful and batteries are included to actually make it useful too.
 
 ## Configuration
 
-Incise is primarily configured via a config file it tries to find as a resource.
+*Incise* is primarily configured via a config file it tries to find as a resource.
 This file must be named `incise.edn` and be found in the root of your resources directory.
-You can override that file and pass in the `-c` or `--config` option to incise's main function to specify an alternative location of the config file.
+You can override that file and pass in the `-c` or `--config` option to *incise's* main function to specify an alternative location of the config file.
 
 An [example `incise.edn`][incise.edn.example] file is included with this project as well as the `incise.edn` file used to generate [this website][incise].
 
 ## Usage
 
-The easiest way to use incise is with the [Leiningen][].
-Make `incise.core` your main by adding the following to your `project.clj`.
+The easiest way to use *incise* is with the [Leiningen][].
+Just add the following alias to your `project.clj`.
 
 ```clojure
 :dependencies [[incise "0.5.0"]]
@@ -73,7 +73,7 @@ lein incise --log-level info
 ## Methods
 
 The default method is to serve.
-This launches ring powered webserver which automatically parsers files and re-parses them when they are modified.
+This launches a ring powered webserver that will parse all content on first request, and re-parse them when they are modified.
 It also launches an nREPL server so clients who want one do not need to startup a separate process to have it.
 
 ```bash
@@ -98,7 +98,7 @@ lein incise deploy
 
 ## Extensibility
 
-Incise has been designed to be extensible.
+*Incise* has been designed to be extensible.
 In order to make this extensibility as broad as possible there are five different types of extensions.
 
 1.  A parser: `incise.parsers.impl.*`
@@ -106,13 +106,13 @@ In order to make this extensibility as broad as possible there are five differen
     Parsers are good for generating ouput files from input files.
     That sounds really vague, but that's because it could be used for many things.
     The most common usecase is generating HTML from an input file.
-    For instance, there is a markdown parser which takes a markdown input file and generates and html file as a result.
+    For instance, there is a markdown parser which takes a markdown input file and generates an html file as a result.
 
 2.  A transformer: `incise.transformers.impl.*`
 
-    Transformers are just functions that take a parse and return a parse (typically after making some change to it).
+    Transformers are just functions that take a Parse and return a Parse (typically after making some change to it).
     They are an entirely optional feature that some parsers use when generating content (like adding layouts to HTML content).
-    Transformers may be specified project wide via `parse-defaults` or per parse.
+    Transformers may be specified project wide via `:parse-defaults` or per file being parsed.
 
 3.  A once fixture: `incise.once.fixtures.impl.*`
 
@@ -128,17 +128,17 @@ In order to make this extensibility as broad as possible there are five differen
 
     Deployers are used for deploying a website.
     They often call `incise.once.core/once` to first generate the site into a directory.
-    Those generated files are then *deployed* by whatever means your configurated deployer uses.
+    Those generated files are then *deployed* by whatever means your configured deployer uses.
     A git branch based deployer is included in `incise`.
 
-You can read more about how extensions are found and used here on the [extensibility][] page.
-This might be helpful if you are hoping to extend incise.
+You can read more about how extensions are found and used on the [extensibility][] page.
+This might be helpful if you are hoping to extend *incise*.
 
 ### Default extensions
 
 #### Parsers
 
-The following default parsers are available:
+The following default parsers are available in `incise`:
 
 Included in `incise-core`:
 
@@ -152,7 +152,8 @@ As a separate package:
 
 #### Transformers
 
-TODO
+The only transformer specified by default is [`html-header-anchors`][html-header-anchors].
+It assumes the content of a Parse to be html and adds easily styled anchor tags into headers.
 
 #### The `git-branch` deployer
 
@@ -166,22 +167,22 @@ It makes deploying to [github pages][] very easy.
 The `incise` package has no tests on its own since it is just a collection of extensions and `incise-core`.
 So, there are no tests in this package but `incise-core` is somewhat well speced out.
 
-## What's next?
+## What's next? & Contributing
 
 I have been adding [issues][] with ideas.
-Open an issues with your own ideas or contribute.
-I would love some feedback and/or collaboration!
+Please open issues with your own idea!
+Contribution and feedback are **very** welcome.
 
 ## Tips
 
-If you find incise valuable and are feeling particularly generous you may send
+If you find *incise* valuable and are feeling particularly generous you may send
 some BTC to the address below.
 
     16QAD8aVDkQYqT8WehSQtfQp1xRjbwxK3Q
 
 ## Insular s (ꞅ)
 
-The *s* in incise logo is the [insular][] *s* (ꞅ). It is sometimes found in
+The *s* in *incise* logo is the [insular][] *s* (ꞅ). It is sometimes found in
 [Gaelic type][gaelic-type].
 
 ## License
@@ -192,6 +193,8 @@ Distributed under the Eclipse Public License, the same as Clojure.
 
 [blog]: http://www.ryanmcg.com/
 [incise]: http://www.ryanmcg.com/incise/
+[incise-source]: https://github.com/RyanMcG/incise-core
+[incise-api]: http://www.ryanmcg.com/incise/api/
 [incise.edn.example]: https://github.com/RyanMcG/incise-core/blob/master/resources/incise.example.edn
 [ex-project]: https://github.com/RyanMcG/incise-example-project
 [insular]: http://en.wikipedia.org/wiki/Insular_script
@@ -204,3 +207,4 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [extensibility]: http://www.ryanmcg.com/incise/extensibility/
 [incise-stefon]: https://github.com/RyanMcG/incise-stefon
 [asset-pipeline]: https://github.com/circleci/stefon
+[html-header-anchors]: http://www.ryanmcg.com/incise/api/incise.transformers.impl.html-header-anchors.html

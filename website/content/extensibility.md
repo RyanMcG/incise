@@ -2,48 +2,45 @@
 
 # Extensibility
 
-Incise has been designed to be extensible. It scans the classpath for namespaces
+*Incise* has been designed to be extensible. It scans the classpath for namespaces
 that match various patterns and requires them to register new functionality.
 This functionality could be one of three things:
 
 1. A parser: `incise.parsers.impl.*`
-2. A layout: `incise.layouts.impl.*`
+2. A transformer: `incise.transformers.impl.*`
 3. A deployment workflow: `incise.deploy.workflows.*`
 
-Effectively, incise does a straightforward require of any namespace that matches
-the one of the patterns above. The namespace may invoke a `register` function to
-make incise aware of the implementation. Parsers, layouts and deployment
-workflows all have their own register functions (`incise.parsers.core/register`,
-`incise.layouts.core/register` and `incise.deploy.core/register`). All three
-register functions take a key or collection of keys to map the function to be
-registered to.
+Effectively, *incise* does a straightforward require of any namespace that matches the one of the patterns above.
+The namespace may invoke a `register` function to make *incise* aware of the implementation.
+Parsers, transformers and deployment workflows all have their own register functions (`incise.parsers.core/register`, `incise.transformers.core/register` and `incise.deploy.core/register`).
+All three register functions take a key or collection of keys to map the function to be registered to.
 
 ### Parsers
 
-Parsers are the muscles that give incise its ability to do. A parser is a
-function which parses a file and writes zero or more files as a result. The
-simplest parser would be the no-op parser. A no-op parser would take in a file
-and do nothing with it. Here is the incise friendly implementation of the no-op
-parser:
+A parser is a function which parses a file and writes zero or more files as a result.
+The simplest parser would be the no-op parser.
+A no-op parser would take in a file and do nothing with it.
+Here is the *incise* friendly implementation of the no-op parser:
 
 ```clojure
-(ns incise.parsers.impl.no-op)
+(ns incise.parsers.impl.no-op
+  (:require [incise.parsers.core :refer [register]])
 
 (defn no-op-parse [^File _] (delay []))
 
-(incise.parsers.core/register [:gitignore] no-op-parser)
+(register [:gitignore] no-op-parser)
 ```
 
-Quite a few things are going on here despite being only a few SLOC. Firstly, you
-will notice the namespace in which the parser is defined. It matches the pattern
-mentioned above so it will get required automatically.
+Quite a few things are going on here despite being only four SLOC.
+Firstly, the namespace in which the parser is defined matches the pattern mentioned above so it will get required automatically.
 
-The actual definition of `no-op-parse` returns a delay which when invoked
-returns a sequence of files. In this case it is an empty sequence since this is
-the no-op parser. Why not just return a sequence of files?
+The actual definition of `no-op-parse` returns a delay which when invoked returns a sequence of files.
+In this case it is an empty sequence since this is the no-op parser.
+Why not just return a sequence of files?
+We'll get to that in the next section.
 
 Finally, the parser is registered to files with the `gitignore` extension.
-Effectively, this means incise would parse all gitignore files with the no-op
+Effectively, this means *incise* would parse all gitignore files with the no-op
 parser. This is, of course, the same as not parsing them at all.
 
 #### Two step parsing
@@ -58,7 +55,7 @@ This is pretty easy to do and very loose. It is also a bit more complex than may
 seem necessary (why return a thunk that does something instead of just doing
 it?). In order to implement features like tags each invocation of a parser must
 have at least some access to data from other files being parsed. The solution
-incise uses is to split parsing into two steps. Generally these steps are:
+*incise* uses is to split parsing into two steps. Generally these steps are:
 
 1.  Allow side-effects like modifying public atoms. Read in the file.
 2.  Invoke the thunk/delay. Write files and return corresponding `java.io.File`
@@ -80,11 +77,9 @@ Most of the time a parser is probably meant to convert some sort of source into
 HTML. For this specific use case a lot of the hard work has already been done for you if
 you use `incise.parsers.html/html-parser`.
 
-`html-parser` is a higher-order function which takes a function and returns a
-valid parsers. The function passed to `html-parser` should take a string
-and either return HTML as a string or a list of Clojure code to evaluate in
-context later (with the result being an HTML string). The first
-case is simpler so I will start there.
+`html-parser` is a higher-order function which takes a function and returns a parser.
+The function passed to `html-parser` should take a String and either return HTML as a String or a list of Clojure code to evaluate in context later (with the result being an HTML string).
+The first case is simpler so I will start there.
 
 Here is the html to html parser implementation.
 
@@ -104,7 +99,7 @@ The following example html file could then be parsed using the parser defined
 above.
 
 ```html
-{:layout :base
+{:transformers [:base-layout]
  :path "hmmm/index.html"}
 
 <h1>Hmmm</h1>
@@ -142,14 +137,17 @@ Note that `markdown.core/md-to-html` is a fictional function.
 
 The full list of available extensions can be find [here][cegdown-extensions].
 
-### Layouts
+### Transformers
 
-While they are a core feature of incise, layouts may or not be used by any given
-parser. For instance, parsers generated with `html-parser` use them but the copy parser does not.
-Layouts are functions which take a sting and return a string. The layouts
-`html-parser` uses simply wrap html tags around some generated content. The
-benefit of separating layouts from the parser is that different layouts can be
-used for different files of the same extension and the same layout may be used for various filetypes.
+While they are a core feature of *incise*, they are not quire as essential.
+However, transformers have a niche and are extremely useful.
+Some parsers use them and some do not.
+For instance, parsers generated with `html-parser` use them but the copy parser does not.
+
+Transformers are functions which takes a Parse and returns a new one, usually with modified content.
+One common use case of a transformer is to wrap various html sources in a layout.
+The built-in [`html-header-anchors` transformer][html-header-anchors] is another good example.
+It assumes Parse content is HTML and adds easily styled, named anchor tags into headers (e.g. `h1`, `h2`).
 
 ### Deployers
 
@@ -159,7 +157,7 @@ specified (or default) output directory.  While very useful on its own, certain
 deployment procedures are so common (not project specific) that it seemed
 sensible to make them plugable.
 
-Like layouts and parsers, deployment workflows are registered in an atom by
+Like transformers and parsers, deployment workflows are registered in an atom by
 calling the `incise.deploy.core/register` function and the namespaces are
 automatically required by the previously mentioned scheme.
 
@@ -188,6 +186,7 @@ key in the `:deploy` map.
 
 It is probably helpful to [look at an example][incise.edn.example].
 
+[html-header-anchors]: http://www.ryanmcg.com/incise/api/incise.transformers.impl.html-header-anchors.html
 [md-parser-source]: https://github.com/RyanMcG/incise-markdown-parser/blob/master/src/incise/parsers/impl/markdown.clj
 [thunk]: http://en.wikipedia.org/wiki/Thunk_(functional_programming)
 [incise.edn.example]: https://github.com/RyanMcG/incise-core/blob/master/resources/incise.example.edn
