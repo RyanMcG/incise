@@ -3,6 +3,11 @@
 <span class="tag-line">An extensible static site generator written in
 Clojure.</span>
 
+<!-- Unfortunately, this is duplicated in src/incise/transformers/impl/incise_layout.clj -->
+[**Source**][incise-source] **|**
+[**API**][incise-api] **|**
+[**Extensibility**][extensibility]
+
 ## Get excited (or don't)
 
 One more static website generator might not be the world's most exciting development. That being said, if the following items sound like good ideas to you then
@@ -196,6 +201,6 @@ Distributed under the Eclipse Public License, the same as Clojure.
 [issues]: https://github.com/RyanMcG/incise/issues?state=open
 [git-deployer]: https://github.com/RyanMcG/incise-git-deployer
 [github pages]: http://pages.github.com/
-[extensibility]: extensibility/
+[extensibility]: http://www.ryanmcg.com/incise/extensibility/
 [incise-stefon]: https://github.com/RyanMcG/incise-stefon
 [asset-pipeline]: https://github.com/circleci/stefon

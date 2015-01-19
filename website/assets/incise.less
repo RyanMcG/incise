@@ -14,3 +14,22 @@ header {
 h1:first-child {
   margin-top: 1.5em;
 }
+
+ul.nav {
+  padding: 0;
+  margin-bottom: 0;
+  .light-copy();
+  list-style: none;
+
+  li {
+    font-weigth: 700;
+    float: left;
+  }
+
+  li + li::before {
+    content: "|";
+    margin: 0 0.5em;
+  }
+
+  .clearfix();
+}
