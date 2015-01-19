@@ -3,9 +3,10 @@
                                                  deflayout defpartial]]
                                  [core :refer [register]])
             [stefon.core :refer [link-to-asset]]
-            [incise.transformers.impl.vm-layout :as vm-layout]
-            [incise.transformers.impl.base-layout :as page-layout]
-            [incise.transformers.impl.base-layout :as base-layout]))
+            [robert.hooke :refer [clear-hooks]]
+            (incise.transformers.impl [vm-layout :as vm-layout]
+                                      [base-layout :as base-layout])
+            [hiccup.util :refer [to-uri]]))
 
 (defpartial header []
   [:header
@@ -34,12 +35,20 @@
       "Extensibility"]]]])
 
 (defpartial stylesheets [_ _ old-sheets]
-  (vec (conj (butlast old-sheets)
+  (vec (conj (vec (butlast old-sheets))
              (link-to-asset "incise.css.stefon"))))
 
+(defpartial head [_ _ old-head]
+  (vec (conj (vec (butlast (first old-head)))
+             [:link {:rel "icon"
+                     :type "image/png"
+                     :href (to-uri "/assets/images/favicon.png")}])))
+
 (deflayout incise []
-  (repartial base-layout/header header)
+  (clear-hooks #'base-layout/head) ; Necessary to remove old favicon
+  (repartial base-layout/head head)
   (repartial vm-layout/stylesheets stylesheets)
+  (repartial base-layout/header header)
   (use-layout vm-layout/vm))
 
 (register :incise-layout incise)
