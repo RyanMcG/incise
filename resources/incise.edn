@@ -5,7 +5,7 @@
  :stefon {:asset-roots ["website/assets"]
           :manifest-file "website/manifest.json"
           :precompiles ["vm/javascripts/vm.js.stefon"
-                        "vm/stylesheets/vm.css.stefon"]}
+                        "incise.css.stefon"]}
  :log-level :info
  :parse-defaults {:transformers [:incise-layout :html-header-anchors]}
  :uri-root "incise"
