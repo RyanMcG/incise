@@ -103,7 +103,7 @@ In order to make this extensibility as broad as possible there are five differen
 
 1.  A parser: `incise.parsers.impl.*`
 
-    Parsers are good for generating ouput files from input files.
+    Parsers are good for generating output files from input files.
     That sounds really vague, but that's because it could be used for many things.
     The most common usecase is generating HTML from an input file.
     For instance, there is a markdown parser which takes a markdown input file and generates an html file as a result.
@@ -117,7 +117,7 @@ In order to make this extensibility as broad as possible there are five differen
 3.  A once fixture: `incise.once.fixtures.impl.*`
 
     A once fixture is used for wrapping `once` in with additional behaviour.
-    For instance, if you want an asset pipleine like stefon, the [`incise-stefon`][incise-stefon] extension adds a once fixture for precompiling assets.
+    For instance, if you want an asset pipeline like stefon, the [`incise-stefon`][incise-stefon] extension adds a once fixture for precompiling assets.
 
 4.  A middleware: `incise.middlewares.impl.*`
 
